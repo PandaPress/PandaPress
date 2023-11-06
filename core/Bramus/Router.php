@@ -6,7 +6,7 @@
  * @license     MIT public license
  */
 
-namespace PandaCMS\Bramus;
+namespace Panda\Bramus;
 
 /**
  * Class Router.
