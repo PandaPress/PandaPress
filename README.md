@@ -6,6 +6,6 @@ A modern CMS but without composer
 
 - MVC architecture
 - PSR-4 compatibility
-- without composer so that you can just use in any cheap PHP hosting service
+- without composer so that you can use it in any cheap PHP hosting service
 - plugins
 - themes
