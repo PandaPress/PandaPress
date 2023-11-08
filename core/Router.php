@@ -2,7 +2,7 @@
 
 namespace Panda;
 
-use Panda\Bramus\Router as BramusRouter;
+use Bramus\Router as BramusRouter;
 
 class Router
 {
