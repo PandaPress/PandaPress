@@ -11,7 +11,7 @@ namespace Latte\Loaders;
 
 
 use Latte;
-use Latte\Runtime\RuntimeException;
+use Latte\Exception\RuntimeException;
 
 
 /**
