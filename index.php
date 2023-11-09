@@ -7,11 +7,15 @@ $loader = new Psr4Autoloader();
 $loader->register();
 $loader->addNamespace('Bramus', './vendor/Bramus');
 $loader->addNamespace('Latte', './vendor/Latte');
+$loader->addNamespace('Symfony', './vendor/Symfony');
 $loader->addNamespace('Panda', './core');
 
 use Panda\Router;
+use Symfony\Component\Dotenv\Dotenv;
+
+$dotenv = new Dotenv();
+$dotenv->load(__DIR__ . '/.env');
 
 $router = new Router();
-
 
 $router->run();

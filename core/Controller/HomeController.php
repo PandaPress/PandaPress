@@ -25,6 +25,6 @@ class HomeController
 
     public function about()
     {
-        echo "home about page";
+        echo "home about page. Test:  " . $_ENV['Test'];
     }
 }
