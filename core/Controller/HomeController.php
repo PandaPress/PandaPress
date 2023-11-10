@@ -5,6 +5,7 @@ namespace Panda\Controller;
 
 use Latte\Engine;
 
+
 class HomeController
 {
     private $latte;
@@ -25,6 +26,15 @@ class HomeController
 
     public function about()
     {
-        echo "home about page. Test:  " . $_ENV['Test'];
+        global $pandadb;
+        $theme = $pandadb->select("panda_options", ["option_key", "option_value"], [
+            "option_value" => 'bear'
+        ]);
+
+        echo json_encode([
+            "theme" => $theme
+        ]);
+
+        // echo json_encode($_ENV);
     }
 }
