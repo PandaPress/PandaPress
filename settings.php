@@ -1,6 +1,8 @@
 <?php
 
-use Panda\PandaDB;
+use Panda\Services;
+
+$services = Services::init();
 
 global $pandadb;
-$pandadb = PandaDB::getInstance()->db;
+$pandadb = $services->db;

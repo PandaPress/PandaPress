@@ -3,17 +3,20 @@
 
 namespace Panda;
 
-use Medoo\Medoo;
+use Panda\Services\DB;
+use Panda\Services\Logger;
 
-class PandaDB
+class Services
 {
     private static self|null $instance = null;
 
-    public  Medoo|null $db = null;
+    public readonly DB $db;
+
+    public readonly Logger $logger;
 
     final private function __construct()
     {
-        $this->db = new Medoo([
+        $this->db = new DB([
             "type" => $_ENV['DB_TYPE'] ?? 'mysql',
             "host" => $_ENV['DB_HOST'],
             "database" => $_ENV['DB_NAME'],
@@ -28,12 +31,9 @@ class PandaDB
     {
     }
 
-    public static function getInstance(): PandaDB
+    public static function init(): self
     {
-        if (PandaDB::$instance === null) {
-            PandaDB::$instance = new PandaDB;
-        }
-
-        return PandaDB::$instance;
+        self::$instance ??= new self;
+        return self::$instance;
     }
 }

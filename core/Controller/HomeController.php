@@ -28,7 +28,7 @@ class HomeController
     {
         global $pandadb;
         $theme = $pandadb->select("panda_options", ["option_key", "option_value"], [
-            "option_value" => 'bear'
+            "option_key" => 'theme'
         ]);
 
         echo json_encode([
