@@ -20,6 +20,9 @@ class Router
     {
         $this->router->get('/', 'HomeController@index');
         $this->router->get('/about', 'HomeController@about');
+        $this->router->get("/install", function () {
+            header("Location: /install.php");
+        });
     }
 
 
