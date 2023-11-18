@@ -12,16 +12,20 @@ class Router
     public function __construct()
     {
         $this->router = new BramusRouter();
-        $this->router->setNamespace("\Panda\Controller");
         $this->setRoutes();
     }
 
     public function setRoutes()
     {
-        $this->router->get('/', 'HomeController@index');
-        $this->router->get('/about', 'HomeController@about');
+        $this->router->get('/', '\Panda\Controller\HomeController@index');
+        $this->router->get('/about', '\Panda\Controller\HomeController@about');
         $this->router->get("/install", function () {
             header("Location: /install.php");
+        });
+
+        $admin_router = $this->router;
+        $admin_router->mount('/admin', function () use ($admin_router) {
+            $admin_router->get('/', '\Panda\Admin\Controller\HomeController@index');
         });
     }
 
