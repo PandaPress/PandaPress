@@ -17,15 +17,24 @@ class Router
 
     public function setRoutes()
     {
-        $this->router->get('/', '\Panda\Controller\HomeController@index');
-        $this->router->get('/about', '\Panda\Controller\HomeController@about');
-        $this->router->get("/install", function () {
+
+        $_router = $this->router;
+
+        $_router->get('/', '\Panda\Controller\HomeController@index');
+        $_router->get('/about', '\Panda\Controller\HomeController@about');
+        $_router->get("/install", function () {
             header("Location: /install.php");
         });
 
-        $admin_router = $this->router;
-        $admin_router->mount('/admin', function () use ($admin_router) {
-            $admin_router->get('/', '\Panda\Admin\Controller\HomeController@index');
+        // $_router->before('GET|POST', '/admin/.*', function () {
+        //     if (!isset($_SESSION['user'])) {
+        //         header('location: /auth/login');
+        //         exit();
+        //     }
+        // });
+
+        $_router->mount('/admin', function () use ($_router) {
+            $_router->get('/', '\Panda\Admin\Controller\HomeController@index');
         });
     }
 
