@@ -24,6 +24,7 @@ class Router
         $_router->get('/about', '\Panda\Controller\HomeController@about');
         $_router->get("/install", function () {
             header("Location: /install.php");
+            exit();
         });
 
         // $_router->before('GET|POST', '/admin/.*', function () {
