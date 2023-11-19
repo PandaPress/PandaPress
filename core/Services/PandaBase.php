@@ -4,6 +4,6 @@ namespace Panda\Services;
 
 use Medoo\Medoo;
 
-class DB extends Medoo
+class PandaBase extends Medoo
 {
 }

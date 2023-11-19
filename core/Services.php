@@ -3,20 +3,20 @@
 
 namespace Panda;
 
-use Panda\Services\DB;
+use Panda\Services\PandaBase;
 use Panda\Services\Logger;
 
 class Services
 {
     private static self|null $instance = null;
 
-    public readonly DB $db;
+    public readonly PandaBase $db;
 
     public readonly Logger $logger;
 
     final private function __construct()
     {
-        $this->db = new DB([
+        $this->db = new PandaBase([
             "type" => $_ENV['DB_TYPE'] ?? 'mysql',
             "host" => $_ENV['DB_HOST'],
             "database" => $_ENV['DB_NAME'],
