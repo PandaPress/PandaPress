@@ -16,7 +16,7 @@ class HomeController
     {
         $this->latte = new Engine();
         $this->theme_dir = root() . "/ext/themes/bear";
-        $this->latte->setTempDirectory(root() . "/tmp/templates");
+        $this->latte->setTempDirectory(root() . "/cache/templates");
     }
     public function index()
     {
