@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace Latte\Exception;
 
-use Exception;
+use Latte\Exception\IException;
 
-class RuntimeException extends Exception
+class RuntimeException extends \RuntimeException implements IException
 {
 }

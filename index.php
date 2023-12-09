@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 require "autoloader.php";
 require "functions.php";
 

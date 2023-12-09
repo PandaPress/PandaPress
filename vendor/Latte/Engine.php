@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Latte;
 
 use Latte\Compiler\Nodes\TemplateNode;
+use Latte\Exception\RuntimeException;
 
 
 /**
@@ -83,7 +84,7 @@ class Engine
 	{
 		$template = $this->createTemplate($name, $this->processParams($params));
 		$template->global->coreCaptured = true;
-		return $template->capture(fn() => $template->render($block));
+		return $template->capture(fn () => $template->render($block));
 	}
 
 
@@ -124,7 +125,6 @@ class Engine
 			$node = $this->parse($source);
 			$this->applyPasses($node);
 			$code = $this->generate($node, $name);
-
 		} catch (\Throwable $e) {
 			if (!$e instanceof CompileException && !$e instanceof SecurityViolationException) {
 				$e = new CompileException("Thrown exception '{$e->getMessage()}'", previous: $e);
@@ -606,7 +606,7 @@ class Engine
 			}
 		}
 
-		return array_filter((array) $params, fn($key) => $key[0] !== "\0", ARRAY_FILTER_USE_KEY);
+		return array_filter((array) $params, fn ($key) => $key[0] !== "\0", ARRAY_FILTER_USE_KEY);
 	}
 
 
