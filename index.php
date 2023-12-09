@@ -16,8 +16,11 @@ $loader->addNamespace('Panda', './core');
 use Panda\Router;
 use Symfony\Component\Dotenv\Dotenv;
 
-$dotenv = new Dotenv();
-$dotenv->load(__DIR__ . '/.env');
+if (file_exists(__DIR__ . '/.env')) {
+    $dotenv = new Dotenv();
+    $dotenv->load(__DIR__ . '/.env');
+}
+
 
 require "settings.php";
 
