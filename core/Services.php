@@ -21,7 +21,8 @@ class Services
             "host" => $_ENV['DB_HOST'],
             "database" => $_ENV['DB_NAME'],
             "username" => $_ENV['DB_USERNAME'],
-            "password" => $_ENV['DB_PASSWORD']
+            "password" => $_ENV['DB_PASSWORD'],
+            "port" => $_ENV['DB_PORT'] ?? 3306
         ]);
     }
     final public function __clone()
