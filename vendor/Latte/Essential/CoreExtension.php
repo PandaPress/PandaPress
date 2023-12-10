@@ -16,7 +16,7 @@ use Latte\Compiler\Nodes\TextNode;
 use Latte\Compiler\Tag;
 use Latte\Compiler\TemplateParser;
 use Latte\Runtime;
-use Latte\RuntimeException;
+use Latte\Exception\RuntimeException;
 use Nette;
 
 
@@ -72,8 +72,8 @@ final class CoreExtension extends Latte\Extension
 			'contentType' => [Nodes\ContentTypeNode::class, 'create'],
 			'spaceless' => [Nodes\SpacelessNode::class, 'create'],
 			'capture' => [Nodes\CaptureNode::class, 'create'],
-			'l' => fn(Tag $tag) => new TextNode('{', $tag->position),
-			'r' => fn(Tag $tag) => new TextNode('}', $tag->position),
+			'l' => fn (Tag $tag) => new TextNode('{', $tag->position),
+			'r' => fn (Tag $tag) => new TextNode('}', $tag->position),
 			'syntax' => \Closure::fromCallable([$this, 'parseSyntax']),
 
 			'dump' => [Nodes\DumpNode::class, 'create'],
@@ -116,7 +116,9 @@ final class CoreExtension extends Latte\Extension
 			'bytes' => [Filters::class, 'bytes'],
 			'capitalize' => extension_loaded('mbstring')
 				? [Filters::class, 'capitalize']
-				: function () { throw new RuntimeException('Filter |capitalize requires mbstring extension.'); },
+				: function () {
+					throw new RuntimeException('Filter |capitalize requires mbstring extension.');
+				},
 			'ceil' => [Filters::class, 'ceil'],
 			'clamp' => [Filters::class, 'clamp'],
 			'dataStream' => [Filters::class, 'dataStream'],
@@ -134,7 +136,9 @@ final class CoreExtension extends Latte\Extension
 			'first' => [Filters::class, 'first'],
 			'firstUpper' => extension_loaded('mbstring')
 				? [Filters::class, 'firstUpper']
-				: function () { throw new RuntimeException('Filter |firstUpper requires mbstring extension.'); },
+				: function () {
+					throw new RuntimeException('Filter |firstUpper requires mbstring extension.');
+				},
 			'floor' => [Filters::class, 'floor'],
 			'checkUrl' => [Latte\Runtime\Filters::class, 'safeUrl'],
 			'implode' => [Filters::class, 'implode'],
@@ -144,7 +148,9 @@ final class CoreExtension extends Latte\Extension
 			'length' => [Filters::class, 'length'],
 			'lower' => extension_loaded('mbstring')
 				? [Filters::class, 'lower']
-				: function () { throw new RuntimeException('Filter |lower requires mbstring extension.'); },
+				: function () {
+					throw new RuntimeException('Filter |lower requires mbstring extension.');
+				},
 			'number' => 'number_format',
 			'padLeft' => [Filters::class, 'padLeft'],
 			'padRight' => [Filters::class, 'padRight'],
@@ -170,10 +176,14 @@ final class CoreExtension extends Latte\Extension
 			'truncate' => [Filters::class, 'truncate'],
 			'upper' => extension_loaded('mbstring')
 				? [Filters::class, 'upper']
-				: function () { throw new RuntimeException('Filter |upper requires mbstring extension.'); },
+				: function () {
+					throw new RuntimeException('Filter |upper requires mbstring extension.');
+				},
 			'webalize' => class_exists(Nette\Utils\Strings::class)
 				? [Nette\Utils\Strings::class, 'webalize']
-				: function () { throw new RuntimeException('Filter |webalize requires nette/utils package.'); },
+				: function () {
+					throw new RuntimeException('Filter |webalize requires nette/utils package.');
+				},
 		];
 	}
 
@@ -188,7 +198,7 @@ final class CoreExtension extends Latte\Extension
 			'last' => [Filters::class, 'last'],
 			'odd' => [Filters::class, 'odd'],
 			'slice' => [Filters::class, 'slice'],
-			'hasBlock' => fn(string $name): bool => $this->template->hasBlock($name),
+			'hasBlock' => fn (string $name): bool => $this->template->hasBlock($name),
 		];
 	}
 
@@ -196,9 +206,9 @@ final class CoreExtension extends Latte\Extension
 	public function getPasses(): array
 	{
 		return [
-			'internalVariables' => fn(TemplateNode $node) => Passes::internalVariablesPass($node, $this->strict),
+			'internalVariables' => fn (TemplateNode $node) => Passes::internalVariablesPass($node, $this->strict),
 			'overwrittenVariables' => [Passes::class, 'overwrittenVariablesPass'],
-			'customFunctions' => fn(TemplateNode $node) => Passes::customFunctionsPass($node, $this->functions),
+			'customFunctions' => fn (TemplateNode $node) => Passes::customFunctionsPass($node, $this->functions),
 			'moveTemplatePrintToHead' => [Passes::class, 'moveTemplatePrintToHeadPass'],
 		];
 	}

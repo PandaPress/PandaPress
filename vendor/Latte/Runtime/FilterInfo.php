@@ -33,7 +33,7 @@ class FilterInfo
 		if (!in_array($this->contentType, $contentTypes, true)) {
 			$name = $name ? " |$name" : $name;
 			$type = $this->contentType ? ' ' . strtoupper($this->contentType) : '';
-			throw new Latte\RuntimeException("Filter{$name} used with incompatible type{$type}.");
+			throw new Latte\Exception\RuntimeException("Filter{$name} used with incompatible type{$type}.");
 		}
 	}
 }

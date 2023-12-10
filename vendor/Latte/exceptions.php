@@ -62,8 +62,3 @@ class SecurityViolationException extends \Exception implements Exception
 		$this->generateMessage();
 	}
 }
-
-
-class RuntimeException extends \RuntimeException implements Exception
-{
-}

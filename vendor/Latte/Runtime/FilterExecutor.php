@@ -61,7 +61,7 @@ class FilterExecutor
 	{
 		[$callback, $infoAware] = $this->prepareFilter($name);
 		return $this->$name = $infoAware
-			? fn(...$args) => $this->callInfoAwareAsClassic($callback, ...$args)
+			? fn (...$args) => $this->callInfoAwareAsClassic($callback, ...$args)
 			: $callback;
 	}
 
@@ -83,7 +83,7 @@ class FilterExecutor
 
 		// classic filter
 		if ($info->contentType !== ContentType::Text) {
-			throw new Latte\RuntimeException("Filter |$name is called with incompatible content type " . strtoupper($info->contentType ?? 'NULL')
+			throw new Latte\Exception\RuntimeException("Filter |$name is called with incompatible content type " . strtoupper($info->contentType ?? 'NULL')
 				. ($info->contentType === ContentType::Html ? ', try to prepend |stripHtml.' : '.'));
 		}
 

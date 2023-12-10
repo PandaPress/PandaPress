@@ -21,7 +21,7 @@ final class Tracer
 {
 	public static function throw(): void
 	{
-		$e = new Latte\RuntimeException('Your location in Latte templates');
+		$e = new Latte\Exception\RuntimeException('Your location in Latte templates');
 		$trace = debug_backtrace();
 		$props = [
 			'file' => $trace[1]['object']->getName(),
@@ -55,7 +55,6 @@ final class Tracer
 						'line' => preg_match('~ on line (\d+)~', $comment, $m) ? (int) $m[1] : 0,
 						'args' => [], // $L_args is not true, will be added in next step
 					];
-
 				} elseif ($method === 'render' && $object->getReferenceType()) {
 					// begin of included/extended/... file
 					$res[] = [
@@ -64,11 +63,9 @@ final class Tracer
 						'line' => 0, // will be added in next step
 						'args' => self::filterParams($object->getParameters()),
 					];
-
 				} elseif ($method === 'renderToContentType') {
 					// {include file}, extends, embed, sandbox, ...
 					$res[count($res) - 1]['line'] = self::getSourceLine($item['file'], $item['line']);
-
 				} elseif ($method === 'renderBlock' || $method === 'renderBlockParent') {
 					// {include block}
 					$res[count($res) - 1]['args'] = self::filterParams($item['args'][1] + $object->getParameters());

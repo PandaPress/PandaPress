@@ -148,16 +148,13 @@ class Template
 
 		if ($this->referenceType === 'import') {
 			if ($this->parentName) {
-				throw new Latte\RuntimeException('Imported template cannot use {extends} or {layout}, use {import}');
+				throw new Latte\Exception\RuntimeException('Imported template cannot use {extends} or {layout}, use {import}');
 			}
-
 		} elseif ($this->parentName) { // extends
 			$this->params = $params;
 			$this->createTemplate($this->parentName, $params, 'extends')->render($block);
-
 		} elseif ($block !== null) { // single block rendering
 			$this->renderBlock($block, $this->params);
-
 		} else {
 			$this->main($params);
 		}
@@ -202,7 +199,7 @@ class Template
 	public function renderToContentType(string|\Closure|null $mod, ?string $block = null): void
 	{
 		$this->filter(
-			fn() => $this->render($block),
+			fn () => $this->render($block),
 			$mod,
 			static::ContentType,
 			"'$this->name'",
@@ -237,8 +234,7 @@ class Template
 		array $params,
 		string|\Closure|null $mod = null,
 		int|string|null $layer = null,
-	): void
-	{
+	): void {
 		$block = $layer
 			? ($this->blocks[$layer][$name] ?? null)
 			: ($this->blocks[self::LayerLocal][$name] ?? $this->blocks[self::LayerTop][$name] ?? null);
@@ -248,11 +244,11 @@ class Template
 				? ", did you mean '$t'?"
 				: '.';
 			$name = $layer ? "$layer $name" : $name;
-			throw new Latte\RuntimeException("Cannot include undefined block '$name'$hint");
+			throw new Latte\Exception\RuntimeException("Cannot include undefined block '$name'$hint");
 		}
 
 		$this->filter(
-			fn() => reset($block->functions)($params),
+			fn () => reset($block->functions)($params),
 			$mod,
 			$block->contentType,
 			"block $name",
@@ -269,7 +265,7 @@ class Template
 	{
 		$block = $this->blocks[self::LayerLocal][$name] ?? $this->blocks[self::LayerTop][$name] ?? null;
 		if (!$block || ($function = next($block->functions)) === false) {
-			throw new Latte\RuntimeException("Cannot include undefined parent block '$name'.");
+			throw new Latte\Exception\RuntimeException("Cannot include undefined parent block '$name'.");
 		}
 		$function($params);
 		prev($block->functions);
@@ -286,15 +282,13 @@ class Template
 		string $contentType,
 		array $functions,
 		int|string|null $layer = null,
-	): void
-	{
+	): void {
 		$block = &$this->blocks[$layer ?? self::LayerTop][$name];
 		$block ??= new Block;
 		if ($block->contentType === null) {
 			$block->contentType = $contentType;
-
 		} elseif (!Escaper::getConvertor($contentType, $block->contentType)) {
-			throw new Latte\RuntimeException(sprintf(
+			throw new Latte\Exception\RuntimeException(sprintf(
 				"Overridden block $name with content type %s by incompatible type %s.",
 				strtoupper($contentType),
 				strtoupper($block->contentType),
@@ -312,15 +306,12 @@ class Template
 	{
 		if ($mod === null || $mod === $contentType) {
 			$function();
-
 		} elseif ($mod instanceof \Closure) {
 			echo $mod($this->capture($function), $contentType);
-
 		} elseif ($filter = Escaper::getConvertor($contentType, $mod)) {
 			echo $filter($this->capture($function));
-
 		} else {
-			throw new Latte\RuntimeException(sprintf(
+			throw new Latte\Exception\RuntimeException(sprintf(
 				"Including $name with content type %s into incompatible type %s.",
 				strtoupper($contentType),
 				strtoupper($mod),
@@ -336,7 +327,7 @@ class Template
 	public function capture(callable $function): string
 	{
 		try {
-			ob_start(fn() => '');
+			ob_start(fn () => '');
 			$function();
 			return ob_get_clean();
 		} catch (\Throwable $e) {

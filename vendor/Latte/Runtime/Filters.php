@@ -11,7 +11,7 @@ namespace Latte\Runtime;
 
 use Latte;
 use Latte\ContentType;
-use Latte\RuntimeException;
+use Latte\Exception\RuntimeException;
 use Nette;
 
 
@@ -78,7 +78,7 @@ class Filters
 		$s = htmlspecialchars($s, ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE, 'UTF-8');
 		return preg_replace_callback(
 			'#[=/\s]#',
-			fn($m) => '&#' . ord($m[0]) . ';',
+			fn ($m) => '&#' . ord($m[0]) . ';',
 			$s,
 		);
 	}
@@ -150,7 +150,7 @@ class Filters
 		$s = self::escapeXml((string) $s);
 		return preg_replace_callback(
 			'#[=/\s]#',
-			fn($m) => '&#' . ord($m[0]) . ';',
+			fn ($m) => '&#' . ord($m[0]) . ';',
 			$s,
 		);
 	}
@@ -177,7 +177,7 @@ class Filters
 
 		$json = json_encode($s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE);
 		if ($error = json_last_error()) {
-			throw new Latte\RuntimeException(json_last_error_msg(), $error);
+			throw new Latte\Exception\RuntimeException(json_last_error_msg(), $error);
 		}
 
 		return str_replace([']]>', '<!', '</'], [']]\u003E', '\u003C!', '<\/'], $json);
@@ -275,11 +275,11 @@ class Filters
 	public static function safeTag(mixed $name, bool $xml = false): string
 	{
 		if (!is_string($name)) {
-			throw new Latte\RuntimeException('Tag name must be string, ' . get_debug_type($name) . ' given');
+			throw new Latte\Exception\RuntimeException('Tag name must be string, ' . get_debug_type($name) . ' given');
 		} elseif (!preg_match('~' . Latte\Compiler\TemplateLexer::ReTagName . '$~DA', $name)) {
-			throw new Latte\RuntimeException("Invalid tag name '$name'");
+			throw new Latte\Exception\RuntimeException("Invalid tag name '$name'");
 		} elseif (!$xml && in_array(strtolower($name), ['style', 'script'], true)) {
-			throw new Latte\RuntimeException("Forbidden variable tag name <$name>");
+			throw new Latte\Exception\RuntimeException("Forbidden variable tag name <$name>");
 		}
 		return $name;
 	}

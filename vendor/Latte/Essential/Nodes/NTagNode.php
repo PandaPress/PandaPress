@@ -47,11 +47,12 @@ final class NTagNode extends StatementNode
 	{
 		if ($new === null) {
 			return $orig;
-		} elseif (!$xml
+		} elseif (
+			!$xml
 			&& is_string($new)
 			&& isset(Latte\Helpers::$emptyElements[strtolower($orig)]) !== isset(Latte\Helpers::$emptyElements[strtolower($new)])
 		) {
-			throw new Latte\RuntimeException("Forbidden tag <$orig> change to <$new>");
+			throw new Latte\Exception\RuntimeException("Forbidden tag <$orig> change to <$new>");
 		}
 
 		return $new;
