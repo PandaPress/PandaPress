@@ -1,0 +1,29 @@
+version: "3"
+
+networks:
+  panda_cms:
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: nginx.dockerfile
+    container_name: panda_nginx
+    ports:
+      - 80:80
+    volumes:
+      - .:/var/www/html:delegated
+    depends_on:
+      - php
+    networks:
+      - panda_cms
+
+  php:
+    build:
+      context: .
+      dockerfile: php.dockerfile
+    container_name: panda_php
+    volumes:
+      - .:/var/www/html:delegated
+    networks:
+      - panda_cms
