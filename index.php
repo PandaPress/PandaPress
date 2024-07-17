@@ -2,15 +2,21 @@
 
 declare(strict_types=1);
 
-require "autoloader.php";
 require "functions.php";
 
+require "autoloader.php";
 $loader = new Psr4Autoloader();
 $loader->register();
+
+$loader->addNamespace('Psr', "./vendor/Psr");
+
+$loader->addNamespace('MongoDB', './vendor/MongoDB');
+require "./vendor/MongoDB/functions.php";
+
+$loader->addNamespace('Symfony', './vendor/Symfony');
 $loader->addNamespace('Medoo', './vendor/Medoo');
 $loader->addNamespace('Bramus', './vendor/Bramus');
 $loader->addNamespace('Latte', './vendor/Latte');
-$loader->addNamespace('Symfony', './vendor/Symfony');
 
 $loader->addNamespace('Panda', './core');
 

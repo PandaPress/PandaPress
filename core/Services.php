@@ -3,27 +3,48 @@
 
 namespace Panda;
 
-use Panda\Services\PandaBase;
+// use Panda\Services\PandaBase;
 use Panda\Services\Logger;
+use MongoDB\Client as MongoDBClient;
+use MongoDB\Database;
+
 
 class Services
 {
     private static self|null $instance = null;
 
-    public readonly PandaBase $db;
+    public readonly MongoDBClient $mongo_client;
+    public readonly Database $db;
 
     public readonly Logger $logger;
 
     final private function __construct()
     {
-        $this->db = new PandaBase([
-            "type" => $_ENV['DB_TYPE'] ?? 'mysql',
-            "host" => $_ENV['DB_HOST'],
-            "database" => $_ENV['DB_NAME'],
-            "username" => $_ENV['DB_USERNAME'],
-            "password" => $_ENV['DB_PASSWORD'],
-            "port" => $_ENV['DB_PORT'] ?? 3306
-        ]);
+        // $this->db = new PandaBase([
+        //     "type" => $_ENV['DB_TYPE'] ?? 'mysql',
+        //     "host" => $_ENV['DB_HOST'],
+        //     "database" => $_ENV['DB_NAME'],
+        //     "username" => $_ENV['DB_USERNAME'],
+        //     "password" => $_ENV['DB_PASSWORD'],
+        //     "port" => $_ENV['DB_PORT'] ?? 3306
+        // ]);
+
+   
+        $this->mongo_client = new MongoDBClient(
+            $_ENV['MONGO_URI'], 
+            [
+                'ssl' => true,
+                'tls' => true,
+                'tlsAllowInvalidHostnames' => true,
+                'tlsCAFile' => root() . "/mongodb-test-ca.pem"
+            ]);
+
+        $this->mongo_client->selectDatabase('admin')->command(['ping' => 1]);
+        echo "Pinged your deployment. You successfully connected to MongoDB!\n";
+
+        $this->db = $this->mongo_client->selectDatabase("pandacms");
+        
+
     }
     final public function __clone()
     {
