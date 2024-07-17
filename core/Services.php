@@ -33,11 +33,10 @@ class Services
         $this->mongo_client = new MongoDBClient(
             $_ENV['MONGO_URI'], 
             [
-                'ssl' => true,
                 'tls' => true,
-                'tlsAllowInvalidHostnames' => true,
-                'tlsCAFile' => root() . "/mongodb-test-ca.pem"
-            ]);
+                'tlsCAFile' => root() . "/ssl/isrgrootx1.pem"
+            ]
+        );
 
         $this->mongo_client->selectDatabase('admin')->command(['ping' => 1]);
         echo "Pinged your deployment. You successfully connected to MongoDB!\n";
