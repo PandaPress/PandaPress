@@ -15,7 +15,7 @@ class HomeController
     public function __construct()
     {
         $this->latte = new Engine();
-        $this->theme_dir = root() . "/ext/themes/bear";
+        $this->theme_dir = root() . "/ext/themes/" . $_ENV['CURRENT_THEME'];
         $this->latte->setTempDirectory(root() . "/cache/templates");
     }
     public function index()
