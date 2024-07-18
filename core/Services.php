@@ -7,6 +7,7 @@ namespace Panda;
 use Panda\Services\Logger;
 use MongoDB\Client as MongoDBClient;
 use MongoDB\Database;
+use Exception;
 
 
 class Services
@@ -20,31 +21,41 @@ class Services
 
     final private function __construct()
     {
-        // $this->db = new PandaBase([
-        //     "type" => $_ENV['DB_TYPE'] ?? 'mysql',
-        //     "host" => $_ENV['DB_HOST'],
-        //     "database" => $_ENV['DB_NAME'],
-        //     "username" => $_ENV['DB_USERNAME'],
-        //     "password" => $_ENV['DB_PASSWORD'],
-        //     "port" => $_ENV['DB_PORT'] ?? 3306
-        // ]);
+        $this->initialize();
+    }
 
-   
+    private function initialize(): void
+    {
         $this->mongo_client = new MongoDBClient(
-            $_ENV['MONGO_URI'], 
+            $_ENV['MONGO_URI'],
             [
                 'tls' => true,
-                'tlsCAFile' => root() . "/ssl/isrgrootx1.pem"
+                'tlsCAFile' => root() . "/ssl/" . $_ENV['MONGO_SSL_FILE']
             ]
         );
-
-        $this->mongo_client->selectDatabase('admin')->command(['ping' => 1]);
-        echo "Pinged your deployment. You successfully connected to MongoDB!\n";
-
         $this->db = $this->mongo_client->selectDatabase("pandacms");
-        
 
+        try {
+            $this->mongo_client->selectDatabase('admin')->command(['ping' => 1]);
+        } catch (Exception $error) {
+
+            $log_path =   root() . "/cache/logs";
+            $log_file = $log_path . "/pandacms.log";
+
+            if (!is_dir($log_path)) {
+                mkdir($log_path, 0755, true);
+            }
+
+            if (!file_exists($log_file)) {
+                touch($log_file);
+            }
+
+            $this->logger = new Logger($log_file);
+            $this->logger->error("Failed to connect to MongoDB: " . $error->getMessage());
+            exit(1);
+        }
     }
+
     final public function __clone()
     {
     }
