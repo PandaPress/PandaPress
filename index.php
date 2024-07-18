@@ -21,7 +21,6 @@ $loader->addNamespace('Latte', './vendor/Latte');
 $loader->addNamespace('Panda', './core');
 
 
-use Panda\Router;
 use Symfony\Component\Dotenv\Dotenv;
 
 if (file_exists(__DIR__ . '/.env')) {
@@ -29,9 +28,14 @@ if (file_exists(__DIR__ . '/.env')) {
     $dotenv->load(__DIR__ . '/.env');
 }
 
+global $pandadb;
+global $logger;
 
-require "settings.php";
+use Panda\Panda;
 
-$router = new Router();
+$panda = Panda::init();
 
-$router->run();
+$pandadb = $panda->db;
+$logger = $panda->logger;
+
+$panda->start();

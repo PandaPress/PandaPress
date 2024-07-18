@@ -23,7 +23,6 @@ class HomeController
         return  $this->latte->render($this->theme_dir . "/index.latte", ['name' => 'Panda']);
     }
 
-
     public function about()
     {
         global $pandadb;

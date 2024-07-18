@@ -1,11 +1,15 @@
 # Panda CMS
 
-A modern CMS but without composer
+- A modern CMS but without composer
 
-# Features
+## Features
 
 - MVC architecture
 - PSR-4 compatibility
-- without composer so that you can use it in any cheap PHP hosting service
+- composer free, layman friendly
 - plugins
 - themes
+
+## Useful links
+
+- [How to Generate a Server Certificate for MongoDB](https://docs.bigchaindb.com/projects/server/en/latest/k8s-deployment-template/server-tls-certificate.html)
