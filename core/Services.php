@@ -52,6 +52,8 @@ class Services
 
             $this->logger = new Logger($log_file);
             $this->logger->error("Failed to connect to MongoDB: " . $error->getMessage());
+
+            echo $error->getMessage();
             exit(1);
         }
     }
