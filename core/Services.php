@@ -37,13 +37,14 @@ class Services
 
         try {
             $this->mongo_client->selectDatabase('admin')->command(['ping' => 1]);
+            throw new Exception("sss");
         } catch (Exception $error) {
 
-            $log_path =   root() . "/cache/logs";
+            $log_path =   root() . "/logs";
             $log_file = $log_path . "/pandacms.log";
 
-            if (!is_dir($log_path)) {
-                mkdir($log_path, 0755, true);
+            if (!is_writable($log_path)) {
+                chmod($log_path, 0755);
             }
 
             if (!file_exists($log_file)) {
