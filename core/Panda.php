@@ -59,7 +59,7 @@ class Panda
         // initialize MongoDB 
         $this->mongo_client = new MongoDBClient($_ENV['MONGO_URI'], [
             'tls' => true,
-            'tlsCAFile' => root() . "/ssl/" . $_ENV['MONGO_SSL_CA_FILE'],
+            'tlsCAFile' => root() . "/ssl/" . $_ENV['MONGO_TLS_CA_FILE'],
             // 'tlsAllowInvalidCertificates' => true,
             // 'tlsAllowInvalidHostnames' => true
 
