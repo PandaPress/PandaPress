@@ -24,7 +24,7 @@ class BaseController
         $this->template_engine->setTempDirectory($cache_panda_tmpl_dir);
 
         // current theme
-        $theme = $_ENV['CURRENT_THEME'] ?? "bear";
+        $theme = getenv('CURRENT_THEME') ?? "bear";
         $this->theme_dir = themes_dir() . "/" . $theme;
     }
 }

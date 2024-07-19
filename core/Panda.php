@@ -42,6 +42,9 @@ class Panda
     private function initialize(): void
     {
 
+        // initialize router
+        $this->router = new Router();
+
         // initialize logger
         $log_path =   root() . "/logs";
         $log_file = $log_path . "/pandacms.log";
@@ -57,9 +60,9 @@ class Panda
         $this->logger = new Logger($log_file);
 
         // initialize MongoDB 
-        $this->mongo_client = new MongoDBClient($_ENV['MONGO_URI'], [
+        $this->mongo_client = new MongoDBClient(getenv('MONGO_URI'), [
             'tls' => true,
-            'tlsCAFile' => $_ENV['MONGO_TLS_CA_FILE'],
+            'tlsCAFile' => getenv('MONGO_TLS_CA_FILE'),
             // 'tlsAllowInvalidCertificates' => true,
             // 'tlsAllowInvalidHostnames' => true
 
@@ -72,9 +75,6 @@ class Panda
             var_dump($error);
             exit(1);
         }
-
-        // initialize router
-        $this->router = new Router();
     }
 
     public function start(): void
