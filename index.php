@@ -14,7 +14,7 @@ $loader->addNamespace('MongoDB', './vendor/MongoDB');
 require "./vendor/MongoDB/functions.php";
 
 $loader->addNamespace('Symfony', './vendor/Symfony');
-$loader->addNamespace('Medoo', './vendor/Medoo');
+
 $loader->addNamespace('Bramus', './vendor/Bramus');
 $loader->addNamespace('Latte', './vendor/Latte');
 
