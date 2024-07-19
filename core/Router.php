@@ -24,6 +24,10 @@ class Router
         $_router->get('/about', '\Panda\Controllers\HomeController@about');
 
         $_router->get("/install", function () {
+            if (getenv("SITE_READY")) {
+                header("Location: /");
+                exit();
+            }
             header("Location: /install.php");
             exit();
         });
