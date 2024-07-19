@@ -1,6 +1,6 @@
 <?php
 
-namespace Panda\Admin\Controller;
+namespace Panda\Admin\Controllers;
 
 use Latte\Engine;
 
@@ -13,7 +13,7 @@ class HomeController
     public function __construct()
     {
         $this->latte = new Engine();
-        $this->theme_dir = root() . "/core/Admin/View";
+
         $this->latte->setTempDirectory(root() . "/cache/admin/templates");
     }
     public function index()

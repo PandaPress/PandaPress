@@ -1,6 +1,6 @@
 <?php
 
-namespace Panda\Controller;
+namespace Panda\Controllers;
 
 
 class HomeController extends BaseController
@@ -17,6 +17,6 @@ class HomeController extends BaseController
 
     public function about()
     {
-        return  $this->template_engine->render($this->theme_dir . "/about.latte", ['name' => 'Panda']);
+        return  $this->template_engine->render($this->theme_dir . "/about.latte", ['name' => 'about']);
     }
 }

@@ -20,8 +20,8 @@ class Router
 
         $_router = $this->router;
 
-        $_router->get('/', '\Panda\Controller\HomeController@index');
-        $_router->get('/about', '\Panda\Controller\HomeController@about');
+        $_router->get('/', '\Panda\Controllers\HomeController@index');
+        $_router->get('/about', '\Panda\Controllers\HomeController@about');
         $_router->get("/install", function () {
             header("Location: /install.php");
             exit();
@@ -35,7 +35,7 @@ class Router
         // });
 
         $_router->mount('/admin', function () use ($_router) {
-            $_router->get('/', '\Panda\Admin\Controller\HomeController@index');
+            $_router->get('/', '\Panda\Admin\Controllers\HomeController@index');
         });
     }
 
