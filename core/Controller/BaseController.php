@@ -15,7 +15,7 @@ class BaseController
     {
         $this->template_engine = new Engine();
 
-        $theme = $_ENV['CURRENT_THEME'] || "bear";
+        $theme = $_ENV['CURRENT_THEME'] ?? "bear";
 
         $this->theme_dir = themes_dir() . "/" . $theme;
         $this->template_engine->setTempDirectory(root() . "/cache/templates");
