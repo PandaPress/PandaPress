@@ -6,6 +6,11 @@ function root()
     return __DIR__;
 }
 
+function env(string $kee)
+{
+    return $_ENV[$kee];
+}
+
 function themes_dir()
 {
     return __DIR__ .  "/themes";

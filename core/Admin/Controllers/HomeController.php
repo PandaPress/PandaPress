@@ -7,8 +7,6 @@ use Latte\Engine;
 class HomeController
 {
     private $latte;
-    private $theme_dir;
-
 
     public function __construct()
     {

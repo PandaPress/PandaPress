@@ -42,6 +42,7 @@ class Panda
     private function initialize(): void
     {
 
+
         // initialize router
         $this->router = new Router();
 
@@ -59,10 +60,12 @@ class Panda
 
         $this->logger = new Logger($log_file);
 
+
+
         // initialize MongoDB 
-        $this->mongo_client = new MongoDBClient(getenv('MONGO_URI'), [
+        $this->mongo_client = new MongoDBClient(env("MONGO_URI"), [
             'tls' => true,
-            'tlsCAFile' => getenv('MONGO_TLS_CA_FILE'),
+            'tlsCAFile' => env("MONGO_TLS_CA_FILE"),
             // 'tlsAllowInvalidCertificates' => true,
             // 'tlsAllowInvalidHostnames' => true
 
