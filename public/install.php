@@ -1,3 +1,3 @@
 <?php
 
-echo "install";
+echo env("SITE_READY");

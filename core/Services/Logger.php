@@ -16,11 +16,13 @@ class Logger extends AbstractLogger
 
     public function log($level, string|\Stringable $message, array $context = []): void
     {
-        error_log($level . ':' . $message . "\n\n", 3, $this->log_file);
+        $now = microtime(true);
+        error_log("Time: $now; $level: $message \n\n", 3, $this->log_file);
     }
 
     public function error(string|\Stringable $message, array $context = []): void
     {
-        error_log("Error : " . $message . "\n\n", 3, $this->log_file);
+        $now = microtime(true);
+        error_log("Time: $now; Error : $message \n\n", 3, $this->log_file);
     }
 }
