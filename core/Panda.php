@@ -23,7 +23,14 @@ class Panda
 
     final private function __construct()
     {
-        $this->initialize();
+        // initialize router
+        $this->router = new Router();
+
+        // initialize logger
+        $this->initializeLogger();
+
+        // initialize MongoDB 
+        $this->initializeMongoDB();
     }
 
     final public function __clone()
@@ -39,14 +46,8 @@ class Panda
         return self::$instance;
     }
 
-    private function initialize(): void
+    private function initializeLogger(): void
     {
-
-
-        // initialize router
-        $this->router = new Router();
-
-        // initialize logger
         $log_path =   root() . "/logs";
         $log_file = $log_path . "/pandacms.log";
 
@@ -59,11 +60,6 @@ class Panda
         }
 
         $this->logger = new Logger($log_file);
-
-
-
-        // initialize MongoDB 
-        $this->initializeMongoDB();
     }
 
     private function initializeMongoDB(): void
