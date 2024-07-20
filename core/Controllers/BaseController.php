@@ -8,24 +8,23 @@ use Latte\Engine;
 
 class BaseController
 {
-    protected $theme;
-    protected $theme_dir;
-    protected $theme_views;
+
     protected $template_engine;
+    protected $current_theme;
+    protected $current_theme_dir;
+    protected $current_theme_views;
+
 
     public function __construct()
     {
         // template engine
         $this->template_engine = new Engine();
-
-
-        // current theme
-        $this->theme = env('CURRENT_THEME') ?? "bear";
-        $this->theme_dir = themes_dir() . "/" . $this->theme;
-        $this->theme_views = $this->theme_dir . "/views";
+        $this->current_theme = env("CURRENT_THEME") ?? "jasmine";
+        $this->current_theme_dir = get_theme_info($this->current_theme)['current_theme_dir'];
+        $this->current_theme_views = get_theme_info($this->current_theme)['current_theme_views'];
 
         // set template engine template directory
-        $cache_panda_tmpl_dir = root() . "/cache/templates/" . $this->theme;
+        $cache_panda_tmpl_dir = root() . "/cache/templates/$this->current_theme";
         if (!is_dir($cache_panda_tmpl_dir)) {
             mkdir($cache_panda_tmpl_dir, 0755, true);
         }

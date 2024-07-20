@@ -12,11 +12,11 @@ class HomeController extends BaseController
     }
     public function index()
     {
-        return  $this->template_engine->render($this->theme_views . "/index.latte", ['name' => 'Panda']);
+        return  $this->template_engine->render($this->current_theme_views . "/index.latte", ['name' => 'Panda']);
     }
 
     public function about()
     {
-        return  $this->template_engine->render($this->theme_views . "/about.latte", ['name' => 'about']);
+        return  $this->template_engine->render($this->current_theme_views . "/about.latte", ['name' => 'about']);
     }
 }
