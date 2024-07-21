@@ -1,6 +1,6 @@
 <?php
 
-namespace Panda\Controllers;
+namespace Panda\Admin\Controllers;
 
 
 use Latte\Engine;

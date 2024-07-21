@@ -2,20 +2,17 @@
 
 namespace Panda\Admin\Controllers;
 
-use Latte\Engine;
 
-class HomeController
+
+class HomeController extends BaseController
 {
-    private $latte;
-
     public function __construct()
     {
-        $this->latte = new Engine();
-
-        $this->latte->setTempDirectory(root() . "/cache/admin/templates");
+        parent::__construct();
     }
+
     public function index()
     {
-        echo "admin view";
+        return $this->template_engine->render("$this->views/index.latte", ["postCount" => 123]);
     }
 }
