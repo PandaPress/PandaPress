@@ -48,7 +48,7 @@ class Panda
 
     private function initializeLogger(): void
     {
-        $log_path =   root() . "/logs";
+        $log_path =   PANDA_ROOT . "/logs";
         $log_file = $log_path . "/pandacms.log";
 
         if (!is_writable($log_path)) {
@@ -79,16 +79,8 @@ class Panda
             // !TODO: put this in installation file as well
             // create collections if not already created
             $collections = iterator_to_array($this->db->listCollectionNames());
-            $default_collections = [
-                "pages",
-                'posts',
-                'categories',
-                'tags',
-                'users',
-                'comments',
-                'options',
-            ];
-            foreach ($default_collections as $collection) {
+
+            foreach (MONGO_DEFAULT_COLLECTIONS as $collection) {
                 if (!in_array($collection, $collections)) {
                     $this->logger->warning("Missing table: $collection");
                     $this->db->createCollection($collection);

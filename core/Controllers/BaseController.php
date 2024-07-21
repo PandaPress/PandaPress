@@ -24,7 +24,7 @@ class BaseController
         $this->current_theme_views = get_theme_info($this->current_theme)['current_theme_views'];
 
         // set template engine template directory
-        $cache_panda_tmpl_dir = root() . "/cache/templates/$this->current_theme";
+        $cache_panda_tmpl_dir = PANDA_ROOT . "/cache/templates/$this->current_theme";
         if (!is_dir($cache_panda_tmpl_dir)) {
             mkdir($cache_panda_tmpl_dir, 0755, true);
         }

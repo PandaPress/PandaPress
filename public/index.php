@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+require __DIR__ . "/../settings.php";
+
 require __DIR__ . "/../functions.php";
 
 require __DIR__ . "/../autoloader.php";
@@ -25,7 +27,7 @@ $loader->addNamespace('Panda', '../core');
 // load dotenv and if no env, go to installation 
 use Symfony\Component\Dotenv\Dotenv;
 
-$dotenv_file = root() . '/.env';
+$dotenv_file = PANDA_ROOT . '/.env';
 
 if (file_exists($dotenv_file)) {
     $dotenv = new Dotenv();

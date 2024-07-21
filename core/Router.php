@@ -20,8 +20,10 @@ class Router
 
         $_router = $this->router;
 
-        $_router->get('/', '\Panda\Controllers\HomeController@index');
-        $_router->get('/about', '\Panda\Controllers\HomeController@about');
+        foreach (PANDA_GET_ROUTES as $get_route) {
+            [$route, $controller, $func] = $get_route;
+            $_router->get($route, "$controller@$func");
+        }
 
         $_router->get("/install", function () {
             if (env("SITE_READY")) {
@@ -40,9 +42,10 @@ class Router
         // });
 
         $_router->mount('/admin', function () use ($_router) {
-            $_router->get('/', '\Panda\Admin\Controllers\HomeController@index');
-            $_router->get('/compose', '\Panda\Admin\Controllers\PostController@compose');
-            $_router->post('/save', '\Panda\Admin\Controllers\PostController@save');
+            foreach (PANDA_ADMIN_GET_ROUTES as $admin_get_route) {
+                [$route, $controller, $func] = $admin_get_route;
+                $_router->get($route, "$controller@$func");
+            }
         });
     }
 
