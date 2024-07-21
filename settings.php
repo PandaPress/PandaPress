@@ -24,5 +24,9 @@ define("PANDA_GET_ROUTES", [
 define("PANDA_ADMIN_GET_ROUTES", [
     ['/', '\Panda\Admin\Controllers\HomeController', 'index'],
     ['/compose', '\Panda\Admin\Controllers\PostController', 'compose'],
+]);
+
+
+define("PANDA_ADMIN_POST_ROUTES", [
     ['/save', '\Panda\Admin\Controllers\PostController', 'save']
 ]);

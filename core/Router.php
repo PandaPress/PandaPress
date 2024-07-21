@@ -46,6 +46,11 @@ class Router
                 [$route, $controller, $func] = $admin_get_route;
                 $_router->get($route, "$controller@$func");
             }
+
+            foreach (PANDA_ADMIN_POST_ROUTES as $admin_post_route) {
+                [$route, $controller, $func] = $admin_post_route;
+                $_router->post($route, "$controller@$func");
+            }
         });
     }
 
