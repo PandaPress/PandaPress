@@ -41,6 +41,8 @@ class Router
 
         $_router->mount('/admin', function () use ($_router) {
             $_router->get('/', '\Panda\Admin\Controllers\HomeController@index');
+            $_router->get('/compose', '\Panda\Admin\Controllers\PostController@compose');
+            $_router->post('/save', '\Panda\Admin\Controllers\PostController@save');
         });
     }
 

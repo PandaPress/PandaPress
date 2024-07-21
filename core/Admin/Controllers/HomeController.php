@@ -2,7 +2,7 @@
 
 namespace Panda\Admin\Controllers;
 
-
+use MongoDB\Exception\Exception;
 
 class HomeController extends BaseController
 {
