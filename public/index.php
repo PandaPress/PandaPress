@@ -29,10 +29,12 @@ use Symfony\Component\Dotenv\Dotenv;
 
 $dotenv_file = PANDA_ROOT . '/.env';
 
-if (file_exists($dotenv_file)) {
-    $dotenv = new Dotenv();
-    $dotenv->load($dotenv_file);
+if (!file_exists($dotenv_file)) {
+    touch($dotenv_file);
 }
+
+$dotenv = new Dotenv();
+$dotenv->load($dotenv_file);
 
 if (!env("SITE_READY")) {
     ob_start();
