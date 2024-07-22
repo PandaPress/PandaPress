@@ -19,7 +19,7 @@ class BaseController
     {
         // template engine
         $this->template_engine = new Engine();
-        $this->current_theme = env("CURRENT_THEME") ?? "jasmine";
+        $this->current_theme = env("CURRENT_THEME") ?? "papermod";
         $this->current_theme_dir = get_theme_info($this->current_theme)['current_theme_dir'];
         $this->current_theme_views = get_theme_info($this->current_theme)['current_theme_views'];
 
