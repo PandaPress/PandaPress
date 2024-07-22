@@ -34,8 +34,16 @@ $writer = new \MirazMac\DotEnv\Writer($dotenv_file);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css">
     <style>
+        .bs-stepper-pane {
+            display: none !important;
+        }
+
         .dstepper-none {
             display: none !important;
+        }
+
+        .dstepper-block.active {
+            display: block !important;
         }
     </style>
 </head>
@@ -71,7 +79,7 @@ $writer = new \MirazMac\DotEnv\Writer($dotenv_file);
                 </div>
             </div>
             <div class="bs-stepper-content container">
-                <form onSubmit="return false" class="container">
+                <form onSubmit="return false">
                     <div id="test-vl-1" role="tabpanel" class="bs-stepper-pane fade" aria-labelledby="stepper4trigger1">
                         <h2>Choose Database</h2>
                         <div class="form-group row mt-4">
@@ -89,7 +97,10 @@ $writer = new \MirazMac\DotEnv\Writer($dotenv_file);
                             <label for="exampleInputPasswordV1">
                                 <h2>Set environment variables</h2>
                             </label>
-                            <textarea rows="10" cols="200" type="text" class="form-control" id="exampleInputPasswordV1"></textarea>
+                            <textarea rows="10" cols="200" type="text" class="form-control" id="exampleInputPasswordV1">
+CURRENT_THEME=
+MONGO_URI= # if you chose mongodb
+                            </textarea>
                         </div>
                         <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                         <button class="btn btn-primary" onclick="stepper.next()">Next</button>
