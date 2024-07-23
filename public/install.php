@@ -84,7 +84,7 @@ if (isset($_POST['envvar'])) {
             <h1>Welcome to Panda CMS</h1>
         </header>
 
-        <form class="" action="install.php" method="post">
+        <form class="mt-3" action="install.php" method="post">
             <div class="form-group">
                 <h2>Choose a database</h2>
                 <div class="input-group mb-3 d-flex flex-column">
