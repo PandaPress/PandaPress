@@ -122,7 +122,7 @@ SITE_READY=true
                 </textarea>
             </div>
             <div class="flex">
-                <button type="submit" name="submit" class="btn">Submit</button>
+                <button type="submit" name="submit" class="btn btn-outline btn-primary">Submit</button>
             </div>
         </form>
     </div>
