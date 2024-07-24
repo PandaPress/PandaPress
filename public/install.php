@@ -74,48 +74,55 @@ if (isset($_POST['envvar'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Panda CMS Installation</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
 </head>
 
-<body>
-    <div class="container">
-        <header class="d-flex justify-content-center py-3 border-bottom">
-            <h1>Welcome to Panda CMS</h1>
-        </header>
+<body class="flex justify-center">
+    <div class="container max-w-screen-lg">
+        <div class="navbar bg-base-100 w-full">
+            <div class="flex-1">
+                <a class="btn btn-ghost text-xl">Installation</a>
+            </div>
+            <div class="flex-none">
+                <ul class="menu menu-horizontal px-1">
+                    <li><a href="https://pandacms.net" target="_blank">Panda CMS</a></li>
+                </ul>
+            </div>
+        </div>
 
-        <form class="mt-3" action="install.php" method="post">
-            <div class="form-group">
-                <h2>Choose a database</h2>
-                <div class="input-group mb-3 d-flex flex-column">
-                    <div class="form-check form-check-inline">
-                        <label for="mongodb" class="form-check-label w-25">
+        <form class="w-full px-5" action="install.php" method="post">
+            <div class="flex flex-col">
+                <h2 class="text-xl font-semibold">Choose a database</h2>
+                <div class="flex flex-col my-4">
+                    <div class="flex items-center">
+                        <label for="mongodb" class="flex w-48">
                             MongoDB
                         </label>
-                        <input type="radio" name="database" id="mongodb" class="form-check-input" />
+                        <input type="radio" name="database" id="mongodb" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
                     </div>
 
-                    <div class="form-check form-check-inline">
-                        <label for="mysql" class="form-check-label w-25">
-                            MySQL
+                    <div class="flex items-center">
+                        <label for="mysql" class="flex w-48">
+                            MySQL (coming soon)
                         </label>
-                        <input type="radio" name="database" id="mysql" class="form-check-input" disabled />
+                        <input type="radio" name="database" id="mysql" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" disabled />
                     </div>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="flex flex-col">
                 <label for="envvar">
-                    <h2>Set environment variables</h2>
+                    <h2 class="text-xl font-semibold">Set environment variables</h2>
                 </label>
-                <textarea rows="10" cols="150" type="text" class="form-control" id="envvar" name="envvar">
+                <textarea rows="10" type="text" class="my-4 p-0" id="envvar" name="envvar">
 CURRENT_THEME=papermod
 MONGO_URI=
 MONGO_TLS_CA_FILE=/etc/ssl/cert.pem
 SITE_READY=true
                 </textarea>
             </div>
-            <div class="form-group">
-                <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+            <div class="flex">
+                <button type="submit" name="submit" class="btn">Submit</button>
             </div>
         </form>
     </div>
@@ -123,8 +130,6 @@ SITE_READY=true
     </div>
 
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
 </body>
 
 </html>
