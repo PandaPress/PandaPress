@@ -89,7 +89,8 @@ if (isset($_POST['envvar'])) {
 
 <body class="flex justify-center">
     <div class="container max-w-screen-lg">
-        <div class="navbar bg-base-100 w-full">
+        <div class="navbar bg-base-100 w-full border-solid border-0 border-b border-blue-900
+">
             <div class="flex-1">
                 <a class="btn btn-ghost text-xl">Installation</a>
             </div>
@@ -100,7 +101,7 @@ if (isset($_POST['envvar'])) {
             </div>
         </div>
 
-        <form class="w-full px-5" action="install.php" method="post">
+        <form class="w-full px-5 mt-8" action="install.php" method="post">
             <div class="flex flex-col">
                 <h2 class="text-xl font-semibold">Choose a database</h2>
                 <div class="flex flex-col my-4">
@@ -130,7 +131,7 @@ MONGO_TLS_CA_FILE=/etc/ssl/cert.pem
 </textarea>
             </div>
             <div class="flex">
-                <button type="submit" name="submit" class="btn btn-outline btn-primary">Submit</button>
+                <button type="submit" name="submit" class="btn btn-outline border-blue-900">Submit</button>
             </div>
         </form>
     </div>
