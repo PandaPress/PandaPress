@@ -36,7 +36,7 @@ if (!file_exists($dotenv_file)) {
 $dotenv = new Dotenv();
 $dotenv->load($dotenv_file);
 
-if (env("SITE_READY")) {
+if (isset($_ENV["SITE_READY"])) {
     header("Location: /");
     exit();
 }
@@ -57,12 +57,15 @@ if (isset($_POST['envvar'])) {
         $mongo_client->selectDatabase('admin')->command(['ping' => 1]);
 
         $success = file_put_contents(PANDA_ROOT . '/.env',  $_POST['envvar']);
+        $success = $success && file_put_contents(PANDA_ROOT . '/.env', "SITE_READY=true\n", FILE_APPEND);
+
+        $database = $_POST['database'];
+        $success = $success && file_put_contents(PANDA_ROOT . '/.env', "DB_TYPE=$database\n", FILE_APPEND);
 
         if ($success) {
-            echo '<script>alert("Installation completed successfully")</script>';
             header("Location: /");
         } else {
-            echo '<script>alert("Error during installation")</script>';
+            echo '<div class="alert alert-danger" role="alert">Error during installation</div>';
         }
     } catch (Exception $e) {
         $err_msg = $e->getMessage();
@@ -105,14 +108,14 @@ if (isset($_POST['envvar'])) {
                         <label for="mongodb" class="flex w-48">
                             MongoDB
                         </label>
-                        <input type="radio" name="database" id="mongodb" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                        <input type="radio" name="database" id="mongodb" value="mongodb" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
                     </div>
 
                     <div class="flex items-center">
                         <label for="mysql" class="flex w-48">
                             MySQL (coming soon)
                         </label>
-                        <input type="radio" name="database" id="mysql" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" disabled />
+                        <input type="radio" name="database" id="mysql" value="mysql" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" disabled />
                     </div>
                 </div>
             </div>
@@ -124,8 +127,7 @@ if (isset($_POST['envvar'])) {
 CURRENT_THEME=papermod
 MONGO_URI=
 MONGO_TLS_CA_FILE=/etc/ssl/cert.pem
-SITE_READY=true
-                </textarea>
+</textarea>
             </div>
             <div class="flex">
                 <button type="submit" name="submit" class="btn btn-outline btn-primary">Submit</button>
