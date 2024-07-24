@@ -34,6 +34,12 @@ if (!file_exists($dotenv_file)) {
 }
 
 $dotenv = new Dotenv();
+$dotenv->load($dotenv_file);
+
+if (env("SITE_READY")) {
+    header("Location: /");
+    exit();
+}
 
 use MongoDB\Client as MongoDBClient;
 
