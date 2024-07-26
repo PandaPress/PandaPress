@@ -4,6 +4,7 @@ namespace Panda\Controllers;
 
 
 use Latte\Engine;
+use Latte\Essential\RawPhpExtension;
 
 
 class BaseController
@@ -29,5 +30,6 @@ class BaseController
             mkdir($cache_panda_tmpl_dir, 0755, true);
         }
         $this->template_engine->setTempDirectory($cache_panda_tmpl_dir);
+        $this->template_engine->addExtension(new RawPhpExtension);
     }
 }
