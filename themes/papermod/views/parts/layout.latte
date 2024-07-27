@@ -7,9 +7,14 @@
 
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
   </head>
-  <body class="container mx-auto flex flex-col h-screen">
+  <body class="container mx-auto flex flex-col justify-center h-screen">
     {include "./header.latte"}
-    <div id="content" class="grow">{block content}{/block}</div>
+    <div
+      id="content"
+      class="grow mx-auto w-full max-w-screen-md flex flex-col items-center"
+    >
+      {block content}{/block}
+    </div>
     {include "./footer.latte"}
   </body>
 </html>
