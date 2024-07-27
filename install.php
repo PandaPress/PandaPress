@@ -2,32 +2,33 @@
 
 declare(strict_types=1);
 
-require __DIR__ . "/../settings.php";
+require "settings.php";
 
-require __DIR__ . "/../functions.php";
+require "functions.php";
 
-require __DIR__ . "/../autoloader.php";
+require "autoloader.php";
 
 $loader = new Psr4Autoloader();
 $loader->register();
 
-$loader->addNamespace('Psr', "../vendor/Psr");
+$loader->addNamespace('Psr', __DIR__ . "/vendor/Psr");
 
-$loader->addNamespace('MongoDB', '../vendor/MongoDB');
-require __DIR__ . "/../vendor/MongoDB/functions.php";
+$loader->addNamespace('MongoDB', __DIR__ . '/vendor/MongoDB');
+require __DIR__ . "/vendor/MongoDB/functions.php";
 
-$loader->addNamespace('Symfony', '../vendor/Symfony');
+$loader->addNamespace('Symfony', __DIR__ . '/vendor/Symfony');
 
-$loader->addNamespace('Bramus', '../vendor/Bramus');
-$loader->addNamespace('Latte', '../vendor/Latte');
+$loader->addNamespace('Bramus', __DIR__ . '/vendor/Bramus');
+$loader->addNamespace('Latte', __DIR__ . '/vendor/Latte');
 
-$loader->addNamespace('Panda', '../core');
+$loader->addNamespace('Panda', __DIR__ . '/core');
+
 
 
 // load dotenv and if no env, go to installation 
 use Symfony\Component\Dotenv\Dotenv;
 
-$dotenv_file = PANDA_ROOT . '/.env';
+$dotenv_file = __DIR__ . '/.env';
 
 if (!file_exists($dotenv_file)) {
     touch($dotenv_file);
