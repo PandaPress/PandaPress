@@ -20,9 +20,15 @@ class Router
 
         $_router = $this->router;
 
-        foreach (PANDA_GET_ROUTES as $get_route) {
-            [$route, $controller, $func] = $get_route;
-            $_router->get($route, "$controller@$func");
+
+        foreach (PANDA_THEME_ROUTES as $theme_route) {
+            [$method, $route, $controller, $func] = $theme_route;
+            if ($method === "GET") {
+                $_router->get($route, "$controller@$func");
+            }
+            if ($method === "POST") {
+                $_router->post($route, "$controller@$func");
+            }
         }
 
         $_router->get("/install", function () {

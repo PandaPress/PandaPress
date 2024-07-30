@@ -43,6 +43,13 @@ if (!env("SITE_READY")) {
     exit();
 }
 
+// load theme's controllers
+$current_theme = env('CURRENT_THEME');
+$theme_info = get_theme_info($current_theme);
+
+require $theme_info['current_theme_dir'] . "/settings.php";
+$loader->addNamespace('Panda', $theme_info['current_theme_dir']);
+
 
 // main panda cms logic here
 

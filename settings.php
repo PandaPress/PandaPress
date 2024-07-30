@@ -16,10 +16,6 @@ define("MONGO_DEFAULT_COLLECTIONS",    [
     'options',
 ]);
 
-define("PANDA_GET_ROUTES", [
-    ["/", "\Panda\Controllers\HomeController", "index"],
-    ["/", "\Panda\Controllers\HomeController", "about"],
-]);
 
 define("PANDA_ADMIN_GET_ROUTES", [
     ['/', '\Panda\Admin\Controllers\HomeController', 'index'],

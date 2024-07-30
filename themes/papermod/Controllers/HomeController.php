@@ -2,6 +2,8 @@
 
 namespace Panda\Controllers;
 
+use Panda\Controllers\BaseController;
+
 
 class HomeController extends BaseController
 {
