@@ -1,0 +1,31 @@
+{
+  "name": "papermod",
+  "version": "1.0.0",
+  "description": "the theme PaperMod implementation in Panda CMS, a modern CMS but without composer",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:layout": "tailwindcss -i ./css/base.css -o ./css/layout.css",
+    "build": "node ./bin/build-all.js"
+  },
+  "keywords": [
+    "Panda CMS",
+    "mordern CMS",
+    "PSR-4",
+    "autoload",
+    "composer",
+    "without composer",
+    "no composer",
+    "PHP"
+  ],
+  "author": "Yumin Gui <yumin@pandacms.net>",
+  "license": "GPL-2.0-only",
+  "devDependencies": {
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/container-queries": "^0.1.1",
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/line-clamp": "^0.4.4",
+    "@tailwindcss/typography": "^0.5.13",
+    "tailwindcss": "^3.4.7"
+  }
+}

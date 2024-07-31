@@ -1,5 +1,5 @@
 const { exec } = require("child_process");
-const packageJson = require("./package.json");
+const packageJson = require("../package.json");
 
 const buildScripts = Object.keys(packageJson.scripts).filter((script) =>
   script.startsWith("build:")
