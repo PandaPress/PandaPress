@@ -13,6 +13,8 @@ class HomeController extends BaseController
 
     public function index()
     {
-        return $this->template_engine->render("$this->views/index.latte", ["postCount" => 123]);
+        global $pandadb;
+        $postCount = $pandadb->selectCollection("posts")->countDocuments();
+        return $this->template_engine->render("$this->views/index.latte", ["postCount" => $postCount]);
     }
 }
