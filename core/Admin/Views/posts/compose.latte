@@ -1,14 +1,16 @@
 {layout '../parts/layout.latte'} {block content}
 <main class="app-main">
-  <div>
+  <form action="/admin/posts/save" method="post">
     <textarea id="editor"></textarea>
-  </div>
+    <button type="submit" name="save" class="btn btn-primary">Save</button>
+  </form>
 </main>
 <script src="/core/Admin/assets/js/tinymce.js"></script>
 <script>
   tinymce.init({
     selector: "textarea#editor",
     plugins: ["wordcount"],
+    auto_focus: true,
   });
 </script>
 {/block}
