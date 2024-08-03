@@ -11,9 +11,14 @@ class PostController extends BaseController
         parent::__construct();
     }
 
+    public function index()
+    {
+        return $this->template_engine->render("$this->views/posts/index.latte");
+    }
+
     public function compose()
     {
-        return $this->template_engine->render("$this->views/compose.latte");
+        return $this->template_engine->render("$this->views/posts/compose.latte");
     }
 
     public function save()

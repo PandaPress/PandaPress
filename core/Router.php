@@ -31,6 +31,23 @@ class Router
             }
         }
 
+        // $_router->before('GET|POST', '/admin/.*', function () {
+        //     if (!isset($_SESSION['user'])) {
+        //         header('location: /auth/login');
+        //         exit();
+        //     }
+        // });
+
+        foreach (PANDA_ADMIN_ROUTES as $admin_route) {
+            [$method, $route, $controller, $func] = $admin_route;
+            if ($method === "GET") {
+                $_router->get($route, "$controller@$func");
+            }
+            if ($method === "POST") {
+                $_router->post($route, "$controller@$func");
+            }
+        }
+
         $_router->get("/install", function () {
             if (env("SITE_READY")) {
                 header("Location: /");
@@ -40,24 +57,6 @@ class Router
             exit();
         });
 
-        // $_router->before('GET|POST', '/admin/.*', function () {
-        //     if (!isset($_SESSION['user'])) {
-        //         header('location: /auth/login');
-        //         exit();
-        //     }
-        // });
-
-        $_router->mount('/admin', function () use ($_router) {
-            foreach (PANDA_ADMIN_GET_ROUTES as $admin_get_route) {
-                [$route, $controller, $func] = $admin_get_route;
-                $_router->get($route, "$controller@$func");
-            }
-
-            foreach (PANDA_ADMIN_POST_ROUTES as $admin_post_route) {
-                [$route, $controller, $func] = $admin_post_route;
-                $_router->post($route, "$controller@$func");
-            }
-        });
     }
 
 

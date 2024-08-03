@@ -16,13 +16,9 @@ define("MONGO_DEFAULT_COLLECTIONS",    [
     'options',
 ]);
 
-
-define("PANDA_ADMIN_GET_ROUTES", [
-    ['/', '\Panda\Admin\Controllers\HomeController', 'index'],
-    ['/compose', '\Panda\Admin\Controllers\PostController', 'compose'],
-]);
-
-
-define("PANDA_ADMIN_POST_ROUTES", [
-    ['/save', '\Panda\Admin\Controllers\PostController', 'save']
+define("PANDA_ADMIN_ROUTES", [
+    ["GET", "/admin", "\Panda\Admin\Controllers\HomeController", "index"],
+    ["GET", "/admin/posts", "\Panda\Admin\Controllers\PostController", "index"],
+    ["GET", "/admin/posts/compose", "\Panda\Admin\Controllers\PostController", "compose"],
+    ["POST", '/admin/save', '\Panda\Admin\Controllers\PostController', 'save']
 ]);
