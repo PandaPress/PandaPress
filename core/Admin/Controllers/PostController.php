@@ -26,12 +26,24 @@ class PostController extends BaseController
         try {
             global $pandadb;
             $title = $_POST["title"];
-            $content = $_POST["content"];
+            $content = $_POST["editor"];
 
-            $pandadb->selectCollection("posts")->insertOne();
-            return $this->template_engine->render("$this->views/success.latte");
+            $_tags = $_POST["tags"];
+            $tags = isset($_tags) && strlen($_tags) > 0 ? explode(',', $_tags) : []; 
+            
+            $category = $_POST["category"];
+
+            $pandadb->selectCollection("posts")->insertOne([
+                "title" => $title,
+                "content" => $content,
+                "tags" => explode(',', $tags),
+                "category" => $category,
+                "updated_at" => time(),
+                "created_at" => time()
+            ]);
+            return $this->template_engine->render("$this->views/posts/success.latte");
         } catch (Exception $e) {
-            return $this->template_engine->render("$this->views/error.latte", ["error" => $e->getMessage()]);
+            return $this->template_engine->render("$this->views/posts/error.latte", ["error" => $e->getMessage()]);
         }
     }
 }
