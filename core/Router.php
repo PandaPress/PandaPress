@@ -59,9 +59,10 @@ class Router
 
     }
 
-    // public function redirect(string $url) {
-        
-    // }
+    public function simpleRedirect(string $url) {
+        header("Location: $url");
+        exit();
+    }
 
 
     public function run()

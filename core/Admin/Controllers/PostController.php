@@ -6,6 +6,8 @@ use MongoDB\Exception\Exception;
 
 class PostController extends BaseController
 {
+    private string $errorMessage = "";
+
     public function __construct()
     {
         parent::__construct();
@@ -23,8 +25,10 @@ class PostController extends BaseController
 
     public function save()
     {
+        global $pandadb;
+        global $router;
+
         try {
-            global $pandadb;
             $title = $_POST["title"];
             $slug = $_POST["slug"];
             $content = $_POST["editor"];
@@ -47,14 +51,20 @@ class PostController extends BaseController
                 "updated_at" => time(),
                 "created_at" => time()
             ]);
-            // global $router;
-            return $this->template_engine->render("$this->views/posts/success.latte");
+   
+            return $router->simpleRedirect("/admin/posts/success");
         } catch (Exception $e) {
-            return $this->template_engine->render("$this->views/posts/error.latte", ["error" => $e->getMessage()]);
+            return $router->simpleRedirect("/admin/posts/error");
+        } catch (\Exception $e) {
+            return $router->simpleRedirect("/admin/posts/error");
         }
     }
 
     public function success(){
         return $this->template_engine->render("$this->views/posts/success.latte");
+    }
+
+    public function error(){
+        return $this->template_engine->render("$this->views/posts/error.latte");
     }
 }

@@ -20,5 +20,7 @@ define("PANDA_ADMIN_ROUTES", [
     ["GET", "/admin", "\Panda\Admin\Controllers\HomeController", "index"],
     ["GET", "/admin/posts", "\Panda\Admin\Controllers\PostController", "index"],
     ["GET", "/admin/posts/compose", "\Panda\Admin\Controllers\PostController", "compose"],
-    ["POST", '/admin/posts/save', '\Panda\Admin\Controllers\PostController', 'save']
+    ["POST", '/admin/posts/save', '\Panda\Admin\Controllers\PostController', 'save'],
+    ["GET", '/admin/posts/success', '\Panda\Admin\Controllers\PostController', 'success'],
+    ["GET", '/admin/posts/error', '\Panda\Admin\Controllers\PostController', 'error']
 ]);
