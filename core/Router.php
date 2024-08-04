@@ -57,6 +57,10 @@ class Router
             exit();
         });
 
+        // TODO: allow cms owners to customize it
+        // if no customized, default to Panda 404
+        $_router->set404('\Panda\Controllers\ErrorController@notFound');
+
     }
 
     public function simpleRedirect(string $url) {
