@@ -19,7 +19,7 @@ class Panda
 
     public readonly Logger $logger;
 
-    private Router $router;
+    public readonly Router $router;
 
     final private function __construct()
     {

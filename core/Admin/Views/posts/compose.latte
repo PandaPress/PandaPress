@@ -14,8 +14,38 @@
       />
     </div>
     <div class="mb-3">
+      <label for="slug" class="form-label">Slug</label>
+      <input
+        type="text"
+        class="form-control"
+        id="slug"
+        aria-describedby="slug"
+        name="slug"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="author" class="form-label">Author</label>
+      <input
+        type="text"
+        class="form-control"
+        id="author"
+        aria-describedby="author"
+        name="author"
+      />
+    </div>
+    <div class="mb-3">
       <label for="editor" class="form-label">Content</label>
       <textarea id="editor" type="text" name="editor"></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="category" class="form-label">Category</label>
+      <input
+        type="text"
+        class="form-control"
+        id="category"
+        aria-describedby="category"
+        name="category"
+      />
     </div>
     <div class="mb-3">
       <label for="tags" class="form-label">Tags</label>
@@ -30,10 +60,17 @@
         Please use comma(,) to separate tags.
       </div>
     </div>
-    <!-- <div class="mb-3 form-check">
-      <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-      <label class="form-check-label" for="exampleCheck1">Check me out</label>
-    </div> -->
+    <div class="mb-3 form-check">
+      <input
+        type="checkbox"
+        class="form-check-input"
+        id="status"
+        name="status"
+        value="draft"
+      />
+      <input type="hidden" name="status" value="published" />
+      <label class="form-check-label" for="is_draft">Save as draft</label>
+    </div>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
 </main>

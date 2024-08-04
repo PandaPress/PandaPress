@@ -57,10 +57,12 @@ use Panda\Panda;
 
 global $pandadb;
 global $logger;
+global $router;
 
 $panda = Panda::getInstance();
 
 $pandadb = $panda->db;
 $logger = $panda->logger;
+$router = $panda->router;
 
 $panda->start();
