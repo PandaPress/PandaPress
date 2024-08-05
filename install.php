@@ -69,8 +69,8 @@ if (isset($_POST['envvar'])) {
             echo '<div class="alert alert-danger" role="alert">Error during installation</div>';
         }
     } catch (Exception $e) {
-        $err_msg = $e->getMessage();
-        echo '<div class="alert alert-danger" role="alert">' . $err_msg . '</div>';
+        $error_message = $e->getMessage();
+        echo '<div class="alert alert-danger" role="alert">' . $error_message . '</div>';
     }
 }
 

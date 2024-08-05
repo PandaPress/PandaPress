@@ -29,6 +29,9 @@ class PostController extends BaseController
         global $router;
 
         try {
+
+            throw new \Exception("Test Post Controller");
+
             $title = $_POST["title"];
             $slug = $_POST["slug"];
             $content = $_POST["editor"];
@@ -54,9 +57,15 @@ class PostController extends BaseController
    
             return $router->simpleRedirect("/admin/posts/success");
         } catch (Exception $e) {
-            return $router->simpleRedirect("/admin/posts/error");
+            $error_message = $e->getMessage();
+            return $router->simpleRedirect("/admin/posts/error", [
+                "error_message" => $error_message
+            ]);
         } catch (\Exception $e) {
-            return $router->simpleRedirect("/admin/posts/error");
+            $error_message = $e->getMessage();
+            return $router->simpleRedirect("/admin/posts/error", [
+                "error_message" => $error_message
+            ]);
         }
     }
 
@@ -65,6 +74,8 @@ class PostController extends BaseController
     }
 
     public function error(){
-        return $this->template_engine->render("$this->views/posts/error.latte");
+        return $this->template_engine->render("$this->views/posts/error.latte", [
+            "error_message" => $_SESSION['panda_error_message']
+        ]);
     }
 }

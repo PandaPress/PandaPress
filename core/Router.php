@@ -63,7 +63,14 @@ class Router
 
     }
 
-    public function simpleRedirect(string $url) {
+    public function simpleRedirect(string $url, array $data = []) {
+
+        if (!empty($data)) {
+            foreach ($data as $key => $value) {
+                $_SESSION["panda_$key"] = $value;
+            }
+        }
+
         header("Location: $url");
         exit();
     }
