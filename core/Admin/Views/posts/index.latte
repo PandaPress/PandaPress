@@ -1,32 +1,36 @@
 {layout '../parts/layout.latte'} {block content}
 
 <main class="app-main">
-  <table class="table">
+  <table class="table m-4 w-75">
     <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">Title</th>
-        <th scope="col">Actions</th>
-        <th scope="col">Handle</th>
+        <th scope="col"><h3>Title</h3></th>
+        <th scope="col"><h3>Date</h3></th>
+        <th scope="col"><h3>Actions</h3></th>
       </tr>
     </thead>
-    <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td colspan="2">Larry the Bird</td>
-        <td>@twitter</td>
+    <tbody n:if="$posts">
+      <tr n:foreach="$posts as $post">
+        <td class="w-auto">{$post['title']}</td>
+        <th scope="row" class="w-auto">
+          {php echo date('m/d/Y', $post['created_at']);}
+        </th>
+        <td class="d-flex gap-2">
+          <a
+            role="button"
+            class="btn btn-primary"
+            href='{php echo "/posts/" . $post["slug"] ; }'
+            >Read</a
+          >
+          <form method="post" action="/admin/posts/update">
+            <input type="hidden" name="_id" value="{php echo $post['_id'];}" />
+            <button type="submit" class="btn btn-warning">Update</button>
+          </form>
+          <form method="post" action="/admin/posts/delete">
+            <input type="hidden" name="_id" value="{php echo $post['_id'];}" />
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </td>
       </tr>
     </tbody>
   </table>

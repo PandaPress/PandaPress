@@ -15,7 +15,30 @@ class PostController extends BaseController
 
     public function index()
     {
-        return $this->template_engine->render("$this->views/posts/index.latte");
+        global $pandadb;
+        $documents = $pandadb->selectCollection("posts")->find();
+
+        $posts = [];
+
+        foreach ($documents as $document) {
+            $post = [
+                "_id" => (string) $document["_id"],
+                "title" => $document["title"],
+                "slug" => $document["slug"],
+                "content" => $document["content"],
+                "author" => $document["author"],
+                "status" => $document["status"],
+                "created_at" => $document["created_at"],
+                "updated_at" => $document["updated_at"],
+                "category" => $document["category"],
+                "tags" => $document["tags"]
+            ];
+            array_push($posts, $post);
+        }
+
+        return $this->template_engine->render("$this->views/posts/index.latte", [
+            "posts" => $posts
+        ]);
     }
 
     public function compose()
@@ -29,9 +52,6 @@ class PostController extends BaseController
         global $router;
 
         try {
-
-            throw new \Exception("Test Post Controller");
-
             $title = $_POST["title"];
             $slug = $_POST["slug"];
             $content = $_POST["editor"];
@@ -55,7 +75,9 @@ class PostController extends BaseController
                 "created_at" => time()
             ]);
    
-            return $router->simpleRedirect("/admin/posts/success");
+            return $router->simpleRedirect("/admin/posts/success", [
+                "success_message" => "Post saved successfully"
+            ]);
         } catch (Exception $e) {
             $error_message = $e->getMessage();
             return $router->simpleRedirect("/admin/posts/error", [
@@ -70,12 +92,45 @@ class PostController extends BaseController
     }
 
     public function success(){
-        return $this->template_engine->render("$this->views/posts/success.latte");
+        $success_message = $_SESSION['panda_success_message'];
+        unset($_SESSION['panda_success_message']);
+        return $this->template_engine->render("$this->views/posts/success.latte", [
+            "success_message" => $success_message
+        ]);
     }
 
     public function error(){
+        $error_message = $_SESSION['panda_error_message'];
+        unset($_SESSION['panda_error_message']);
         return $this->template_engine->render("$this->views/posts/error.latte", [
-            "error_message" => $_SESSION['panda_error_message']
+            "error_message" => $error_message
         ]);
+    }
+
+    public function delete(){
+        global $pandadb;
+        global $router;
+
+        try {
+            $id = $_POST["_id"];
+
+            var_dump($id);
+
+            $pandadb->selectCollection("posts")->deleteOne(["_id" => new \MongoDB\BSON\ObjectId($id)]);
+
+            return $router->simpleRedirect("/admin/posts/success", [
+                "success_message" => "Post deleted successfully"
+            ]);
+        } catch (Exception $e) {
+            $error_message = $e->getMessage();
+            return $router->simpleRedirect("/admin/posts/error", [
+                "error_message" => $error_message
+            ]);
+        } catch (\Exception $e) {
+            $error_message = $e->getMessage();
+            return $router->simpleRedirect("/admin/posts/error", [
+                "error_message" => $error_message
+            ]);
+        }
     }
 }

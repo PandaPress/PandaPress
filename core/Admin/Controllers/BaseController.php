@@ -4,6 +4,8 @@ namespace Panda\Admin\Controllers;
 
 
 use Latte\Engine;
+use Latte\Essential\RawPhpExtension;
+
 
 
 class BaseController
@@ -20,8 +22,10 @@ class BaseController
             mkdir($cache_admin_tmpl_dir, 0755, true);
         }
         $this->template_engine->setTempDirectory($cache_admin_tmpl_dir);
+        $this->template_engine->addExtension(new RawPhpExtension);
 
         // admin view templates
         $this->views = PANDA_ROOT . "/core/Admin/Views";
+
     }
 }
