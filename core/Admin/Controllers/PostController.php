@@ -16,6 +16,8 @@ class PostController extends BaseController
     public function index()
     {
         global $pandadb;
+
+        // !TODO pagination
         $documents = $pandadb->selectCollection("posts")->find();
 
         $posts = [];
