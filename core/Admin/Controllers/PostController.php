@@ -95,7 +95,7 @@ class PostController extends BaseController
     }
 
     public function success(){
-        $success_message = $_SESSION['panda_success_message'];
+        $success_message = isset($_SESSION['panda_success_message']) ? $_SESSION['panda_success_message'] : "";
         unset($_SESSION['panda_success_message']);
         return $this->template_engine->render("$this->views/posts/success.latte", [
             "success_message" => $success_message
@@ -103,7 +103,7 @@ class PostController extends BaseController
     }
 
     public function error(){
-        $error_message = $_SESSION['panda_error_message'];
+        $error_message = isset($_SESSION['panda_error_message']) ? $_SESSION['panda_error_message'] : "";
         unset($_SESSION['panda_error_message']);
         return $this->template_engine->render("$this->views/posts/error.latte", [
             "error_message" => $error_message
