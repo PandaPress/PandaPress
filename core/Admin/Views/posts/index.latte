@@ -16,27 +16,21 @@
         <td
           class="w-auto {php echo $post['status'] === 'published' ? 'text-black' : 'text-secondary';}"
         >
-          {$post['title']}
+          <a href='{php echo "/post/" . $post["slug"] ; }' target="_blank">
+            {$post['title']}
+          </a>
         </td>
         <th scope="row" class="w-auto">
           {php echo date('m/d/Y', $post['created_at']);}
         </th>
         <td class="d-flex gap-2">
-          <a
-            role="button"
-            class="btn btn-primary"
-            href='{php echo "/post/" . $post["slug"] ; }'
-            target="_blank"
-          >
-            Read
-          </a>
           <form method="post" action="/admin/posts/update">
             <input type="hidden" name="_id" value="{php echo $post['_id'];}" />
-            <button type="submit" class="btn btn-warning">Update</button>
+            <button type="submit" class="btn btn-warning btn-sm">Update</button>
           </form>
           <form method="post" action="/admin/posts/delete">
             <input type="hidden" name="_id" value="{php echo $post['_id'];}" />
-            <button type="submit" class="btn btn-danger">Delete</button>
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
           </form>
         </td>
       </tr>
