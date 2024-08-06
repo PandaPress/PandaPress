@@ -3,6 +3,7 @@
 namespace Panda\Admin\Controllers;
 
 use MongoDB\Exception\Exception;
+use MongoDB\BSON\ObjectId;
 
 class PostController extends BaseController
 {
@@ -57,7 +58,7 @@ class PostController extends BaseController
             $title = $_POST["title"];
             $slug = $_POST["slug"];
             $content = $_POST["editor"];
-            $status = $_POST["status"]; // "draft" or "published";
+            $status = $_POST["status"]; // "draft" or "published" or "deleted"
             $author = isset($_POST["author"]) ? $_POST["author"] : "admin";
 
             $_tags = $_POST["tags"];
@@ -116,13 +117,23 @@ class PostController extends BaseController
         try {
             $id = $_POST["_id"];
 
-            var_dump($id);
+            $post = $pandadb->selectCollection("posts")->findOne(["_id" => new ObjectId($id)]);
 
-            $pandadb->selectCollection("posts")->deleteOne(["_id" => new \MongoDB\BSON\ObjectId($id)]);
+            if ($post['status'] === "published") {
+                $pandadb->selectCollection("posts")->updateOne(
+                    ["_id" => new ObjectId($id)],
+                    [ '$set' => [ 'status' => 'deleted' ]]
+                );
+                return $router->simpleRedirect("/admin/posts");
+            } else {
+                $pandadb->selectCollection("posts")->deleteOne(
+                    ["_id" => new ObjectId($id)]
+                );
 
-            return $router->simpleRedirect("/admin/posts/success", [
-                "success_message" => "Post deleted successfully"
-            ]);
+                return $router->simpleRedirect("/admin/posts/success", [
+                    "success_message" => "Post deleted successfully"
+                ]);
+            }
         } catch (Exception $e) {
             $error_message = $e->getMessage();
             return $router->simpleRedirect("/admin/posts/error", [
