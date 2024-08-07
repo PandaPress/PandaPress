@@ -25,7 +25,7 @@ class BaseController
         $this->template_engine->addExtension(new RawPhpExtension);
 
         // admin view templates
-        $this->views = PANDA_ROOT . "/core/Admin/Views";
+        $this->views = PANDA_ROOT . "/admin/Views";
 
     }
 }

@@ -24,6 +24,7 @@ $loader->addNamespace('Bramus', __DIR__ . '/vendor/Bramus');
 $loader->addNamespace('Latte', __DIR__ . '/vendor/Latte');
 
 $loader->addNamespace('Panda', __DIR__ . '/core');
+$loader->addNamespace('Panda\Admin', __DIR__ . '/admin');
 
 
 // load dotenv and if no env, go to installation 
