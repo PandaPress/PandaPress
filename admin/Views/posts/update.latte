@@ -1,0 +1,101 @@
+{layout '../parts/layout.latte'} {block content}
+<main class="app-main">
+  <h1 class="px-4 mt-3">Compose</h1>
+  <form class="px-4" action="/admin/posts/save" method="post">
+    <div>
+      <input type="hidden" name="id" value="{$post['_id'] ?? ''}" />
+    </div>
+    <div class="mb-3">
+      <label for="title" class="form-label">Title</label>
+      <input
+        type="text"
+        class="form-control"
+        id="title"
+        aria-describedby="title"
+        name="title"
+        autofocus
+        value="{$post['title']}"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="slug" class="form-label">Slug</label>
+      <input
+        type="text"
+        class="form-control"
+        id="slug"
+        aria-describedby="slug"
+        name="slug"
+        value="{$post['slug']}"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="author" class="form-label">Author</label>
+      <input
+        type="text"
+        class="form-control"
+        id="author"
+        aria-describedby="author"
+        name="author"
+        value="{$post['author']}"
+        disabled
+      />
+    </div>
+    <div class="mb-3">
+      <label for="editor" class="form-label">Content</label>
+      <textarea id="editor" type="text" name="editor"></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="category" class="form-label">Category</label>
+      <input
+        type="text"
+        class="form-control"
+        id="category"
+        aria-describedby="category"
+        name="category"
+        value="{$post['category']}"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="tags" class="form-label">Tags</label>
+      <input
+        type="text"
+        class="form-control"
+        id="tags"
+        aria-describedby="tagsHelp"
+        name="tags"
+        value="{php echo implode(',', $tags);}"
+      />
+      <div id="tagsHelp" class="form-text">
+        Please use comma(,) to separate tags.
+      </div>
+    </div>
+    <div class="mb-3 form-check">
+      <input
+        type="checkbox"
+        class="form-check-input"
+        id="status"
+        name="status"
+        value="draft"
+      />
+      <input type="hidden" name="status" value="published" />
+      <label class="form-check-label" for="is_draft">Save as draft</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+
+  <input type="hidden" name="initial_content" value="{$post['content']}" />
+</main>
+<script src="/admin/assets/js/tinymce.js"></script>
+<script>
+  tinymce.init({
+    selector: "textarea#editor",
+    plugins: ["wordcount", "preview"],
+    toolbar: "preview",
+    init_instance_callback: (editor) => {
+      editor.setContent(
+        document.querySelector('input[name="initial_content"]').value
+      );
+    },
+  });
+</script>
+{/block}

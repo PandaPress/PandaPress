@@ -49,6 +49,7 @@ class PostController extends BaseController
         return $this->template_engine->render("$this->views/posts/compose.latte");
     }
 
+    // check if slug is unique
     public function save()
     {
         global $pandadb;
@@ -146,4 +147,23 @@ class PostController extends BaseController
             ]);
         }
     }
+
+    public function update(){
+        global $pandadb;
+        global $router;
+
+        try {
+            $id = $_POST["_id"];
+            $post = $pandadb->selectCollection("posts")->findOne([
+                "_id" => new ObjectId($id)
+            ]);
+
+            return $this->template_engine->render("$this->views/posts/update.latte", [
+                "post" => iterator_to_array($post),
+                "tags" => iterator_to_array($post['tags'])
+            ]);
+        } catch (\Exception $e) {}
+    }
+
+    public function upsave(){}
 }
