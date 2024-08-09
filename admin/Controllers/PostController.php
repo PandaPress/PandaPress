@@ -176,5 +176,59 @@ class PostController extends BaseController
         }
     }
 
-    public function upsave(){}
+    public function upsave(){
+        global $pandadb;
+        global $router;
+
+        if(!isset($_POST["id"])) {
+            return $router->simpleRedirect("/admin/posts/error", [
+                "error_message" => "Post id is missing"
+            ]);
+        }
+
+        try {
+            $id = $_POST["id"];
+            $title = $_POST["title"];
+            $slug = $_POST["slug"];
+            $content = $_POST["editor"];
+            $status = $_POST["status"]; // "draft" or "published" or "deleted"
+            $author = isset($_POST["author"]) ? $_POST["author"] : "admin";
+
+            $_tags = $_POST["tags"];
+            $tags = isset($_tags) && strlen($_tags) > 0 ? explode(',', $_tags) : []; 
+
+            $category = $_POST["category"];
+
+            $pandadb->selectCollection("posts")->updateOne(
+                ["_id" => new ObjectId($id)],
+                [
+                    '$set' => [
+                        'title' => $title,
+                        'slug' => $slug,
+                        'content' => $content,
+                        'status' => $status,
+                        'author' => $author,
+                        'tags' => $tags,
+                        'category' => $category,
+                        'updated_at' => time()
+                    ]
+                ]
+            );
+
+            return $router->simpleRedirect("/admin/posts/success", [
+                "success_message" => "Post updated successfully"
+            ]);
+
+        } catch (CompileException $e) {
+            $error_message = $e->getMessage();
+            return $router->simpleRedirect("/admin/posts/error", [
+                "error_message" => $error_message
+            ]);
+        } catch (\Exception $e) {
+            $error_message = $e->getMessage();
+            return $router->simpleRedirect("/admin/posts/error", [
+                "error_message" => $error_message
+            ]);
+        }
+    }
 }

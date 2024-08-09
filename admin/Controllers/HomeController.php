@@ -15,6 +15,12 @@ class HomeController extends BaseController
     {
         global $pandadb;
         $postCount = $pandadb->selectCollection("posts")->countDocuments();
-        return $this->template_engine->render("$this->views/index.latte", ["postCount" => $postCount]);
+        $commentCount = $pandadb->selectCollection("posts")->aggregate([
+            [ '$group' => [ '_id' => null, 'totalComments' => [ '$sum' => [ '$size' => '$comments' ] ] ] ]
+        ]);
+        return $this->template_engine->render("$this->views/index.latte", [
+            "postCount" => $postCount, 
+            "commentCount" => $commentCount
+        ]);
     }
 }
