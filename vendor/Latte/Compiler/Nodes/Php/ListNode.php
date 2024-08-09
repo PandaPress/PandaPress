@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Latte\Compiler\Nodes\Php;
 
-use Latte\CompileException;
+use Latte\Exception\CompileException;
 use Latte\Compiler\Node;
 use Latte\Compiler\Position;
 use Latte\Compiler\PrintContext;

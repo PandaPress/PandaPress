@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Latte\Compiler\Nodes\Php\Expression;
 
-use Latte\CompileException;
+use Latte\Exception\CompileException;
 use Latte\Compiler\Nodes\Php\ExpressionNode;
 use Latte\Compiler\Nodes\Php\ListNode;
 use Latte\Compiler\Position;

@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Latte\Compiler\Nodes\Php\Scalar;
 
-use Latte\CompileException;
+use Latte\Exception\CompileException;
 use Latte\Compiler\Nodes\Php\ScalarNode;
 use Latte\Compiler\PhpHelpers;
 use Latte\Compiler\Position;

@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Latte\Compiler;
 
-use Latte\CompileException;
+use Latte\Exception\CompileException;
 
 
 /**

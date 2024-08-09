@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace Latte\Compiler;
 
 use Latte;
-use Latte\CompileException;
+use Latte\Exception\CompileException;
 use Latte\Compiler\Nodes\Php as Node;
 use Latte\Compiler\Nodes\Php\Expression;
 use Latte\Compiler\Nodes\Php\ExpressionNode;
@@ -157,7 +157,7 @@ final class TagParser extends TagParserData
 	}
 
 
-	/** @throws Latte\CompileException */
+	/** @throws Latte\Exception\CompileException */
 	private function parse(string $schema, bool $recovery = false): mixed
 	{
 		$symbol = self::SymbolNone; // We start off with no lookahead-token
@@ -253,7 +253,7 @@ final class TagParser extends TagParserData
 					goto recovery;
 
 				} else { // error
-					throw new Latte\CompileException('Unexpected ' . ($token->text ? "'$token->text'" : 'end'), $token->position);
+					throw new Latte\Exception\CompileException('Unexpected ' . ($token->text ? "'$token->text'" : 'end'), $token->position);
 				}
 
 				if ($state < self::NumNonLeafStates) {
@@ -291,7 +291,7 @@ final class TagParser extends TagParserData
 
 	public function throwReservedKeywordException(Token $token)
 	{
-		throw new Latte\CompileException("Keyword '$token->text' cannot be used in Latte.", $token->position);
+		throw new Latte\Exception\CompileException("Keyword '$token->text' cannot be used in Latte.", $token->position);
 	}
 
 

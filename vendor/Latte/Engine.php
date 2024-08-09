@@ -11,6 +11,7 @@ namespace Latte;
 
 use Latte\Compiler\Nodes\TemplateNode;
 use Latte\Exception\RuntimeException;
+use Latte\Exception\CompileException;
 
 
 /**

@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace Latte\Compiler;
 
 use Latte;
-use Latte\CompileException;
+use Latte\Exception\CompileException;
 use Latte\Compiler\Nodes\AreaNode;
 use Latte\Compiler\Nodes\FragmentNode;
 use Latte\Compiler\Nodes\Html;

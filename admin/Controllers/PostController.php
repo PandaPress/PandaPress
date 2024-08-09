@@ -3,6 +3,7 @@
 namespace Panda\Admin\Controllers;
 
 use MongoDB\Exception\Exception;
+use Latte\Exception\CompileException;
 use MongoDB\BSON\ObjectId;
 
 class PostController extends BaseController
@@ -148,12 +149,11 @@ class PostController extends BaseController
         }
     }
 
-    public function update(){
+    public function update($id){
         global $pandadb;
         global $router;
 
         try {
-            $id = $_POST["_id"];
             $post = $pandadb->selectCollection("posts")->findOne([
                 "_id" => new ObjectId($id)
             ]);
@@ -162,7 +162,18 @@ class PostController extends BaseController
                 "post" => iterator_to_array($post),
                 "tags" => iterator_to_array($post['tags'])
             ]);
-        } catch (\Exception $e) {}
+
+        } catch (CompileException $e) {
+            $error_message = $e->getMessage();
+            return $router->simpleRedirect("/admin/posts/error", [
+                "error_message" => $error_message
+            ]);
+        } catch (\Exception $e) {
+            $error_message = $e->getMessage();
+            return $router->simpleRedirect("/admin/posts/error", [
+                "error_message" => $error_message
+            ]);
+        }
     }
 
     public function upsave(){}

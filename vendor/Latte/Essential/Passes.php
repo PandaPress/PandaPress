@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace Latte\Essential;
 
 use Latte;
-use Latte\CompileException;
+use Latte\Exception\CompileException;
 use Latte\Compiler\ExpressionBuilder;
 use Latte\Compiler\Node;
 use Latte\Compiler\Nodes\AuxiliaryNode;
