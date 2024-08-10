@@ -7,7 +7,6 @@ define("PANDA_THEMES", __DIR__ . '/themes');
 define("PANDA_PLUGINS", __DIR__ . '/plugins');
 
 define("MONGO_DEFAULT_COLLECTIONS",    [
-    "pages",
     'posts',
     'categories',
     'tags',

@@ -8,7 +8,7 @@ use MongoDB\BSON\ObjectId;
 
 class PostController extends BaseController
 {
-    private string $errorMessage = "";
+
 
     public function __construct()
     {
