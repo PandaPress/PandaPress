@@ -7,6 +7,7 @@
 - MVC architecture
 - PSR-4 compatibility
 - composer free, beginner friendly
+- powerful admin dashboard
 - plugins
 - themes
 
