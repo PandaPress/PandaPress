@@ -6,7 +6,7 @@
 
 - MVC architecture
 - PSR-4 compatibility
-- composer free, layman friendly
+- composer free, beginner friendly
 - plugins
 - themes
 
