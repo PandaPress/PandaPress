@@ -76,10 +76,12 @@ class Panda
 
             $this->mongo_client->selectDatabase('admin')->command(['ping' => 1]);
 
-            // !TODO: put this in installation file as well
             // create collections if not already created
             $collections = iterator_to_array($this->db->listCollectionNames());
 
+            // ! this is for update actually. Let's say, a new version needs a new collection, what then?
+            // ! the installation step is no more applicable. 
+            // ! then, we need this step to make sure the new collection will be created.
             foreach (MONGO_DEFAULT_COLLECTIONS as $collection) {
                 if (!in_array($collection, $collections)) {
                     $this->logger->warning("Missing table: $collection");

@@ -57,6 +57,15 @@ if (isset($_POST['envvar'])) {
         ]);
         $mongo_client->selectDatabase('admin')->command(['ping' => 1]);
 
+        $pandacmsdb = $mongo_client->selectDatabase("pandacms");
+        $collections = iterator_to_array($pandacmsdb->listCollectionNames());
+
+        foreach (MONGO_DEFAULT_COLLECTIONS as $collection) {
+            if (!in_array($collection, $collections)) {
+                $pandacmsdb->createCollection($collection);
+            }
+        }
+
         $success = file_put_contents(PANDA_ROOT . '/.env',  $_POST['envvar']);
         $success = $success && file_put_contents(PANDA_ROOT . '/.env', "SITE_READY=true\n", FILE_APPEND);
 
