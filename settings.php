@@ -24,5 +24,6 @@ define("PANDA_ADMIN_ROUTES", [
     ["POST", '/admin/posts/upsave', '\Panda\Admin\Controllers\PostController', 'upsave'],
     ["POST", '/admin/posts/delete', '\Panda\Admin\Controllers\PostController', 'delete'],
     ["GET", '/admin/posts/success', '\Panda\Admin\Controllers\PostController', 'success'],
-    ["GET", '/admin/posts/error', '\Panda\Admin\Controllers\PostController', 'error']
+    ["GET", '/admin/posts/error', '\Panda\Admin\Controllers\PostController', 'error'],
+    ["GET", "/admin/categories", "\Panda\Admin\Controllers\CategoryController", "index"],
 ]);

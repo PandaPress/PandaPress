@@ -1,0 +1,47 @@
+{layout '../parts/layout.latte'} {block content}
+
+<main class="app-main">
+  <table class="table m-4 w-75">
+    <thead>
+      <tr>
+        <th scope="col"><h3>Category Name</h3></th>
+        <th scope="col"><h3>Slug</h3></th>
+        <th scope="col"><h3>Description</h3></th>
+      </tr>
+    </thead>
+    <tbody n:if="$categories">
+      <tr n:foreach="$categories as $category">
+        <td class="w-auto">{$category['name']}</td>
+        <td class="w-auto text-black">
+          <a
+            href='{php echo "/category/" . $category["slug"] ; }'
+            target="_blank"
+          >
+            {$category['slug']}
+          </a>
+        </td>
+        <th scope="row" class="w-auto">
+          <div>{$category['description']}</div>
+        </th>
+        <td class="d-flex gap-2">
+          <a
+            href="/admin/categories/update/{$category['_id']}"
+            role="button"
+            class="btn btn-warning btn-sm"
+            >Update</a
+          >
+          <form method="post" action="/admin/categories/delete">
+            <input
+              type="hidden"
+              name="_id"
+              value="{php echo $category['_id'];}"
+            />
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+          </form>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</main>
+
+{/block}

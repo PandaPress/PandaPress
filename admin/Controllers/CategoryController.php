@@ -6,7 +6,7 @@ use MongoDB\Exception\Exception;
 use Latte\Exception\CompileException;
 use MongoDB\BSON\ObjectId;
 
-class PostController extends BaseController
+class CategoryController extends BaseController
 {
     private string $errorMessage = "";
 
@@ -27,10 +27,15 @@ class PostController extends BaseController
 
         foreach ($documents as $document) {
             $category = [
-          
+                "_id" => $document["_id"]->__toString(),
+                "name" => $document["name"],
+                "description" => $document["description"],
+                "slug" => $document["slug"],
             ];
             array_push($categories, $category);
         }
+
+       
 
         return $this->template_engine->render("$this->views/categories/index.latte", [
             "categories" => $categories
