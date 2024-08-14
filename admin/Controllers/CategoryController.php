@@ -41,4 +41,8 @@ class CategoryController extends BaseController
             "categories" => $categories
         ]);
     }
+
+    public function create() {
+        return $this->template_engine->render("$this->views/categories/create.latte");
+    }
 }

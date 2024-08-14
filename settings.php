@@ -26,4 +26,5 @@ define("PANDA_ADMIN_ROUTES", [
     ["GET", '/admin/posts/success', '\Panda\Admin\Controllers\PostController', 'success'],
     ["GET", '/admin/posts/error', '\Panda\Admin\Controllers\PostController', 'error'],
     ["GET", "/admin/categories", "\Panda\Admin\Controllers\CategoryController", "index"],
+    ["GET", "/admin/categories/create", "\Panda\Admin\Controllers\CategoryController", "create"],
 ]);
