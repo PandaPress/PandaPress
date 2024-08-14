@@ -45,4 +45,36 @@ class CategoryController extends BaseController
     public function create() {
         return $this->template_engine->render("$this->views/categories/create.latte");
     }
+
+    public function save() {
+        global $pandadb;
+        global $router;
+        
+        try {
+            $title = $_POST["name"];
+            $slug = $_POST["slug"];
+            $description = $_POST["description"];
+
+            $pandadb->selectCollection("categories")->insertOne([
+                "title" => $title,
+                "slug" => $slug,
+                "description" => $description,
+            ]);
+   
+            return $router->simpleRedirect("/admin/success", [
+                "success_message" => "Category saved successfully"
+            ]);
+        } catch (Exception $e) {
+            $error_message = $e->getMessage();
+            return $router->simpleRedirect("/admin/error", [
+                "error_message" => $error_message
+            ]);
+        } catch (\Exception $e) {
+            $error_message = $e->getMessage();
+            return $router->simpleRedirect("/admin/error", [
+                "error_message" => $error_message
+            ]);
+        }
+
+    }
 }

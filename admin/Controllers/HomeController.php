@@ -22,4 +22,20 @@ class HomeController extends BaseController
             "commentCount" => $commentCount
         ]);
     }
+
+    public function success(){
+        $success_message = isset($_SESSION['panda_success_message']) ? $_SESSION['panda_success_message'] : "";
+        unset($_SESSION['panda_success_message']);
+        return $this->template_engine->render("$this->views/success.latte", [
+            "success_message" => $success_message
+        ]);
+    }
+
+    public function error(){
+        $error_message = isset($_SESSION['panda_error_message']) ? $_SESSION['panda_error_message'] : "";
+        unset($_SESSION['panda_error_message']);
+        return $this->template_engine->render("$this->views/error.latte", [
+            "error_message" => $error_message
+        ]);
+    }
 }

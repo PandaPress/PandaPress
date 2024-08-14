@@ -80,37 +80,23 @@ class PostController extends BaseController
                 "created_at" => time()
             ]);
    
-            return $router->simpleRedirect("/admin/posts/success", [
+            return $router->simpleRedirect("/admin/success", [
                 "success_message" => "Post saved successfully"
             ]);
         } catch (Exception $e) {
             $error_message = $e->getMessage();
-            return $router->simpleRedirect("/admin/posts/error", [
+            return $router->simpleRedirect("/admin/error", [
                 "error_message" => $error_message
             ]);
         } catch (\Exception $e) {
             $error_message = $e->getMessage();
-            return $router->simpleRedirect("/admin/posts/error", [
+            return $router->simpleRedirect("/admin/error", [
                 "error_message" => $error_message
             ]);
         }
     }
 
-    public function success(){
-        $success_message = isset($_SESSION['panda_success_message']) ? $_SESSION['panda_success_message'] : "";
-        unset($_SESSION['panda_success_message']);
-        return $this->template_engine->render("$this->views/posts/success.latte", [
-            "success_message" => $success_message
-        ]);
-    }
-
-    public function error(){
-        $error_message = isset($_SESSION['panda_error_message']) ? $_SESSION['panda_error_message'] : "";
-        unset($_SESSION['panda_error_message']);
-        return $this->template_engine->render("$this->views/posts/error.latte", [
-            "error_message" => $error_message
-        ]);
-    }
+  
 
     public function delete(){
         global $pandadb;
@@ -132,18 +118,18 @@ class PostController extends BaseController
                     ["_id" => new ObjectId($id)]
                 );
 
-                return $router->simpleRedirect("/admin/posts/success", [
+                return $router->simpleRedirect("/admin/success", [
                     "success_message" => "Post deleted successfully"
                 ]);
             }
         } catch (Exception $e) {
             $error_message = $e->getMessage();
-            return $router->simpleRedirect("/admin/posts/error", [
+            return $router->simpleRedirect("/admin/error", [
                 "error_message" => $error_message
             ]);
         } catch (\Exception $e) {
             $error_message = $e->getMessage();
-            return $router->simpleRedirect("/admin/posts/error", [
+            return $router->simpleRedirect("/admin/error", [
                 "error_message" => $error_message
             ]);
         }
@@ -165,12 +151,12 @@ class PostController extends BaseController
 
         } catch (CompileException $e) {
             $error_message = $e->getMessage();
-            return $router->simpleRedirect("/admin/posts/error", [
+            return $router->simpleRedirect("/admin/error", [
                 "error_message" => $error_message
             ]);
         } catch (\Exception $e) {
             $error_message = $e->getMessage();
-            return $router->simpleRedirect("/admin/posts/error", [
+            return $router->simpleRedirect("/admin/error", [
                 "error_message" => $error_message
             ]);
         }
@@ -181,7 +167,7 @@ class PostController extends BaseController
         global $router;
 
         if(!isset($_POST["id"])) {
-            return $router->simpleRedirect("/admin/posts/error", [
+            return $router->simpleRedirect("/admin/error", [
                 "error_message" => "Post id is missing"
             ]);
         }
@@ -215,18 +201,18 @@ class PostController extends BaseController
                 ]
             );
 
-            return $router->simpleRedirect("/admin/posts/success", [
+            return $router->simpleRedirect("/admin/success", [
                 "success_message" => "Post updated successfully"
             ]);
 
         } catch (CompileException $e) {
             $error_message = $e->getMessage();
-            return $router->simpleRedirect("/admin/posts/error", [
+            return $router->simpleRedirect("/admin/error", [
                 "error_message" => $error_message
             ]);
         } catch (\Exception $e) {
             $error_message = $e->getMessage();
-            return $router->simpleRedirect("/admin/posts/error", [
+            return $router->simpleRedirect("/admin/error", [
                 "error_message" => $error_message
             ]);
         }
