@@ -21,4 +21,14 @@ function get_theme_info(string $current_theme)
 }
 
 
+function get_form_old_value($session_key, $field) {
+    return isset($_SESSION[$session_key][$field]) ? htmlspecialchars($_SESSION[$session_key][$field]) : '';
+}
+
+function unset_session_keys($kees = []) {
+    foreach ($kees as $kee) {
+        unset($_SESSION[$kee]);
+    }
+}
+
 // plugins helper functions

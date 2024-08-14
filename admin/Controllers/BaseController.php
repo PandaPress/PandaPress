@@ -17,7 +17,7 @@ class BaseController
     {
         // template engine
         $this->template_engine = new Engine();
-        $cache_admin_tmpl_dir =   PANDA_ROOT . "/cache/admin/templates";
+        $cache_admin_tmpl_dir =   PANDA_ROOT . "/cache/templates/admin";
         if (!is_dir($cache_admin_tmpl_dir)) {
             mkdir($cache_admin_tmpl_dir, 0755, true);
         }

@@ -68,7 +68,7 @@ class PostController extends BaseController
 
             $category = $_POST["category"];
 
-            $pandadb->selectCollection("posts")->insertOne([
+            $result = $pandadb->selectCollection("posts")->insertOne([
                 "title" => $title,
                 "slug" => $slug,
                 "status" => $status,
@@ -79,10 +79,16 @@ class PostController extends BaseController
                 "updated_at" => time(),
                 "created_at" => time()
             ]);
-   
-            return $router->simpleRedirect("/admin/success", [
-                "success_message" => "Post saved successfully"
-            ]);
+
+            if ($result->getInsertedCount() > 0) {
+                return $router->simpleRedirect("/admin/success", [
+                    "success_message" => "Post saved successfully"
+                ]);
+            } else {
+                return $router->simpleRedirect("/admin/error", [
+                    "error_message" => "Post creation failed"
+                ]);
+            }
         } catch (Exception $e) {
             $error_message = $e->getMessage();
             return $router->simpleRedirect("/admin/error", [

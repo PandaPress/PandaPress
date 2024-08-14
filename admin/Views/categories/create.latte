@@ -1,17 +1,29 @@
 {layout '../parts/layout.latte'} {block content}
 
 <main class="app-main">
+  {if isset($_SESSION['panda_error_message'])}
+  <div class="alert alert-danger alert-dismissible" role="alert">
+    {php echo $_SESSION['panda_error_message']; }
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  {/if}
   <h1 class="px-4 mt-3">Create a new category</h1>
   <form class="px-4" action="/admin/categories/save" method="post">
     <div class="mb-3">
-      <label for="title" class="form-label">Name</label>
+      <label for="title" class="form-label">Title</label>
       <input
         type="text"
         class="form-control"
-        id="name"
-        aria-describedby="name"
-        name="name"
+        id="title"
+        aria-describedby="title"
+        name="title"
         autofocus
+        value="{php echo get_form_old_value('panda_category_form_data', 'title');}"
       />
     </div>
     <div class="mb-3">
@@ -22,6 +34,7 @@
         id="slug"
         aria-describedby="slug"
         name="slug"
+        value="{php echo get_form_old_value('panda_category_form_data', 'slug');}"
       />
     </div>
     <div class="mb-3">
@@ -31,6 +44,7 @@
         type="text"
         name="description"
         class="form-control"
+        value="{php echo get_form_old_value('panda_category_form_data', 'description');}"
       ></textarea>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>

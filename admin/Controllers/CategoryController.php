@@ -28,14 +28,12 @@ class CategoryController extends BaseController
         foreach ($documents as $document) {
             $category = [
                 "_id" => $document["_id"]->__toString(),
-                "name" => $document["name"],
+                "title" => $document["title"],
                 "description" => $document["description"],
                 "slug" => $document["slug"],
             ];
             array_push($categories, $category);
         }
-
-       
 
         return $this->template_engine->render("$this->views/categories/index.latte", [
             "categories" => $categories
@@ -49,21 +47,42 @@ class CategoryController extends BaseController
     public function save() {
         global $pandadb;
         global $router;
+
+        $collection = $pandadb->selectCollection("categories");
+
+        $_category = $collection->findOne([
+            "slug" => $_POST["slug"]
+        ]);
+
+        if ($_category !== null) {
+            return $router->simpleRedirect("/admin/categories/create", [
+                "error_message" => "Slug already exists in the database",
+                "category_form_data" => $_POST
+            ]);
+        } 
         
         try {
-            $title = $_POST["name"];
+            $title = $_POST["title"];
             $slug = $_POST["slug"];
             $description = $_POST["description"];
 
-            $pandadb->selectCollection("categories")->insertOne([
+            $result = $collection->insertOne([
                 "title" => $title,
                 "slug" => $slug,
                 "description" => $description,
             ]);
-   
-            return $router->simpleRedirect("/admin/success", [
-                "success_message" => "Category saved successfully"
-            ]);
+
+            if($result->getInsertedCount() > 0) {
+                unset_session_keys(['error_message', 'category_form_data']);
+              
+                return $router->simpleRedirect("/admin/success", [
+                    "success_message" => "Category saved successfully"
+                ]);
+            } else {
+                return $router->simpleRedirect("/admin/error", [
+                    "error_message" => "Category creation failed"
+                ]);
+            }
         } catch (Exception $e) {
             $error_message = $e->getMessage();
             return $router->simpleRedirect("/admin/error", [

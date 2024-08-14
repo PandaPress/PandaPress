@@ -12,11 +12,12 @@
         <th scope="col"><h3>Category Name</h3></th>
         <th scope="col"><h3>Slug</h3></th>
         <th scope="col"><h3>Description</h3></th>
+        <th scope="col"><h3>Actions</h3></th>
       </tr>
     </thead>
     <tbody n:if="$categories">
       <tr n:foreach="$categories as $category">
-        <td class="w-auto">{$category['name']}</td>
+        <td class="w-auto">{$category['title']}</td>
         <td class="w-auto text-black">
           <a
             href='{php echo "/category/" . $category["slug"] ; }'
