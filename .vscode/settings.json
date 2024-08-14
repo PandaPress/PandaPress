@@ -4,5 +4,6 @@
   },
   "files.associations": {
     "*.latte": "html"
-  }
+  },
+  "makefile.configureOnOpen": false
 }
