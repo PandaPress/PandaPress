@@ -16,8 +16,12 @@ class SessionController extends BaseController
     public function clear() {
         $session_keys = $_POST['session_keys'];
         unset_session_keys($session_keys);
-        return json_encode([
-            'result' => "Session data is cleared"
+        header('Content-Type: application/json');
+        echo json_encode([
+            "code" => 0,
+            "success" => true,
+            "data" => null,
+            'message' => "Session data is cleared"
         ]);
     }
 }
