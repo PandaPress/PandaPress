@@ -22,12 +22,18 @@ function get_theme_info(string $current_theme)
 
 
 function get_form_old_value($session_key, $field) {
-    return isset($_SESSION[$session_key][$field]) ? htmlspecialchars($_SESSION[$session_key][$field]) : '';
+    $kee = generate_full_session_key($session_key);
+    return isset($_SESSION[$kee][$field]) ? htmlspecialchars($_SESSION[$kee][$field]) : '';
+}
+
+function generate_full_session_key(string $kee){
+    return "panda_$kee";
 }
 
 function unset_session_keys($kees = []) {
     foreach ($kees as $kee) {
-        unset($_SESSION[$kee]);
+        $_kee = generate_full_session_key($kee);
+        unset($_SESSION[$_kee]);
     }
 }
 

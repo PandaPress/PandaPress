@@ -28,4 +28,5 @@ define("PANDA_ADMIN_ROUTES", [
     ["GET", "/admin/categories", "\Panda\Admin\Controllers\CategoryController", "index"],
     ["GET", "/admin/categories/create", "\Panda\Admin\Controllers\CategoryController", "create"],
     ["POST", '/admin/categories/save', '\Panda\Admin\Controllers\CategoryController', 'save'],
+    ["POST", '/admin/session/clear', '\Panda\Admin\Controllers\SessionController', 'clear']
 ]);

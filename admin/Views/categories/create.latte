@@ -23,7 +23,7 @@
         aria-describedby="title"
         name="title"
         autofocus
-        value="{php echo get_form_old_value('panda_category_form_data', 'title');}"
+        value="{php echo get_form_old_value('category_form_data', 'title');}"
       />
     </div>
     <div class="mb-3">
@@ -34,7 +34,7 @@
         id="slug"
         aria-describedby="slug"
         name="slug"
-        value="{php echo get_form_old_value('panda_category_form_data', 'slug');}"
+        value="{php echo get_form_old_value('category_form_data', 'slug');}"
       />
     </div>
     <div class="mb-3">
@@ -44,11 +44,23 @@
         type="text"
         name="description"
         class="form-control"
-        value="{php echo get_form_old_value('panda_category_form_data', 'description');}"
+        value="{php echo get_form_old_value('category_form_data', 'description');}"
       ></textarea>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
 </main>
+
+<script>
+  document.querySelector(".btn-close").addEventListener("click", function () {
+    $.ajax({
+      url: "/admin/session/clear",
+      type: "POST",
+      data: {
+        session_keys: ["error_message"],
+      },
+    });
+  });
+</script>
 
 {/block}
