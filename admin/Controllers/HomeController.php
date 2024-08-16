@@ -15,10 +15,12 @@ class HomeController extends BaseController
     {
         global $pandadb;
         $postCount = $pandadb->selectCollection("posts")->countDocuments();
+        $categoryCount = $pandadb->selectCollection("categories")->countDocuments();
         $commentCount = $pandadb->selectCollection("comments")->countDocuments();
 
         return $this->template_engine->render("$this->views/index.latte", [
             "postCount" => $postCount, 
+            "categoryCount" =>$categoryCount,
             "commentCount" => $commentCount
         ]);
     }

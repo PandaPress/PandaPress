@@ -20,7 +20,7 @@ class CategoryController extends BaseController
     {
         global $pandadb;
 
-        // !TODO pagination
+    
         $documents = $pandadb->selectCollection("categories")->find();
 
         $categories = [];
