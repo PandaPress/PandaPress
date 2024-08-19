@@ -66,7 +66,7 @@ class PostController extends BaseController
             $_tags = $_POST["tags"];
             $tags = isset($_tags) && strlen($_tags) > 0 ? explode(',', $_tags) : []; 
 
-            $category = $_POST["category"];
+            $category = isset($_POST["category"]) ? $_POST["category"] : [];
 
             $result = $pandadb->selectCollection("posts")->insertOne([
                 "title" => $title,
@@ -75,7 +75,7 @@ class PostController extends BaseController
                 "author" => $author,
                 "content" => $content,
                 "tags" => $tags,
-                "category" => $category,
+                "category" => $category, // !TODO: should save the entire category object here
                 "updated_at" => time(),
                 "created_at" => time()
             ]);

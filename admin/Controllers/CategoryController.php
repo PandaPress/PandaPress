@@ -72,28 +72,52 @@ class CategoryController extends BaseController
                 "description" => $description,
             ]);
 
-            if($result->getInsertedCount() > 0) {
-                unset_session_keys(['error_message', 'category_form_data']);
-              
-                return $router->simpleRedirect("/admin/success", [
-                    "success_message" => "Category saved successfully"
-                ]);
-            } else {
-                return $router->simpleRedirect("/admin/error", [
-                    "error_message" => "Category creation failed"
-                ]);
-            }
-        } catch (Exception $e) {
+            unset_session_keys(['error_message', 'category_form_data']);
+            
+            return $router->simpleRedirect("/admin/success", [
+                "success_message" => "Category saved successfully"
+            ]);         
+        } catch (Exception | \Exception $e) {
             $error_message = $e->getMessage();
             return $router->simpleRedirect("/admin/error", [
                 "error_message" => $error_message
             ]);
-        } catch (\Exception $e) {
-            $error_message = $e->getMessage();
-            return $router->simpleRedirect("/admin/error", [
-                "error_message" => $error_message
-            ]);
-        }
+        } 
+    }
 
+
+    public function delete(){
+        global $pandadb;
+        global $router;
+
+        try {
+            $category_id = $_POST['_id'];
+       
+            // delete the category
+            $collection = $pandadb->selectCollection("categories");
+            $deleteResult = $collection->deleteOne([
+                "_id" => new ObjectId($category_id)
+            ]);
+
+            // update all posts that have the deleted category to be uncategorized
+            $updateResult = $pandadb->selectCollection("posts")
+                ->updateMany(
+                    ['category' => ['$elemMatch' => ['_id' => new ObjectId($category_id)]]],
+                    ['$set' => ['category' => []]]
+                );
+
+            unset_session_keys(['error_message', 'category_form_data']);  // remove error message and form data from session 
+            
+            // redirect to success page with success message 
+            return $router->simpleRedirect("/admin/success", [
+                "success_message" => "Category deleted successfully"
+            ]);
+      
+        } catch (Exception | \Exception $e) {
+            $error_message = $e->getMessage();
+            return $router->simpleRedirect("/admin/error", [
+                "error_message" => $error_message
+            ]);
+        } 
     }
 }
