@@ -36,18 +36,48 @@
             class="btn btn-warning btn-sm"
             >Update</a
           >
-          <form method="post" action="/admin/categories/delete">
-            <input
-              type="hidden"
-              name="_id"
-              value="{php echo $category['_id'];}"
-            />
-            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-          </form>
+          <button
+            type="button"
+            class="btn btn-danger btn-sm delete-button"
+            data-cid="{$category['_id']}"
+          >
+            Delete
+          </button>
         </td>
       </tr>
     </tbody>
   </table>
 </main>
 
+<script type="text/javascript">
+  $(document).ready(function () {
+    $(".delete-button").click(function (evt) {
+      evt.preventDefault();
+      evt.stopPropagation();
+
+      const cid = $(this).data("cid");
+      const url = "/admin/categories/delete"; // !TODO: need jwt protection
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            url: url,
+            type: "post",
+            data: { _id: cid },
+            success: function () {
+              location.reload();
+            },
+          });
+        }
+      });
+    });
+  });
+</script>
 {/block}
