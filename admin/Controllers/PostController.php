@@ -66,7 +66,19 @@ class PostController extends BaseController
             $_tags = $_POST["tags"];
             $tags = isset($_tags) && strlen($_tags) > 0 ? explode(',', $_tags) : []; 
 
-            $category = isset($_POST["category"]) ? $_POST["category"] : [];
+            $category = isset($_POST["category"]) ? $_POST["category"] : "uncategorized";
+
+            $requiredFields = ['title', 'slug', 'editor'];
+            foreach ($requiredFields as $field) {
+                if (!isset($_POST[$field]) || empty(trim($_POST[$field]))) {
+                    return $router->simpleRedirect("/admin/posts/compose", [
+                        "error_message" => "There are missing fields",
+                        "post_form_data" => $_POST
+                    ]);
+                }
+            }
+
+
 
             $result = $pandadb->selectCollection("posts")->insertOne([
                 "title" => $title,

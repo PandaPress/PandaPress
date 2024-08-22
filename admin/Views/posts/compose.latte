@@ -1,5 +1,16 @@
 {layout '../parts/layout.latte'} {block content}
 <main class="app-main">
+  {if isset($_SESSION['panda_error_message'])}
+  <div class="alert alert-danger alert-dismissible" role="alert">
+    {php echo $_SESSION['panda_error_message']; }
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  {/if}
   <h1 class="px-4 mt-3">Compose</h1>
   <form class="px-4" action="/admin/posts/save" method="post">
     <div class="mb-3">
@@ -11,6 +22,8 @@
         aria-describedby="title"
         name="title"
         autofocus
+        value="{php echo get_form_old_value('post_form_data', 'title');}"
+        required
       />
     </div>
     <div class="mb-3">
@@ -21,6 +34,8 @@
         id="slug"
         aria-describedby="slug"
         name="slug"
+        value="{php echo get_form_old_value('post_form_data', 'slug');}"
+        required
       />
     </div>
     <div class="mb-3">
@@ -31,6 +46,7 @@
         id="author"
         aria-describedby="author"
         name="author"
+        value="{php echo get_form_old_value('post_form_data', 'author');}"
       />
     </div>
     <div class="mb-3">
@@ -45,6 +61,7 @@
         id="category"
         aria-describedby="categoryHelp"
         name="category"
+        value="{php echo get_form_old_value('post_form_data', 'category');}"
       />
       <div id="categoryHelp" class="form-text">Optional</div>
     </div>
@@ -56,6 +73,7 @@
         id="tags"
         aria-describedby="tagsHelp"
         name="tags"
+        value="{php echo get_form_old_value('post_form_data', 'tags') ? implode(',', get_form_old_value('post_form_data', 'tags')) : '';}"
       />
       <div id="tagsHelp" class="form-text">
         Optional. Please use comma(,) to separate tags.
@@ -79,8 +97,32 @@
 <script>
   tinymce.init({
     selector: "textarea#editor",
-    plugins: ["wordcount", "preview"],
+    plugins: ["wordcount", "preview", "table", "image", "link"],
     toolbar: "preview",
+    setup: function (editor) {
+      editor.on("input", function () {
+        localStorage.setItem("Panda.EditorContentCache", editor.getContent());
+      });
+
+      editor.on("init", function () {
+        const savedContent =
+          localStorage.getItem("Panda.EditorContentCache") ||
+          "{php echo get_form_old_value('post_form_data', 'editor');}";
+        editor.setContent(savedContent);
+      });
+    },
+  });
+
+  $(".btn-close").on("click", function () {
+    $.ajax({
+      url: "/admin/session/clear",
+      type: "POST",
+      data: {
+        session_keys: ["error_message"],
+      },
+    }).then((res) => {
+      console.log("res :>> ", res);
+    });
   });
 </script>
 {/block}
