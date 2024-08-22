@@ -84,7 +84,7 @@ class Panda
             // ! then, we need this step to make sure the new collection will be created.
             foreach (MONGO_DEFAULT_COLLECTIONS as $collection) {
                 if (!in_array($collection, $collections)) {
-                    $this->logger->warning("Missing table: $collection");
+                    $this->logger->warning("Missing table: $collection"); 
                     $this->db->createCollection($collection);
                 }
             }

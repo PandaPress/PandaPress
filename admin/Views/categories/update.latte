@@ -1,0 +1,43 @@
+{layout '../parts/layout.latte'} {block content}
+
+<main class="app-main">
+  <h1 class="px-4 mt-3">Update category</h1>
+  <form class="px-4" action="/admin/categories/upsave" method="post">
+    <div class="mb-3">
+      <label for="title" class="form-label">Title</label>
+      <input
+        type="text"
+        class="form-control"
+        id="title"
+        aria-describedby="title"
+        name="title"
+        autofocus
+        value="{$category['title']}"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="slug" class="form-label">Slug</label>
+      <input
+        type="text"
+        class="form-control"
+        id="slug"
+        aria-describedby="slug"
+        name="slug"
+        value="{$category['slug']}"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <textarea
+        id="description"
+        type="text"
+        name="description"
+        class="form-control"
+        value="{$category['description']}"
+      ></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</main>
+
+{/block}

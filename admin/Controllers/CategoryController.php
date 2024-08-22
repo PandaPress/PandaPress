@@ -3,7 +3,6 @@
 namespace Panda\Admin\Controllers;
 
 use MongoDB\Exception\Exception;
-use Latte\Exception\CompileException;
 use MongoDB\BSON\ObjectId;
 
 class CategoryController extends BaseController
@@ -119,5 +118,19 @@ class CategoryController extends BaseController
                 "error_message" => $error_message
             ]);
         } 
+    }
+
+    public function update($id) {
+        global $pandadb;
+        global $router;
+
+        $collection = $pandadb->selectCollection("categories");
+        $category = $collection->findOne([
+            "_id" => new ObjectId($id)
+        ]);
+
+        return $this->template_engine->render("$this->views/categories/update.latte", [
+            "category" => $category
+        ]);
     }
 }

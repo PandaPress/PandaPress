@@ -4,6 +4,8 @@ namespace Panda\Services;
 
 use Psr\Log\AbstractLogger;
 
+// TODO: implement a logger that writes to a MongoDB collection
+
 class Logger extends AbstractLogger
 {
 
