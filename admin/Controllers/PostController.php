@@ -223,12 +223,7 @@ class PostController extends BaseController
                 "success_message" => "Post updated successfully"
             ]);
 
-        } catch (CompileException $e) {
-            $error_message = $e->getMessage();
-            return $router->simpleRedirect("/admin/error", [
-                "error_message" => $error_message
-            ]);
-        } catch (\Exception $e) {
+        } catch (CompileException | \Exception $e) {
             $error_message = $e->getMessage();
             return $router->simpleRedirect("/admin/error", [
                 "error_message" => $error_message

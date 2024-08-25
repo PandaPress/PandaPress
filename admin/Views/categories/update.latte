@@ -1,8 +1,22 @@
 {layout '../parts/layout.latte'} {block content}
 
 <main class="app-main">
+  {if isset($_SESSION['panda_error_message'])}
+  <div class="alert alert-danger alert-dismissible" role="alert">
+    {php echo $_SESSION['panda_error_message']; }
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  {/if}
   <h1 class="px-4 mt-3">Update category</h1>
   <form class="px-4" action="/admin/categories/upsave" method="post">
+    <div>
+      <input type="hidden" name="_id" value="{$category['_id'] ?? ''}" />
+    </div>
     <div class="mb-3">
       <label for="title" class="form-label">Title</label>
       <input
@@ -39,5 +53,19 @@
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
 </main>
+
+<script>
+  $(".btn-close").click(function () {
+    $.ajax({
+      url: "/admin/session/clear",
+      type: "POST",
+      data: {
+        session_keys: ["error_message"],
+      },
+    }).then((res) => {
+      console.log("res :>> ", res);
+    });
+  });
+</script>
 
 {/block}

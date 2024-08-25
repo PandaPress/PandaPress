@@ -5,6 +5,7 @@ namespace Panda\Admin\Controllers;
 use MongoDB\Exception\Exception;
 use MongoDB\BSON\ObjectId;
 
+
 class CategoryController extends BaseController
 {
     private string $errorMessage = "";
@@ -124,13 +125,78 @@ class CategoryController extends BaseController
         global $pandadb;
         global $router;
 
-        $collection = $pandadb->selectCollection("categories");
-        $category = $collection->findOne([
-            "_id" => new ObjectId($id)
-        ]);
+        try {
+            $collection = $pandadb->selectCollection("categories");
+            $category = $collection->findOne([
+                "_id" => new ObjectId($id)
+            ]);
 
-        return $this->template_engine->render("$this->views/categories/update.latte", [
-            "category" => $category
-        ]);
+    
+            if ($category === null) {
+                return $router->simpleRedirect("/admin/error", [
+                    "error_message" => "Category not found"
+                ]);
+            }
+    
+            
+            return $this->template_engine->render("$this->views/categories/update.latte", [
+                "category" => $category
+            ]);
+        } catch (Exception | \Exception $e) {
+            $error_message = $e->getMessage();
+            var_dump($error_message);
+            return $router->simpleRedirect("/admin/error", [
+                "error_message" => $error_message
+            ]);
+        }
+
+       
+    }
+
+    public function upsave() {
+        global $pandadb;
+        global $router;
+
+        try {
+            $id = $_POST['_id'];
+            $title = $_POST['title'];
+            $slug = $_POST['slug'];
+            $description = $_POST['description'];
+
+            $collection = $pandadb->selectCollection("categories");
+
+            // make sure the slug is unique
+            $category = $collection->findOne([
+                "slug" => $slug
+            ]);
+
+            if ($category !== null) {
+                return $router->simpleRedirect("/admin/categories/update/$id", [
+                    "error_message" => "Slug already exists in the database",
+                ]);
+            }
+
+            $collection->updateOne(
+                [
+                    "_id" => new ObjectId($id)
+                ], 
+                [
+                    '$set' => [
+                        "title" => $title,
+                        "slug" => $slug,
+                        "description" => $description
+                    ]
+                ]
+            );
+
+            return $router->simpleRedirect("/admin/success", [
+                "success_message" => "Category updated successfully"
+            ]);
+        } catch (Exception | \Exception $e) {
+            $error_message = $e->getMessage();
+            return $router->simpleRedirect("/admin/error", [
+                "error_message" => $error_message
+            ]);
+        }
     }
 }
