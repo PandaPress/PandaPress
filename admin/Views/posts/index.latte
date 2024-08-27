@@ -14,7 +14,14 @@
     <tbody n:if="$posts">
       <tr n:foreach="$posts as $post">
         <td class="w-auto">{$post['status']}</td>
-        <td class="w-auto">{$post['category']['title']}</td>
+        <td class="w-auto">
+          <a
+            href='{php echo "/category/" . $post["category"]["slug"] ; }'
+            target="_blank"
+          >
+            {$post['category']['title']}
+          </a>
+        </td>
         <td
           class="w-auto {php echo $post['status'] === 'published' ? 'text-black' : 'text-secondary';}"
         >
