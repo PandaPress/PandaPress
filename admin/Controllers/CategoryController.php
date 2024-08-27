@@ -21,16 +21,24 @@ class CategoryController extends BaseController
         global $pandadb;
 
     
-        $documents = $pandadb->selectCollection("categories")->find();
+        $categoriesCollection = $pandadb->selectCollection("categories");
+        $postsCollection = $pandadb->selectCollection("posts");
+
+        $documents = $categoriesCollection->find();
 
         $categories = [];
 
         foreach ($documents as $document) {
+
+            $categoryId = $document["_id"]->__toString();
+            $postCount = $postsCollection->countDocuments(['category' => $categoryId]);
+    
             $category = [
                 "_id" => $document["_id"]->__toString(),
                 "title" => $document["title"],
                 "description" => $document["description"],
                 "slug" => $document["slug"],
+                "postCount" => $postCount,
             ];
             array_push($categories, $category);
         }
@@ -73,6 +81,7 @@ class CategoryController extends BaseController
             ]);
 
             unset_session_keys(['error_message', 'category_form_data']);
+
             
             return $router->simpleRedirect("/admin/success", [
                 "success_message" => "Category saved successfully"
@@ -130,17 +139,15 @@ class CategoryController extends BaseController
             $category = $collection->findOne([
                 "_id" => new ObjectId($id)
             ]);
-
     
             if ($category === null) {
                 return $router->simpleRedirect("/admin/error", [
                     "error_message" => "Category not found"
                 ]);
             }
-    
-            
+
             return $this->template_engine->render("$this->views/categories/update.latte", [
-                "category" => $category
+                "category" => $category,
             ]);
         } catch (Exception | \Exception $e) {
             $error_message = $e->getMessage();

@@ -22,9 +22,12 @@ class PostController extends BaseController
         // !TODO pagination
         $documents = $pandadb->selectCollection("posts")->find();
 
+        $categoriesCollection = $pandadb->selectCollection("categories");
+
         $posts = [];
 
         foreach ($documents as $document) {
+            $category = $categoriesCollection->findOne(["_id" => new ObjectId($document["category"])]);
             $post = [
                 "_id" => (string) $document["_id"],
                 "title" => $document["title"],
@@ -34,7 +37,7 @@ class PostController extends BaseController
                 "status" => $document["status"],
                 "created_at" => $document["created_at"],
                 "updated_at" => $document["updated_at"],
-                "category" => $document["category"],
+                "category" => $category,
                 "tags" => $document["tags"]
             ];
             array_push($posts, $post);
