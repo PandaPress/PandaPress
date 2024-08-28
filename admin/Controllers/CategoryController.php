@@ -20,31 +20,41 @@ class CategoryController extends BaseController
     {
         global $pandadb;
 
-    
         $categoriesCollection = $pandadb->selectCollection("categories");
-        $postsCollection = $pandadb->selectCollection("posts");
 
-        $documents = $categoriesCollection->find();
+        $pipeline = [
+            [
+                '$addFields' => [
+                    'stringId' => ['$toString' => '$_id']
+                ]
+            ],
+            [
+                '$lookup' => [
+                    'from' => 'posts',
+                    'localField' => 'stringId',
+                    'foreignField' => 'category',
+                    'as' => 'posts'
+                ]
+            ]
+        ];
+       
+        $documents = $categoriesCollection->aggregate($pipeline);
 
-        $categories = [];
+        $categoriesWithPostCount = [];
 
         foreach ($documents as $document) {
-
-            $categoryId = $document["_id"]->__toString();
-            $postCount = $postsCollection->countDocuments(['category' => $categoryId]);
-    
             $category = [
                 "_id" => $document["_id"]->__toString(),
                 "title" => $document["title"],
                 "description" => $document["description"],
                 "slug" => $document["slug"],
-                "postCount" => $postCount,
+                "postCount" => $document["posts"]->count(),
             ];
-            array_push($categories, $category);
+            array_push($categoriesWithPostCount, $category);
         }
 
         return $this->template_engine->render("$this->views/categories/index.latte", [
-            "categories" => $categories
+            "categories" => $categoriesWithPostCount
         ]);
     }
 
