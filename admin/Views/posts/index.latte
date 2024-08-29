@@ -33,7 +33,10 @@
         <td class="w-auto">
           {foreach $post['tags'] as $tag}
           <span class="badge rounded-pill text-bg-primary">
-            <a href='{php echo "/admin/tags/" . $tag ; }' class="text-white">
+            <a
+              href='{php echo "/admin/tags/" . urlencode($tag) ; }'
+              class="text-white"
+            >
               {$tag}
             </a>
           </span>
