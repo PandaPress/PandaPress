@@ -19,15 +19,30 @@ class PostController extends BaseController
     {
         global $pandadb;
 
-        // !TODO pagination
-        $documents = $pandadb->selectCollection("posts")->find();
 
-        $categoriesCollection = $pandadb->selectCollection("categories");
+        $pipeline = [
+            [
+                '$addFields' => [
+                    "cid" => ['$toObjectId' => '$category']
+                ]
+            ],
+            [
+                '$lookup' => [
+                    'from' => 'categories',
+                    'localField' => 'cid',
+                    'foreignField' => '_id',
+                    'as' => 'category_obj'
+                ]
+            ],
+        ];
+
+        // !TODO pagination
+        $documents = $pandadb->selectCollection("posts")->aggregate($pipeline);
 
         $posts = [];
 
         foreach ($documents as $document) {
-            $category = $categoriesCollection->findOne(["_id" => new ObjectId($document["category"])]);
+    
             $post = [
                 "_id" => (string) $document["_id"],
                 "title" => $document["title"],
@@ -37,7 +52,7 @@ class PostController extends BaseController
                 "status" => $document["status"],
                 "created_at" => $document["created_at"],
                 "updated_at" => $document["updated_at"],
-                "category" => $category,
+                "category" => $document['category_obj'][0],
                 "tags" => $document["tags"]
             ];
             array_push($posts, $post);
