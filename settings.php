@@ -12,7 +12,7 @@ define("MONGO_DEFAULT_COLLECTIONS",    [
     'tags',
     'users',
     'comments',
-    'options',
+    'settings',
 ]);
 
 define("PANDA_ADMIN_ROUTES", [
