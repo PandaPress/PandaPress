@@ -6,6 +6,7 @@ use MongoDB\Exception\Exception;
 use Latte\Exception\CompileException;
 use MongoDB\BSON\ObjectId;
 
+
 class PostController extends BaseController
 {
 
@@ -33,7 +34,7 @@ class PostController extends BaseController
                     'foreignField' => '_id',
                     'as' => 'category_obj'
                 ]
-            ],
+            ]
         ];
 
         // !TODO pagination
@@ -42,7 +43,6 @@ class PostController extends BaseController
         $posts = [];
 
         foreach ($documents as $document) {
-    
             $post = [
                 "_id" => (string) $document["_id"],
                 "title" => $document["title"],
@@ -53,7 +53,7 @@ class PostController extends BaseController
                 "created_at" => $document["created_at"],
                 "updated_at" => $document["updated_at"],
                 "category" => $document['category_obj'][0],
-                "tags" => $document["tags"]
+                "tags" => iterator_to_array($document["tags"])
             ];
             array_push($posts, $post);
         }
