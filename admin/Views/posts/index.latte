@@ -30,7 +30,15 @@
             {$post['title']}
           </a>
         </td>
-        <td class="w-auto">{php echo implode(', ', $post['tags']); }</td>
+        <td class="w-auto">
+          {foreach $post['tags'] as $tag}
+          <span class="badge rounded-pill text-bg-primary">
+            <a href='{php echo "/admin/tags/" . $tag ; }' class="text-white">
+              {$tag}
+            </a>
+          </span>
+          {/foreach}
+        </td>
         <th scope="row" class="w-auto">
           {php echo date('m/d/Y', $post['created_at']);}
         </th>
