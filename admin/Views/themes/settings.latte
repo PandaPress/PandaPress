@@ -1,0 +1,42 @@
+{layout '../parts/layout.latte'} {block content}
+
+<main class="app-main settings-container">
+  <h1>Themes Settings</h1>
+
+  <form action="/admin/themes/current" method="post">
+    <div class="form-group">
+      <label for="theme">Current Theme</label>
+      <select class="form-control" id="theme" name="theme">
+        <option value="papermod">PaperMod</option>
+        <option value="test">Test</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Save</button>
+  </form>
+</main>
+
+<style>
+  .settings-container {
+    padding: 20px 20px 0 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .settings-container > form {
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 8px;
+  }
+
+  .settings-container > form > .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .settings-container > form > .form-group > label {
+    font-weight: 600;
+    font-size: 22px;
+  }
+</style>
+
+{/block}

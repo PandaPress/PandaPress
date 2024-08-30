@@ -38,5 +38,11 @@ define("PANDA_ADMIN_ROUTES", [
     ["POST", '/admin/categories/upsave', '\Panda\Admin\Controllers\CategoryController', 'upsave'],
 
     // sessions
-    ["POST", '/admin/session/clear', '\Panda\Admin\Controllers\SessionController', 'clear']
+    ["POST", '/admin/session/clear', '\Panda\Admin\Controllers\SessionController', 'clear'],
+
+    // themes
+    ["GET", "/admin/themes", "\Panda\Admin\Controllers\ThemeController", "index"],
+    ["GET", "/admin/themes/settings", "\Panda\Admin\Controllers\ThemeController", "settings"],
+    ["GET", "/admin/themes/current", "\Panda\Admin\Controllers\ThemeController", "getCurrent"],
+    ["POST", "/admin/themes/current", "\Panda\Admin\Controllers\ThemeController", "setCurrent"],
 ]);
