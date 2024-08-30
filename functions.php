@@ -13,6 +13,10 @@ function env(string $kee)
 
 function get_theme_info(string $current_theme)
 {
+    $theme_exists = file_exists(PANDA_THEMES . "/$current_theme");
+    if (!$theme_exists) {
+        return false;
+    }
     return [
         "current_theme_dir" => PANDA_THEMES . "/$current_theme",
         "current_theme_views" => PANDA_THEMES . "/$current_theme/Views",
