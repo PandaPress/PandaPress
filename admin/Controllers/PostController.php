@@ -56,7 +56,7 @@ class PostController extends BaseController
                 "tags" => iterator_to_array($document["tags"])
             ];
             array_push($posts, $post);
-        }
+        } 
 
         return $this->template_engine->render("$this->views/posts/index.latte", [
             "posts" => $posts
@@ -176,12 +176,28 @@ class PostController extends BaseController
         global $router;
 
         try {
-            $post = $pandadb->selectCollection("posts")->findOne([
-                "_id" => new ObjectId($id)
-            ]);
+
+            $pipeline = [
+                [
+                    '$addFields' => [
+                        "cid" => ['$toObjectId' => '$category']
+                    ]
+                ],
+                [
+                    '$lookup' => [
+                        'from' => 'categories',
+                        'localField' => 'cid',
+                        'foreignField' => '_id',
+                        'as' => 'category_obj'
+                    ],
+                ]
+            ];
+    
+            $post = $pandadb->selectCollection("posts")->aggregate($pipeline)->toArray()[0];
 
             return $this->template_engine->render("$this->views/posts/update.latte", [
                 "post" => iterator_to_array($post),
+                "category" => iterator_to_array($post['category_obj'][0]),
                 "tags" => iterator_to_array($post['tags'])
             ]);
 

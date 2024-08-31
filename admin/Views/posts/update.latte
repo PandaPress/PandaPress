@@ -6,7 +6,7 @@
       <input type="hidden" name="id" value="{$post['_id'] ?? ''}" />
     </div>
     <div class="mb-3">
-      <label for="title" class="form-label">Title</label>
+      <label for="title" class="form-label"><h3>Title</h3></label>
       <input
         type="text"
         class="form-control"
@@ -18,7 +18,7 @@
       />
     </div>
     <div class="mb-3">
-      <label for="slug" class="form-label">Slug</label>
+      <label for="slug" class="form-label"><h3>Slug</h3></label>
       <input
         type="text"
         class="form-control"
@@ -29,7 +29,7 @@
       />
     </div>
     <div class="mb-3">
-      <label for="author" class="form-label">Author</label>
+      <label for="author" class="form-label"><h3>Author</h3></label>
       <input
         type="text"
         class="form-control"
@@ -41,11 +41,12 @@
       />
     </div>
     <div class="mb-3">
-      <label for="editor" class="form-label">Content</label>
+      <label for="editor" class="form-label"><h3>Content</h3></label>
       <textarea id="editor" type="text" name="editor"></textarea>
     </div>
     <div class="mb-3">
-      <label for="category" class="form-label">Category</label>
+      <label for="category" class="form-label"><h3>Category</h3></label>
+      <div>{$category['title']}</div>
       <input
         type="text"
         class="form-control"
@@ -53,10 +54,11 @@
         aria-describedby="category"
         name="category"
         value="{$post['category']}"
+        hidden
       />
     </div>
     <div class="mb-3">
-      <label for="tags" class="form-label">Tags</label>
+      <label for="tags" class="form-label"><h3>Tags</h3></label>
       <input
         type="text"
         class="form-control"
@@ -70,15 +72,19 @@
       </div>
     </div>
     <div class="mb-3 form-check">
-      <input
-        type="checkbox"
-        class="form-check-input"
-        id="status"
-        name="status"
-        value="draft"
-      />
-      <input type="hidden" name="status" value="published" />
-      <label class="form-check-label" for="is_draft">Save as draft</label>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="status"
+        id="published" {if $post['status'] == 'published'} checked {/if}
+        value="published" />
+        <label class="form-check-label" for="published">
+          Save as published post</label
+        >
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="status" id="draft"
+        value="draft" {if $post['status'] == 'draft'} checked {/if} />
+        <label class="form-check-label" for="draft"> Save as draft </label>
+      </div>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
