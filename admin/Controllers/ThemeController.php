@@ -16,17 +16,13 @@ class ThemeController extends BaseController
 
     public function settings()
     {
-        return $this->template_engine->render("$this->views/themes/settings.latte");
+        return $this->template_engine->render("$this->views/themes/settings.latte", [
+            'current_theme' => env("CURRENT_THEME"),
+            'themes' =>  array_diff(scandir(PANDA_THEMES), array('.', '..'))  
+        ]);
     }
 
-    public function getCurrent()
-    {
-        $envFile = PANDA_ROOT . '/.env';
-        $envContents = file_get_contents($envFile);
-        return $envContents;
-    }
-
-    public function setCurrent()
+    public function current()
     {
         $newTheme = $_POST['theme'] ?? null;
         if (!$newTheme) {

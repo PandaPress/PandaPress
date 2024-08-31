@@ -7,8 +7,9 @@
     <div class="form-group">
       <label for="theme">Current Theme</label>
       <select class="form-control" id="theme" name="theme">
-        <option value="papermod">PaperMod</option>
-        <option value="test">Test</option>
+        {foreach $themes as $theme}
+        <option value="{$theme}" {if $theme === $current_theme} selected {/if}>{$theme}</option>
+        {/foreach}
       </select>
     </div>
     <button type="submit" class="btn btn-primary mt-2">Save</button>
