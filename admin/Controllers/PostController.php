@@ -251,20 +251,19 @@ class PostController extends BaseController
 
         global $pandadb;
 
-        $tags = $pandadb->posts->aggregate([
+        $cursor = $pandadb->posts->aggregate([
             ['$unwind' => '$tags'],
             ['$group' => ['_id' => '$tags']],
             ['$sort' => ['_id' => 1]]
-        ])->toArray();
+        ]);
 
-        $allTags = array_map(function($tag) {
-            return $tag['_id'];
-        }, $tags);
-
-    
+        $tags = [];
+        foreach ($cursor as $doc) {
+            $tags[] = $doc['_id'];
+        }
 
         return $this->template_engine->render("$this->views/posts/tags.latte", [
-            "tags" => $allTags
+            "tags" => $tags
         ]);
     }
 }
