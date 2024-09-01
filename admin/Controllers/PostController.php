@@ -177,41 +177,21 @@ class PostController extends BaseController
 
         try {
 
-            $pipeline = [
-                [
-                    '$addFields' => [
-                        "cid" => ['$toObjectId' => '$category']
-                    ]
-                ],
-                [
-                    '$lookup' => [
-                        'from' => 'categories',
-                        'localField' => 'cid',
-                        'foreignField' => '_id',
-                        'as' => 'category_obj'
-                    ],
-                ]
-            ];
-    
-            $post = $pandadb->selectCollection("posts")->aggregate($pipeline)->toArray()[0];
+            $post = $pandadb->selectCollection("posts")->findOne(["_id" => new ObjectId($id)]);
+            $category = $pandadb->selectCollection("categories")->findOne(["_id" => new ObjectId($post['category'])]);
 
             return $this->template_engine->render("$this->views/posts/update.latte", [
-                "post" => iterator_to_array($post),
-                "category" => iterator_to_array($post['category_obj'][0]),
+                "post" => $post,
+                "category" => $category,
                 "tags" => iterator_to_array($post['tags'])
             ]);
 
-        } catch (CompileException $e) {
+        } catch (CompileException | \Exception $e) {
             $error_message = $e->getMessage();
             return $router->simpleRedirect("/admin/error", [
                 "error_message" => $error_message
             ]);
-        } catch (\Exception $e) {
-            $error_message = $e->getMessage();
-            return $router->simpleRedirect("/admin/error", [
-                "error_message" => $error_message
-            ]);
-        }
+        } 
     }
 
     public function upsave(){
@@ -263,5 +243,28 @@ class PostController extends BaseController
                 "error_message" => $error_message
             ]);
         }
+    }
+
+
+    public function tags(){
+
+
+        global $pandadb;
+
+        $tags = $pandadb->posts->aggregate([
+            ['$unwind' => '$tags'],
+            ['$group' => ['_id' => '$tags']],
+            ['$sort' => ['_id' => 1]]
+        ])->toArray();
+
+        $allTags = array_map(function($tag) {
+            return $tag['_id'];
+        }, $tags);
+
+    
+
+        return $this->template_engine->render("$this->views/posts/tags.latte", [
+            "tags" => $allTags
+        ]);
     }
 }
