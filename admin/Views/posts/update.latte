@@ -46,16 +46,11 @@
     </div>
     <div class="mb-3">
       <label for="category" class="form-label"><h3>Category</h3></label>
-      <div>{$category['title']}</div>
-      <input
-        type="text"
-        class="form-control"
-        id="category"
-        aria-describedby="category"
-        name="category"
-        value="{$post['category']}"
-        hidden
-      />
+      <select class="form-control" id="category" name="category">
+        {foreach $categories as $category}
+        <option value="{$category['_id']}" {if $category['_id'] == $current_category['_id']} selected {/if}>{$category['title']}</option>
+        {/foreach}
+      </select>
     </div>
     <div class="mb-3">
       <label for="tags" class="form-label"><h3>Tags</h3></label>

@@ -65,7 +65,10 @@ class PostController extends BaseController
 
     public function compose()
     {
-        return $this->template_engine->render("$this->views/posts/compose.latte");
+        global $pandadb;
+        return $this->template_engine->render("$this->views/posts/compose.latte", [
+            "categories" => $pandadb->selectCollection("categories")->find()
+        ]);
     }
 
     // check if slug is unique
@@ -178,11 +181,13 @@ class PostController extends BaseController
         try {
 
             $post = $pandadb->selectCollection("posts")->findOne(["_id" => new ObjectId($id)]);
+            $categories = $pandadb->selectCollection("categories")->find()->toArray();
             $category = $pandadb->selectCollection("categories")->findOne(["_id" => new ObjectId($post['category'])]);
 
             return $this->template_engine->render("$this->views/posts/update.latte", [
                 "post" => $post,
-                "category" => $category,
+                "categories" => $categories,
+                "current_category" => $category,
                 "tags" => iterator_to_array($post['tags'])
             ]);
 

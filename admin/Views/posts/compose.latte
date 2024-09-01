@@ -55,15 +55,11 @@
     </div>
     <div class="mb-3">
       <label for="category" class="form-label">Category</label>
-      <input
-        type="text"
-        class="form-control"
-        id="category"
-        aria-describedby="categoryHelp"
-        name="category"
-        value="{php echo get_form_old_value('post_form_data', 'category');}"
-      />
-      <div id="categoryHelp" class="form-text">Optional</div>
+      <select class="form-control" id="category" name="category">
+        {foreach $categories as $category}
+        <option value="{$category['_id']}">{$category['title']}</option>
+        {/foreach}
+      </select>
     </div>
     <div class="mb-3">
       <label for="tags" class="form-label">Tags</label>
