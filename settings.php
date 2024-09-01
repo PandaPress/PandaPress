@@ -28,6 +28,7 @@ define("PANDA_ADMIN_ROUTES", [
     ["GET", '/admin/posts/update/{id}', '\Panda\Admin\Controllers\PostController', 'update'],
     ["POST", '/admin/posts/upsave', '\Panda\Admin\Controllers\PostController', 'upsave'],
     ["POST", '/admin/posts/delete', '\Panda\Admin\Controllers\PostController', 'delete'],
+    ["GET", "/admin/posts/tags", "\Panda\Admin\Controllers\PostController", "tags"],
 
     // categories
     ["GET", "/admin/categories", "\Panda\Admin\Controllers\CategoryController", "index"],
@@ -43,6 +44,7 @@ define("PANDA_ADMIN_ROUTES", [
     // themes
     ["GET", "/admin/themes", "\Panda\Admin\Controllers\ThemeController", "index"],
     ["GET", "/admin/themes/settings", "\Panda\Admin\Controllers\ThemeController", "settings"],
-    ["GET", "/admin/themes/current", "\Panda\Admin\Controllers\ThemeController", "getCurrent"],
-    ["POST", "/admin/themes/current", "\Panda\Admin\Controllers\ThemeController", "setCurrent"],
+    ["POST", "/admin/themes/current", "\Panda\Admin\Controllers\ThemeController", "current"],
+
+
 ]);
