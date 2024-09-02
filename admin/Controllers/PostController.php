@@ -138,8 +138,6 @@ class PostController extends BaseController
                 }
             }
 
-
-
             $result = $pandadb->selectCollection("posts")->insertOne([
                 "title" => $title,
                 "slug" => $slug,
