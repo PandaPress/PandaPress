@@ -28,45 +28,45 @@
         data-accordion="false"
       >
         <li class="nav-header">Dashboard</li>
-        <li class="nav-item menu-open">
+        <li class="nav-item" id="admin_homepage">
           <a href="/admin" class="nav-link">
             <i class="nav-icon bi bi-house-gear"></i>
             <p>Admin Homepage</p>
           </a>
         </li>
         <li class="nav-header">Content Management</li>
-        <li class="nav-item">
+        <li class="nav-item" id="post_compose">
           <a href="/admin/posts/compose" class="nav-link">
             <i class="nav-icon bi bi-vector-pen"></i>
             <p>New Post</p>
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" id="categories">
           <a href="/admin/categories" class="nav-link">
             <i class="nav-icon bi bi-paperclip"></i>
             <p>Categories</p>
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" id="tags">
           <a href="/admin/posts/tags" class="nav-link">
             <i class="nav-icon bi bi-tags"></i>
             <p>Tags</p>
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" id="posts">
           <a href="/admin/posts" class="nav-link">
             <i class="nav-icon bi bi-mailbox-flag"></i>
             <p>Posts</p>
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" id="pages">
           <a href="/admin/pages" class="nav-link">
             <i class="nav-icon bi bi-file-earmark-richtext"></i>
             <p>Pages</p>
           </a>
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item" id="settings">
           <a href="#" class="nav-link">
             <i class="nav-icon bi bi-gear-wide-connected"></i>
             <p>
@@ -75,22 +75,22 @@
             </p>
           </a>
           <ul class="nav nav-treeview">
-            <li class="nav-item">
+            <li class="nav-item" id="current_theme">
               <a href="/admin/themes/current" class="nav-link">
                 <i class="nav-icon bi bi-brush-fill"></i>
                 <p>Current Theme</p>
               </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" id="theme_settings">
               <a href="/admin/themes/settings" class="nav-link">
                 <i class="nav-icon bi bi-gear"></i>
                 <p>Theme Settings</p>
               </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" id="plugins_settings">
               <a href="/admin/plugins/index" class="nav-link">
                 <i class="nav-icon bi bi-plugin"></i>
-                <p>Plugins</p>
+                <p>Plugins Settings</p>
               </a>
             </li>
           </ul>
@@ -420,3 +420,17 @@
   </div>
   <!--end::Sidebar Wrapper-->
 </aside>
+
+<script>
+  $(document).ready(function () {
+    var active_menu = window.localStorage.getItem("PandaCMS.active_menu");
+    if (active_menu) {
+      $("#" + active_menu).addClass("menu-open");
+    }
+
+    $(".nav-item").click(function () {
+      var id = $(this).attr("id");
+      window.localStorage.setItem("PandaCMS.active_menu", id);
+    });
+  });
+</script>
