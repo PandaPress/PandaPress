@@ -1,13 +1,17 @@
 {layout '../parts/layout.latte'} {block content}
 
 <main class="app-main">
-  <div class="m-4">
-    <a role="button" class="btn btn-primary" href="/admin/categories/create">
+  <div class="p-4">
+    <a
+      role="button"
+      class="btn btn-primary fs-2"
+      href="/admin/categories/create"
+    >
       Create Category
     </a>
   </div>
-  <table class="table m-4">
-    <thead>
+  <table class="table p-4 d-block">
+    <thead class="w-100">
       <tr>
         <th scope="col"><h3>Category Name</h3></th>
         <th scope="col"><h3>Post Count</h3></th>
@@ -16,7 +20,7 @@
         <th scope="col"><h3>Actions</h3></th>
       </tr>
     </thead>
-    <tbody n:if="$categories">
+    <tbody n:if="$categories" class="w-100">
       <tr n:foreach="$categories as $category">
         <td class="w-auto">{$category['title']}</td>
         <td class="w-auto">{$category['postCount']}</td>
