@@ -88,12 +88,13 @@
         >Save as draft</label
       >
     </div>
-    <div class="mb-3 form-check">
-      <input type="checkbox" class="form-check-input" id="status" name="is_page"
-      value="true" {php echo isset($_GET['is_page']) && $_GET['is_page'] == true
-      ? 'checked' : '';} />
-      <input type="hidden" name="is_page" value="false" />
-      <label class="form-check-label fw-bold" for="is_page">Save as page</label>
+    <div class="mb-3">
+      <label class="form-label fw-bold" for="type">Choose type</label>
+      <select class="form-control" id="type" name="type">
+        <option value="post">Post</option>
+        <option value="page" {php echo isset($_GET['type']) && $_GET['type'] == 'page'
+        ? 'selected' : '';}>Page</option>
+      </select>
     </div>
     <button type="submit" class="btn btn-primary fw-bold fs-3">Submit</button>
   </form>

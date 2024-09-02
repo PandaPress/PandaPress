@@ -186,6 +186,7 @@
     }
 
     $(".nav-item").click(function () {
+      console.log("window.location.pathname", window.location.pathname);
       var id = $(this).attr("id");
       window.localStorage.setItem("PandaCMS.active_menu", id);
     });

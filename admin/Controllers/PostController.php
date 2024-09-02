@@ -48,7 +48,7 @@ class PostController extends BaseController
         if($page_only){
             $documents = array_filter(
                 $documents->toArray(),     
-                fn ($doc) => isset($doc['is_page']) && $doc['is_page'] === true,
+                fn ($doc) => isset($doc['type']) && $doc['type'] === 'page',
                 ARRAY_FILTER_USE_BOTH
             );
         }
@@ -56,7 +56,7 @@ class PostController extends BaseController
         if($post_only){
             $documents = array_filter(
                 $documents->toArray(),     
-                fn ($doc) => !isset($doc['is_page']) || $doc['is_page'] !== true,
+                fn ($doc) => !isset($doc['type']) || $doc['type'] === 'post',
                 ARRAY_FILTER_USE_BOTH
             );
         }
@@ -75,7 +75,7 @@ class PostController extends BaseController
                 "updated_at" => $document["updated_at"],
                 "category" => $document['category_obj'][0],
                 "tags" => iterator_to_array($document["tags"]),
-                "is_page" => isset($document["is_page"]) ? $document["is_page"] : false
+                "type" => isset($document["type"]) ? $document["type"] : "post"
             ];
             array_push($posts, $post);
         } 
@@ -126,7 +126,7 @@ class PostController extends BaseController
             $tags = isset($_tags) && strlen($_tags) > 0 ? explode(',', $_tags) : []; 
 
             $category = isset($_POST["category"]) ? $_POST["category"] : "uncategorized";
-            $is_page = isset($_POST["is_page"]) ? $_POST["is_page"] : "false";
+            $type = isset($_POST["type"]) ? $_POST["type"] : "post";
 
             $requiredFields = ['title', 'slug', 'editor'];
             foreach ($requiredFields as $field) {
@@ -145,7 +145,7 @@ class PostController extends BaseController
                 "author" => $author,
                 "content" => $content,
                 "tags" => $tags,
-                "is_page" => $is_page,
+                "type" => $type,
                 "category" => $category, // !TODO: should save the entire category object here
                 "updated_at" => time(),
                 "created_at" => time()
