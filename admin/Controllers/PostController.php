@@ -16,13 +16,13 @@ class PostController extends BaseController
         parent::__construct();
     }
 
-    private function posts($params = []){
+    private function posts($params = ['type' => 'post']){
 
         // $page = isset($params['page']) ? $params['page'] : 1;
         // $limit = isset($params['limit']) ? $params['limit'] : 25;
         // $skip = ($page - 1) * $limit;
-        $page_only = isset($params['page_only']) ? $params['page_only'] : false;
-        $post_only = isset($params['post_only']) ? $params['post_only'] : false;
+
+        $type = $params['type'];
 
         global $pandadb;
 
@@ -45,7 +45,7 @@ class PostController extends BaseController
         // !TODO pagination
         $documents = $pandadb->selectCollection("posts")->aggregate($pipeline);
 
-        if($page_only){
+        if($type === 'page'){
             $documents = array_filter(
                 $documents->toArray(),     
                 fn ($doc) => isset($doc['type']) && $doc['type'] === 'page',
@@ -53,7 +53,7 @@ class PostController extends BaseController
             );
         }
 
-        if($post_only){
+        if($type === 'post'){
             $documents = array_filter(
                 $documents->toArray(),     
                 fn ($doc) => !isset($doc['type']) || $doc['type'] === 'post',
@@ -85,7 +85,7 @@ class PostController extends BaseController
 
     public function index()
     {
-        $posts = $this->posts(['post_only' => true]);
+        $posts = $this->posts(['type' => 'post']);
 
         return $this->template_engine->render("$this->views/posts/index.latte", [
             "posts" => $posts
@@ -94,7 +94,7 @@ class PostController extends BaseController
 
     public function pages()
     {
-        $posts = $this->posts(['page_only' => true]);
+        $posts = $this->posts(['type' => 'page']);
 
         return $this->template_engine->render("$this->views/posts/pages.latte", [
             "posts" => $posts
