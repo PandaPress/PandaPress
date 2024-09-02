@@ -16,10 +16,15 @@ class PostController extends BaseController
         parent::__construct();
     }
 
-    public function index()
-    {
-        global $pandadb;
+    private function posts($params = []){
 
+        // $page = isset($params['page']) ? $params['page'] : 1;
+        // $limit = isset($params['limit']) ? $params['limit'] : 25;
+        // $skip = ($page - 1) * $limit;
+        $page_only = isset($params['page_only']) ? $params['page_only'] : false;
+        $post_only = isset($params['post_only']) ? $params['post_only'] : false;
+
+        global $pandadb;
 
         $pipeline = [
             [
@@ -40,6 +45,22 @@ class PostController extends BaseController
         // !TODO pagination
         $documents = $pandadb->selectCollection("posts")->aggregate($pipeline);
 
+        if($page_only){
+            $documents = array_filter(
+                $documents->toArray(),     
+                fn ($doc) => isset($doc['is_page']) && $doc['is_page'] === true,
+                ARRAY_FILTER_USE_BOTH
+            );
+        }
+
+        if($post_only){
+            $documents = array_filter(
+                $documents->toArray(),     
+                fn ($doc) => !isset($doc['is_page']) || $doc['is_page'] !== true,
+                ARRAY_FILTER_USE_BOTH
+            );
+        }
+
         $posts = [];
 
         foreach ($documents as $document) {
@@ -53,12 +74,29 @@ class PostController extends BaseController
                 "created_at" => $document["created_at"],
                 "updated_at" => $document["updated_at"],
                 "category" => $document['category_obj'][0],
-                "tags" => iterator_to_array($document["tags"])
+                "tags" => iterator_to_array($document["tags"]),
+                "is_page" => isset($document["is_page"]) ? $document["is_page"] : false
             ];
             array_push($posts, $post);
         } 
 
+        return $posts;
+    }
+
+    public function index()
+    {
+        $posts = $this->posts(['post_only' => true]);
+
         return $this->template_engine->render("$this->views/posts/index.latte", [
+            "posts" => $posts
+        ]);
+    }
+
+    public function pages()
+    {
+        $posts = $this->posts(['page_only' => true]);
+
+        return $this->template_engine->render("$this->views/posts/pages.latte", [
             "posts" => $posts
         ]);
     }
@@ -88,6 +126,7 @@ class PostController extends BaseController
             $tags = isset($_tags) && strlen($_tags) > 0 ? explode(',', $_tags) : []; 
 
             $category = isset($_POST["category"]) ? $_POST["category"] : "uncategorized";
+            $is_page = isset($_POST["is_page"]) ? $_POST["is_page"] : "false";
 
             $requiredFields = ['title', 'slug', 'editor'];
             foreach ($requiredFields as $field) {
@@ -108,6 +147,7 @@ class PostController extends BaseController
                 "author" => $author,
                 "content" => $content,
                 "tags" => $tags,
+                "is_page" => $is_page,
                 "category" => $category, // !TODO: should save the entire category object here
                 "updated_at" => time(),
                 "created_at" => time()

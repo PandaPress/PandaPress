@@ -14,7 +14,7 @@
   <h1 class="px-4 mt-3">Compose</h1>
   <form class="px-4" action="/admin/posts/save" method="post">
     <div class="mb-3">
-      <label for="title" class="form-label">Title</label>
+      <label for="title" class="form-label fw-bold">Title</label>
       <input
         type="text"
         class="form-control"
@@ -27,7 +27,7 @@
       />
     </div>
     <div class="mb-3">
-      <label for="slug" class="form-label">Slug</label>
+      <label for="slug" class="form-label fw-bold">Slug</label>
       <input
         type="text"
         class="form-control"
@@ -39,7 +39,7 @@
       />
     </div>
     <div class="mb-3">
-      <label for="author" class="form-label">Author</label>
+      <label for="author" class="form-label fw-bold">Author</label>
       <input
         type="text"
         class="form-control"
@@ -50,11 +50,11 @@
       />
     </div>
     <div class="mb-3">
-      <label for="editor" class="form-label">Content</label>
+      <label for="editor" class="form-label fw-bold">Content</label>
       <textarea id="editor" type="text" name="editor"></textarea>
     </div>
     <div class="mb-3">
-      <label for="category" class="form-label">Category</label>
+      <label for="category" class="form-label fw-bold">Category</label>
       <select class="form-control" id="category" name="category">
         {foreach $categories as $category}
         <option value="{$category['_id']}">{$category['title']}</option>
@@ -62,7 +62,7 @@
       </select>
     </div>
     <div class="mb-3">
-      <label for="tags" class="form-label">Tags</label>
+      <label for="tags" class="form-label fw-bold">Tags</label>
       <input
         type="text"
         class="form-control"
@@ -84,9 +84,22 @@
         value="draft"
       />
       <input type="hidden" name="status" value="published" />
-      <label class="form-check-label" for="is_draft">Save as draft</label>
+      <label class="form-check-label fw-bold" for="is_draft"
+        >Save as draft</label
+      >
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <div class="mb-3 form-check">
+      <input
+        type="checkbox"
+        class="form-check-input"
+        id="status"
+        name="is_page"
+        value="true"
+      />
+      <input type="hidden" name="is_page" value="false" />
+      <label class="form-check-label fw-bold" for="is_page">Save as page</label>
+    </div>
+    <button type="submit" class="btn btn-primary fw-bold fs-3">Submit</button>
   </form>
 </main>
 <script src="/admin/assets/js/tinymce.js"></script>
