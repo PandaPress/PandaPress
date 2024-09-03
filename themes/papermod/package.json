@@ -5,8 +5,7 @@
   "main": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:layout": "tailwindcss -i ./css/base.css -o ./css/layout.css",
-    "build": "node ./bin/build-all.js"
+    "css:layout": "tailwindcss -i ./css/base.css -o ./css/layout.css"
   },
   "keywords": [
     "Panda CMS",
