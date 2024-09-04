@@ -22,7 +22,9 @@ class PostController extends BaseController
         // $limit = isset($params['limit']) ? $params['limit'] : 25;
         // $skip = ($page - 1) * $limit;
 
-        $type = $params['type'];
+        $tag = isset($params['tag']) ? $params['tag'] : null;
+
+        $type = isset($params['type']) ? $params['type'] : null;
 
         global $pandadb;
 
@@ -42,24 +44,25 @@ class PostController extends BaseController
             ]
         ];
 
+        if ($tag) {
+            array_unshift($pipeline, ['$match' => ['tags' => ['$in' => [$tag]]]]);
+        }
+
+        if ($type === 'page') {
+            array_unshift($pipeline, ['$match' => ['type' => 'page']]);
+        }
+
+        if ($type === 'post') {
+            array_unshift($pipeline, ['$match' => [
+                '$or' => [
+                    ['type' => 'post'],
+                    ['$exists' => false]
+                ]
+            ]]);
+        }
+
         // !TODO pagination
         $documents = $pandadb->selectCollection("posts")->aggregate($pipeline);
-
-        if($type === 'page'){
-            $documents = array_filter(
-                $documents->toArray(),     
-                fn ($doc) => isset($doc['type']) && $doc['type'] === 'page',
-                ARRAY_FILTER_USE_BOTH
-            );
-        }
-
-        if($type === 'post'){
-            $documents = array_filter(
-                $documents->toArray(),     
-                fn ($doc) => !isset($doc['type']) || $doc['type'] === 'post',
-                ARRAY_FILTER_USE_BOTH
-            );
-        }
 
         $posts = [];
 
@@ -79,6 +82,27 @@ class PostController extends BaseController
             ];
             array_push($posts, $post);
         } 
+
+        return $posts;
+    }
+
+    private function postsWithTag(string $tag){
+        global $pandadb;
+
+        $pipeline = [
+            ['$match' => ['tags' => ['$in' => [$tag]]]],
+            ['$addFields' => [
+                "cid" => ['$toObjectId' => '$category']
+            ]],
+            ['$lookup' => [
+                'from' => 'categories',
+                'localField' => 'cid',
+                'foreignField' => '_id',
+                'as' => 'category_obj'
+            ]]
+        ];
+
+        $posts = $pandadb->selectCollection("posts")->aggregate($pipeline)->toArray();
 
         return $posts;
     }
@@ -307,6 +331,15 @@ class PostController extends BaseController
 
         return $this->template_engine->render("$this->views/posts/tags.latte", [
             "tags" => $tags
+        ]);
+    }
+
+    public function tag($tag){
+        $posts = $this->posts(['tag' => $tag]);
+
+        return $this->template_engine->render("$this->views/posts/tag.latte", [
+            "posts" => $posts,
+            "tag" => $tag
         ]);
     }
 }

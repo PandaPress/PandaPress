@@ -29,6 +29,7 @@ define("PANDA_ADMIN_ROUTES", [
     ["POST", '/admin/posts/upsave', '\Panda\Admin\Controllers\PostController', 'upsave'],
     ["POST", '/admin/posts/delete', '\Panda\Admin\Controllers\PostController', 'delete'],
     ["GET", "/admin/posts/tags", "\Panda\Admin\Controllers\PostController", "tags"],
+    ["GET", "/admin/posts/tags/{tag}", "\Panda\Admin\Controllers\PostController", "tag"],
     ["GET", "/admin/pages", "\Panda\Admin\Controllers\PostController", "pages"],
 
 

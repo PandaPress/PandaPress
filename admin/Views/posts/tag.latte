@@ -1,0 +1,57 @@
+{layout '../parts/layout.latte'} {block content}
+
+<main class="app-main tags">
+  <div class="p-4 fs-2">Posts with tag: {$tag}</div>
+  <div class="p-4">
+    <table class="table w-100">
+      <thead class="w-100">
+        <tr>
+          <th scope="col"><h3>Status</h3></th>
+          <th scope="col"><h3>Category</h3></th>
+          <th scope="col"><h3>Title</h3></th>
+          <th scope="col"><h3>Tags</h3></th>
+          <th scope="col"><h3>Date</h3></th>
+        </tr>
+      </thead>
+      <tbody n:if="$posts" class="w-100">
+        <tr n:foreach="$posts as $post">
+          <td
+            class="w-auto fw-bold {php echo $post['status'] === 'published' ? 'text-success' : 'text-secondary';}"
+          >
+            {$post['status']}
+          </td>
+          <td class="w-auto">
+            <a
+              href='{php echo "/admin/category/" . $post["category"]["slug"] ; }'
+              target="_blank"
+            >
+              {$post['category']['title']}
+            </a>
+          </td>
+          <td class="w-auto">
+            <a href='{php echo "/post/" . $post["slug"] ; }' target="_blank">
+              {$post['title']}
+            </a>
+          </td>
+          <td class="w-auto">
+            {foreach $post['tags'] as $tagItem}
+            <span class="badge rounded-pill text-bg-primary">
+              <a
+                href='{php echo "/admin/posts/tags/" . urlencode($tagItem) ; }'
+                class="text-white"
+              >
+                {$tagItem}
+              </a>
+            </span>
+            {/foreach}
+          </td>
+          <th scope="row" class="w-auto">
+            {php echo date('m/d/Y', $post['created_at']);}
+          </th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+{/block}
