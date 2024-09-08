@@ -341,14 +341,20 @@ class PostController extends BaseController
                 ['$pull' => ['tags' => $tag]]
             );
 
-            return $router->simpleRedirect("/admin/success", [
-                "success_message" => "Tag removed successfully"
+            echo json_encode([
+                "code" => 0,
+                "success" => true,
+                "data" => null,
+                'message' => "tag is removed from all posts and pages"
             ]);
 
         } catch (Exception $e) {
             $error_message = $e->getMessage();
-            return $router->simpleRedirect("/admin/error", [
-                "error_message" => $error_message
+            echo json_encode([
+                "code" => -1,
+                "success" => false,
+                "data" => null,
+                'message' => $error_message
             ]);
         }
     }
@@ -367,14 +373,20 @@ class PostController extends BaseController
                 ['$pull' => ['tags' => $tag]]
             );
 
-            return $router->simpleRedirect("/admin/success", [
-                "success_message" => "Tag removed successfully"
+            echo json_encode([
+                "code" => 0,
+                "success" => true,
+                "data" => null,
+                'message' => "tag is removed from the post"
             ]);
 
         } catch (Exception $e) {
             $error_message = $e->getMessage();
-            return $router->simpleRedirect("/admin/error", [
-                "error_message" => $error_message
+            echo json_encode([
+                "code" => -1,
+                "success" => false,
+                "data" => null,
+                'message' => $error_message
             ]);
         }
     }
