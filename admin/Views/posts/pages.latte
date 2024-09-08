@@ -46,7 +46,7 @@
             {foreach $post['tags'] as $tag}
             <span class="badge rounded-pill text-bg-primary">
               <a
-                href='{php echo "/admin/posts/tags/" . urlencode($tag) ; }'
+                href='{php echo "/admin/posts/tags/" . $tag ; }'
                 class="text-white"
               >
                 {$tag}

@@ -30,6 +30,8 @@ define("PANDA_ADMIN_ROUTES", [
     ["POST", '/admin/posts/delete', '\Panda\Admin\Controllers\PostController', 'delete'],
     ["GET", "/admin/posts/tags", "\Panda\Admin\Controllers\PostController", "tags"],
     ["GET", "/admin/posts/tags/{tag}", "\Panda\Admin\Controllers\PostController", "tag"],
+    ["POST", "/admin/posts/tags/remove4all", "\Panda\Admin\Controllers\PostController", "removeTag4All"],
+    ["POST", "/admin/posts/tags/remove4one", "\Panda\Admin\Controllers\PostController", "removeTag4One"],
     ["GET", "/admin/pages", "\Panda\Admin\Controllers\PostController", "pages"],
 
 

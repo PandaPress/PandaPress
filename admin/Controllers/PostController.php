@@ -16,7 +16,7 @@ class PostController extends BaseController
         parent::__construct();
     }
 
-    private function posts($params = ['type' => 'post']){
+    private function posts($params){
 
         // $page = isset($params['page']) ? $params['page'] : 1;
         // $limit = isset($params['limit']) ? $params['limit'] : 25;
@@ -44,19 +44,23 @@ class PostController extends BaseController
             ]
         ];
 
+        // tag filter all documents that have the tag
+        // the documents could be posts or pages
         if ($tag) {
             array_unshift($pipeline, ['$match' => ['tags' => ['$in' => [$tag]]]]);
         }
 
+        // type filter all documents that are pages
         if ($type === 'page') {
             array_unshift($pipeline, ['$match' => ['type' => 'page']]);
         }
 
+        // type filter all documents that are posts
         if ($type === 'post') {
             array_unshift($pipeline, ['$match' => [
                 '$or' => [
                     ['type' => 'post'],
-                    ['$exists' => false]
+                    ['type' => ['$exists' => false]]
                 ]
             ]]);
         }
@@ -86,26 +90,6 @@ class PostController extends BaseController
         return $posts;
     }
 
-    private function postsWithTag(string $tag){
-        global $pandadb;
-
-        $pipeline = [
-            ['$match' => ['tags' => ['$in' => [$tag]]]],
-            ['$addFields' => [
-                "cid" => ['$toObjectId' => '$category']
-            ]],
-            ['$lookup' => [
-                'from' => 'categories',
-                'localField' => 'cid',
-                'foreignField' => '_id',
-                'as' => 'category_obj'
-            ]]
-        ];
-
-        $posts = $pandadb->selectCollection("posts")->aggregate($pipeline)->toArray();
-
-        return $posts;
-    }
 
     public function index()
     {
@@ -341,5 +325,57 @@ class PostController extends BaseController
             "posts" => $posts,
             "tag" => $tag
         ]);
+    }
+
+    // !TODO: the two functions below are never used yet
+    // remove a tag from all posts and pages
+    public function removeTag4All(){
+        global $pandadb;
+        global $router;
+
+        $tag = $_POST["tag"];
+
+        try {
+            $pandadb->posts->updateMany(
+                ['tags' => $tag],
+                ['$pull' => ['tags' => $tag]]
+            );
+
+            return $router->simpleRedirect("/admin/success", [
+                "success_message" => "Tag removed successfully"
+            ]);
+
+        } catch (Exception $e) {
+            $error_message = $e->getMessage();
+            return $router->simpleRedirect("/admin/error", [
+                "error_message" => $error_message
+            ]);
+        }
+    }
+
+    // remove a tag from a post or page
+    public function removeTag4One(){
+        global $pandadb;
+        global $router;
+
+        $tag = $_POST["tag"];
+        $id = $_POST["id"];
+
+        try {
+            $pandadb->posts->updateOne(
+                ['_id' => new ObjectId($id)],
+                ['$pull' => ['tags' => $tag]]
+            );
+
+            return $router->simpleRedirect("/admin/success", [
+                "success_message" => "Tag removed successfully"
+            ]);
+
+        } catch (Exception $e) {
+            $error_message = $e->getMessage();
+            return $router->simpleRedirect("/admin/error", [
+                "error_message" => $error_message
+            ]);
+        }
     }
 }

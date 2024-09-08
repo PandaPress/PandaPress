@@ -1,7 +1,10 @@
 {layout '../parts/layout.latte'} {block content}
 
 <main class="app-main tags">
-  <div class="p-4 fs-2">Posts with tag: {$tag}</div>
+  <div class="p-4 fs-2">
+    Posts and pages with tag:
+    <span class="badge rounded-pill text-bg-primary"> {$tag} </span>
+  </div>
   <div class="p-4">
     <table class="table w-100">
       <thead class="w-100">
@@ -37,7 +40,7 @@
             {foreach $post['tags'] as $tagItem}
             <span class="badge rounded-pill text-bg-primary">
               <a
-                href='{php echo "/admin/posts/tags/" . urlencode($tagItem) ; }'
+                href='{php echo "/admin/posts/tags/" . $tagItem ; }'
                 class="text-white"
               >
                 {$tagItem}

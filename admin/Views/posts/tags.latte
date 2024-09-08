@@ -5,9 +5,7 @@
   <div class="tags-cloud p-4">
     {foreach $tags as $tag}
     <span class="badge rounded-pill text-bg-primary">
-      <a
-        href="{php echo '/admin/posts/tags/' . urlencode($tag);}"
-        target="_blank"
+      <a href="{php echo '/admin/posts/tags/' . $tag;}" target="_blank"
         >{$tag}</a
       >
     </span>
