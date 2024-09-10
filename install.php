@@ -75,7 +75,7 @@ if (isset($_POST['envvar'])) {
 
         $result = $pandacmsdb->selectCollection('users')->insertOne([
             'username' => $_POST['username'],
-            'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
+            'password' => password_hash($_POST['password'], PASSWORD_BCRYPT),
             'role' => 'admin',
         ]);
 
