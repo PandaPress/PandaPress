@@ -371,7 +371,7 @@ class PostController extends BaseController {
                 "data" => null,
                 'message' => "tag is removed from the post"
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception | \Exception $e) {
             $error_message = $e->getMessage();
             echo json_encode([
                 "code" => -1,
