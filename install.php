@@ -72,7 +72,14 @@ if (isset($_POST['envvar'])) {
         $database = $_POST['database'];
         $success = $success && file_put_contents(PANDA_ROOT . '/.env', "DB_TYPE=$database\n", FILE_APPEND);
 
-        if ($success) {
+
+        $result = $pandacmsdb->selectCollection('users')->insertOne([
+            'username' => $_POST['username'],
+            'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
+            'role' => 'admin',
+        ]);
+
+        if ($success && $result->getInsertedCount() > 0) {
             header("Location: /");
         } else {
             echo '<div class="alert alert-danger" role="alert">Error during installation</div>';
@@ -98,7 +105,7 @@ if (isset($_POST['envvar'])) {
 </head>
 
 <body class="flex justify-center">
-    <div class="container max-w-screen-lg">
+    <div class="container max-w-screen-lg mb-20">
         <div class="navbar bg-base-100 w-full border-solid border-0 border-b border-blue-900
 ">
             <div class="flex-1">
@@ -134,21 +141,35 @@ if (isset($_POST['envvar'])) {
                 <label for="envvar">
                     <h2 class="text-xl font-semibold">Set environment variables</h2>
                 </label>
-                <textarea rows="10" type="text" class="my-4 p-0" id="envvar" name="envvar">
+                <textarea id="envvar" name="envvar" rows="10" type="text" class="my-4 p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
 CURRENT_THEME=papermod
 MONGO_URI=
 MONGO_TLS_CA_FILE=/etc/ssl/cert.pem
+JWT_SECRET=
+JWT_ALGORITHM=HS256
 </textarea>
+            </div>
+            <div class="flex flex-col">
+                <label for="username">
+                    <h2 class="text-xl font-semibold">Set admin username</h2>
+                </label>
+                <div class="my-4  flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                    <input type="text" name="username" id="username" autocomplete="username" class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" placeholder="janesmith">
+                </div>
+            </div>
+            <div class="flex flex-col">
+                <label for="username">
+                    <h2 class="text-xl font-semibold">Set admin password</h2>
+                </label>
+                <div class="my-4  flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                    <input type="password" name="password" id="password" autocomplete="password" class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" placeholder="password">
+                </div>
             </div>
             <div class="flex">
                 <button type="submit" name="submit" class="btn btn-outline border-blue-900">Submit</button>
             </div>
         </form>
     </div>
-
-    </div>
-
-
 </body>
 
 </html>
