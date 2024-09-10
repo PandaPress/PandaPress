@@ -2,28 +2,23 @@
 
 namespace Panda\Admin\Controllers;
 
-class ThemeController extends BaseController
-{
-    public function __construct()
-    {
+class ThemeController extends BaseController {
+    public function __construct() {
         parent::__construct();
     }
 
-    public function index()
-    {
+    public function index() {
         return $this->template_engine->render("$this->views/themes/index.latte");
     }
 
-    public function settings()
-    {
+    public function settings() {
         return $this->template_engine->render("$this->views/themes/settings.latte", [
             'current_theme' => env("CURRENT_THEME"),
-            'themes' =>  array_diff(scandir(PANDA_THEMES), array('.', '..'))  
+            'themes' =>  array_diff(scandir(PANDA_THEMES), array('.', '..'))
         ]);
     }
 
-    public function current()
-    {
+    public function current() {
         $newTheme = $_POST['theme'] ?? null;
         if (!$newTheme) {
             return json_encode(['error' => 'No theme specified']);

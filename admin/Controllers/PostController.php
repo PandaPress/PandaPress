@@ -7,16 +7,14 @@ use Latte\Exception\CompileException;
 use MongoDB\BSON\ObjectId;
 
 
-class PostController extends BaseController
-{
+class PostController extends BaseController {
 
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
     }
 
-    private function posts($params){
+    private function posts($params) {
 
         // $page = isset($params['page']) ? $params['page'] : 1;
         // $limit = isset($params['limit']) ? $params['limit'] : 25;
@@ -85,14 +83,13 @@ class PostController extends BaseController
                 "type" => isset($document["type"]) ? $document["type"] : "post"
             ];
             array_push($posts, $post);
-        } 
+        }
 
         return $posts;
     }
 
 
-    public function index()
-    {
+    public function index() {
         $posts = $this->posts(['type' => 'post']);
 
         return $this->template_engine->render("$this->views/posts/index.latte", [
@@ -100,8 +97,7 @@ class PostController extends BaseController
         ]);
     }
 
-    public function pages()
-    {
+    public function pages() {
         $posts = $this->posts(['type' => 'page']);
 
         return $this->template_engine->render("$this->views/posts/pages.latte", [
@@ -109,8 +105,7 @@ class PostController extends BaseController
         ]);
     }
 
-    public function compose()
-    {
+    public function compose() {
         global $pandadb;
         return $this->template_engine->render("$this->views/posts/compose.latte", [
             "categories" => $pandadb->selectCollection("categories")->find()
@@ -118,8 +113,7 @@ class PostController extends BaseController
     }
 
     // check if slug is unique
-    public function save()
-    {
+    public function save() {
         global $pandadb;
         global $router;
 
@@ -131,7 +125,7 @@ class PostController extends BaseController
             $author = isset($_POST["author"]) ? $_POST["author"] : "admin";
 
             $_tags = $_POST["tags"];
-            $tags = isset($_tags) && strlen($_tags) > 0 ? explode(',', $_tags) : []; 
+            $tags = isset($_tags) && strlen($_tags) > 0 ? explode(',', $_tags) : [];
 
             $category = isset($_POST["category"]) ? $_POST["category"] : "uncategorized";
             $type = isset($_POST["type"]) ? $_POST["type"] : "post";
@@ -181,9 +175,9 @@ class PostController extends BaseController
         }
     }
 
-  
 
-    public function delete(){
+
+    public function delete() {
         global $pandadb;
         global $router;
 
@@ -195,7 +189,7 @@ class PostController extends BaseController
             if ($post['status'] === "published") {
                 $pandadb->selectCollection("posts")->updateOne(
                     ["_id" => new ObjectId($id)],
-                    [ '$set' => [ 'status' => 'deleted' ]]
+                    ['$set' => ['status' => 'deleted']]
                 );
                 return $router->simpleRedirect("/admin/posts");
             } else {
@@ -220,7 +214,7 @@ class PostController extends BaseController
         }
     }
 
-    public function update($id){
+    public function update($id) {
         global $pandadb;
         global $router;
 
@@ -236,20 +230,19 @@ class PostController extends BaseController
                 "current_category" => $category,
                 "tags" => iterator_to_array($post['tags'])
             ]);
-
         } catch (CompileException | \Exception $e) {
             $error_message = $e->getMessage();
             return $router->simpleRedirect("/admin/error", [
                 "error_message" => $error_message
             ]);
-        } 
+        }
     }
 
-    public function upsave(){
+    public function upsave() {
         global $pandadb;
         global $router;
 
-        if(!isset($_POST["id"])) {
+        if (!isset($_POST["id"])) {
             return $router->simpleRedirect("/admin/error", [
                 "error_message" => "Post id is missing"
             ]);
@@ -264,7 +257,7 @@ class PostController extends BaseController
             $author = isset($_POST["author"]) ? $_POST["author"] : "admin";
 
             $_tags = $_POST["tags"];
-            $tags = isset($_tags) && strlen($_tags) > 0 ? explode(',', $_tags) : []; 
+            $tags = isset($_tags) && strlen($_tags) > 0 ? explode(',', $_tags) : [];
 
             $category = $_POST["category"];
 
@@ -287,7 +280,6 @@ class PostController extends BaseController
             return $router->simpleRedirect("/admin/success", [
                 "success_message" => "Post updated successfully"
             ]);
-
         } catch (CompileException | \Exception $e) {
             $error_message = $e->getMessage();
             return $router->simpleRedirect("/admin/error", [
@@ -297,7 +289,7 @@ class PostController extends BaseController
     }
 
 
-    public function tags(){
+    public function tags() {
 
 
         global $pandadb;
@@ -318,7 +310,7 @@ class PostController extends BaseController
         ]);
     }
 
-    public function tag($tag){
+    public function tag($tag) {
         $posts = $this->posts(['tag' => $tag]);
 
         return $this->template_engine->render("$this->views/posts/tag.latte", [
@@ -327,9 +319,9 @@ class PostController extends BaseController
         ]);
     }
 
-    // !TODO: the two functions below are never used yet
+
     // remove a tag from all posts and pages
-    public function removeTag4All(){
+    public function removeTag4All() {
         global $pandadb;
         global $router;
 
@@ -347,7 +339,6 @@ class PostController extends BaseController
                 "data" => null,
                 'message' => "tag is removed from all posts and pages"
             ]);
-
         } catch (Exception $e) {
             $error_message = $e->getMessage();
             echo json_encode([
@@ -359,8 +350,9 @@ class PostController extends BaseController
         }
     }
 
+    // !TODO: the two functions below are never used yet
     // remove a tag from a post or page
-    public function removeTag4One(){
+    public function removeTag4One() {
         global $pandadb;
         global $router;
 
@@ -379,8 +371,7 @@ class PostController extends BaseController
                 "data" => null,
                 'message' => "tag is removed from the post"
             ]);
-
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $error_message = $e->getMessage();
             echo json_encode([
                 "code" => -1,

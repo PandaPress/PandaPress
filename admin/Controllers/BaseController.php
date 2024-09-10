@@ -8,13 +8,11 @@ use Latte\Essential\RawPhpExtension;
 
 
 
-class BaseController
-{
+class BaseController {
     protected $views;
     protected $template_engine;
 
-    public function __construct()
-    {
+    public function __construct() {
         // template engine
         $this->template_engine = new Engine();
         $cache_admin_tmpl_dir =   PANDA_ROOT . "/cache/templates/admin";
@@ -26,6 +24,5 @@ class BaseController
 
         // admin view templates
         $this->views = PANDA_ROOT . "/admin/Views";
-
     }
 }

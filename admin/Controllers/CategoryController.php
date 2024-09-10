@@ -6,18 +6,15 @@ use MongoDB\Exception\Exception;
 use MongoDB\BSON\ObjectId;
 
 
-class CategoryController extends BaseController
-{
+class CategoryController extends BaseController {
     private string $errorMessage = "";
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
     }
 
 
-    public function index()
-    {
+    public function index() {
         global $pandadb;
 
         $categoriesCollection = $pandadb->selectCollection("categories");
@@ -37,7 +34,7 @@ class CategoryController extends BaseController
                 ]
             ]
         ];
-       
+
         $documents = $categoriesCollection->aggregate($pipeline);
 
         $categoriesWithPostCount = [];
@@ -77,8 +74,8 @@ class CategoryController extends BaseController
                 "error_message" => "Slug already exists in the database",
                 "category_form_data" => $_POST
             ]);
-        } 
-        
+        }
+
         try {
             $title = $_POST["title"];
             $slug = $_POST["slug"];
@@ -92,26 +89,26 @@ class CategoryController extends BaseController
 
             unset_session_keys(['error_message', 'category_form_data']);
 
-            
+
             return $router->simpleRedirect("/admin/success", [
                 "success_message" => "Category saved successfully"
-            ]);         
+            ]);
         } catch (Exception | \Exception $e) {
             $error_message = $e->getMessage();
             return $router->simpleRedirect("/admin/error", [
                 "error_message" => $error_message
             ]);
-        } 
+        }
     }
 
 
-    public function delete(){
+    public function delete() {
         global $pandadb;
         global $router;
 
         try {
             $category_id = $_POST['_id'];
-       
+
             // delete the category
             $collection = $pandadb->selectCollection("categories");
             $deleteResult = $collection->deleteOne([
@@ -126,18 +123,17 @@ class CategoryController extends BaseController
                 );
 
             unset_session_keys(['error_message', 'category_form_data']);  // remove error message and form data from session 
-            
+
             // redirect to success page with success message 
             return $router->simpleRedirect("/admin/success", [
                 "success_message" => "Category deleted successfully"
             ]);
-      
         } catch (Exception | \Exception $e) {
             $error_message = $e->getMessage();
             return $router->simpleRedirect("/admin/error", [
                 "error_message" => $error_message
             ]);
-        } 
+        }
     }
 
     public function update($id) {
@@ -149,7 +145,7 @@ class CategoryController extends BaseController
             $category = $collection->findOne([
                 "_id" => new ObjectId($id)
             ]);
-    
+
             if ($category === null) {
                 return $router->simpleRedirect("/admin/error", [
                     "error_message" => "Category not found"
@@ -166,8 +162,6 @@ class CategoryController extends BaseController
                 "error_message" => $error_message
             ]);
         }
-
-       
     }
 
     public function upsave() {
@@ -196,7 +190,7 @@ class CategoryController extends BaseController
             $collection->updateOne(
                 [
                     "_id" => new ObjectId($id)
-                ], 
+                ],
                 [
                     '$set' => [
                         "title" => $title,
