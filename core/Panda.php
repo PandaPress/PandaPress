@@ -59,6 +59,8 @@ class Panda {
 
     private function initializeMongoDB(): void {
         try {
+            // !TODO if MONGO_URI starts with "mongodb://", no need to use tlsCAFile and tls=true
+            // ! Like this: $this->mongo_client = new MongoDBClient(env("MONGO_URI"));
             $this->mongo_client = new MongoDBClient(env("MONGO_URI"), [
                 'tls' => true,
                 'tlsCAFile' => env("MONGO_TLS_CA_FILE"),
