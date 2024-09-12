@@ -10,8 +10,8 @@ use MongoDB\Database;
 use Exception;
 use Panda\Router;
 
-class Panda
-{
+
+class Panda {
     private static self|null $instance = null;
 
     public readonly MongoDBClient $mongo_client;
@@ -21,8 +21,7 @@ class Panda
 
     public readonly Router $router;
 
-    final private function __construct()
-    {
+    final private function __construct() {
         // initialize router
         $this->router = new Router();
 
@@ -33,21 +32,17 @@ class Panda
         $this->initializeMongoDB();
     }
 
-    final public function __clone()
-    {
+    final public function __clone() {
     }
-    final public function __wakeup()
-    {
+    final public function __wakeup() {
     }
 
-    public static function getInstance(): self
-    {
+    public static function getInstance(): self {
         self::$instance ??= new self;
         return self::$instance;
     }
 
-    private function initializeLogger(): void
-    {
+    private function initializeLogger(): void {
         $log_path =   PANDA_ROOT . "/logs";
         $log_file = $log_path . "/pandacms.log";
 
@@ -62,15 +57,11 @@ class Panda
         $this->logger = new Logger($log_file);
     }
 
-    private function initializeMongoDB(): void
-    {
+    private function initializeMongoDB(): void {
         try {
             $this->mongo_client = new MongoDBClient(env("MONGO_URI"), [
                 'tls' => true,
                 'tlsCAFile' => env("MONGO_TLS_CA_FILE"),
-                // 'tlsAllowInvalidCertificates' => true,
-                // 'tlsAllowInvalidHostnames' => true
-
             ]);
             $this->db = $this->mongo_client->selectDatabase("pandacms");
 
@@ -84,7 +75,7 @@ class Panda
             // ! then, we need this step to make sure the new collection will be created.
             foreach (MONGO_DEFAULT_COLLECTIONS as $collection) {
                 if (!in_array($collection, $collections)) {
-                    $this->logger->warning("Missing table: $collection"); 
+                    $this->logger->warning("Missing table: $collection");
                     $this->db->createCollection($collection);
                 }
             }
@@ -95,8 +86,7 @@ class Panda
         }
     }
 
-    public function start(): void
-    {
+    public function start(): void {
         $this->router->run();
     }
 }

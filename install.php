@@ -52,8 +52,6 @@ if (isset($_POST['envvar'])) {
         $mongo_client = new MongoDBClient($envvars["MONGO_URI"], [
             'tls' => true,
             'tlsCAFile' => $envvars["MONGO_TLS_CA_FILE"],
-            // 'tlsAllowInvalidCertificates' => true,
-            // 'tlsAllowInvalidHostnames' => true
         ]);
         $mongo_client->selectDatabase('admin')->command(['ping' => 1]);
 
@@ -144,7 +142,7 @@ if (isset($_POST['envvar'])) {
                 <textarea id="envvar" name="envvar" rows="10" type="text" class="my-4 p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
 CURRENT_THEME=papermod
 MONGO_URI=
-MONGO_TLS_CA_FILE=/etc/ssl/cert.pem
+MONGO_TLS_CA_FILE=./ssl/isrgrootx1.pem
 JWT_SECRET=
 JWT_ALGORITHM=HS256
 </textarea>

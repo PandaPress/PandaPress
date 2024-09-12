@@ -16,12 +16,19 @@ define("MONGO_DEFAULT_COLLECTIONS",    [
 ]);
 
 define("PANDA_ADMIN_ROUTES", [
-    // home
+
+    ['GET', '/login', '\Panda\Controllers\AuthController', 'login'],
+    ['POST', '/login', '\Panda\Controllers\AuthController', 'loginApi'],
+    ['GET', '/signup', '\Panda\Controllers\AuthController', 'signup'],
+    ['POST', '/signup', '\Panda\Controllers\AuthController', 'signupApi'],
+    ['POST', '/logout', '\Panda\Controllers\AuthController', 'logout'],
+
+    // admin home
     ["GET", "/admin", "\Panda\Admin\Controllers\HomeController", "index"],
     ["GET", '/admin/success', '\Panda\Admin\Controllers\HomeController', 'success'],
     ["GET", '/admin/error', '\Panda\Admin\Controllers\HomeController', 'error'],
 
-    // posts
+    // admin posts
     ["GET", "/admin/posts", "\Panda\Admin\Controllers\PostController", "index"],
     ["GET", "/admin/posts/compose", "\Panda\Admin\Controllers\PostController", "compose"],
     ["POST", '/admin/posts/save', '\Panda\Admin\Controllers\PostController', 'save'],
@@ -35,7 +42,7 @@ define("PANDA_ADMIN_ROUTES", [
     ["GET", "/admin/pages", "\Panda\Admin\Controllers\PostController", "pages"],
 
 
-    // categories
+    // admin categories
     ["GET", "/admin/categories", "\Panda\Admin\Controllers\CategoryController", "index"],
     ["GET", "/admin/categories/create", "\Panda\Admin\Controllers\CategoryController", "create"],
     ["POST", "/admin/categories/delete", "\Panda\Admin\Controllers\CategoryController", "delete"],
