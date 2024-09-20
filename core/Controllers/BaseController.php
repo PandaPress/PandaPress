@@ -7,17 +7,14 @@ use Latte\Engine;
 use Latte\Essential\RawPhpExtension;
 
 
-class BaseController
-{
+class BaseController {
 
     protected $template_engine;
     protected $current_theme;
     protected $current_theme_dir;
     protected $current_theme_views;
 
-
-    public function __construct()
-    {
+    public function __construct() {
         // template engine
         $this->template_engine = new Engine();
         $this->current_theme = env("CURRENT_THEME") ?? "papermod";
@@ -31,5 +28,12 @@ class BaseController
         }
         $this->template_engine->setTempDirectory($cache_panda_tmpl_dir);
         $this->template_engine->addExtension(new RawPhpExtension);
+    }
+
+    public function json($data, $status_code = 200) {
+        header('Content-Type: application/json');
+        http_response_code($status_code);
+        echo json_encode($data);
+        exit;
     }
 }

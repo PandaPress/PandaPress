@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-session_start();
-
 require "settings.php";
 
 require "functions.php";
@@ -14,6 +12,7 @@ $loader = new Psr4Autoloader();
 $loader->register();
 
 $loader->addNamespace('Psr', __DIR__ . "/vendor/Psr");
+$loader->addNamespace('Firebase', __DIR__ . "/vendor/Firebase");
 
 $loader->addNamespace('MongoDB', __DIR__ . '/vendor/MongoDB');
 require __DIR__ . "/vendor/MongoDB/functions.php";
@@ -25,6 +24,8 @@ $loader->addNamespace('Latte', __DIR__ . '/vendor/Latte');
 
 $loader->addNamespace('Panda', __DIR__ . '/core');
 $loader->addNamespace('Panda\Admin', __DIR__ . '/admin');
+
+\Panda\Session::start('Strict');
 
 
 // load dotenv and if no env, go to installation 
