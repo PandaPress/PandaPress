@@ -22,6 +22,7 @@ define("PANDA_ADMIN_ROUTES", [
     ['GET', '/signup', '\Panda\Controllers\AuthController', 'signup'],
     ['POST', '/signup', '\Panda\Controllers\AuthController', 'signupApi'],
     ['POST', '/logout', '\Panda\Controllers\AuthController', 'logout'],
+    ['GET', '/404', '\Panda\Controllers\ErrorController', 'notFound'],
 
     // admin home
     ["GET", "/admin", "\Panda\Admin\Controllers\HomeController", "index"],

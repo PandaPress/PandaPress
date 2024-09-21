@@ -57,6 +57,7 @@ if (isset($_POST['envvar'])) {
 
         $pandacmsdb = $mongo_client->selectDatabase("pandacms");
         $collections = iterator_to_array($pandacmsdb->listCollectionNames());
+        $usersCollection = $pandacmsdb->selectCollection('users');
 
         foreach (MONGO_DEFAULT_COLLECTIONS as $collection) {
             if (!in_array($collection, $collections)) {
@@ -68,16 +69,35 @@ if (isset($_POST['envvar'])) {
         $success = $success && file_put_contents(PANDA_ROOT . '/.env', "SITE_READY=true\n", FILE_APPEND);
 
         $database = $_POST['database'];
+        $allow_signup = $_POST['allow_signup'];
         $success = $success && file_put_contents(PANDA_ROOT . '/.env', "DB_TYPE=$database\n", FILE_APPEND);
+        $success = $success && file_put_contents(PANDA_ROOT . '/.env', "ALLOW_SIGNUP=$allow_signup\n", FILE_APPEND);
 
+        $existingAdmin = $usersCollection->findOne(['role' => 'admin']);
 
-        $result = $pandacmsdb->selectCollection('users')->insertOne([
-            'username' => $_POST['username'],
-            'password' => password_hash($_POST['password'], PASSWORD_BCRYPT),
-            'role' => 'admin',
-        ]);
+        if ($existingAdmin) {
+            // Update existing admin user
+            $result = $usersCollection->updateOne(
+                ['role' => 'admin'],
+                ['$set' => [
+                    'username' => $_POST['username'],
+                    'email' => $_POST['email'],
+                    'password' => password_hash($_POST['password'], PASSWORD_BCRYPT)
+                ]]
+            );
+            $success = $success && $result->getModifiedCount() > 0;
+        } else {
+            // Insert new admin user
+            $result = $usersCollection->insertOne([
+                'username' => $_POST['username'],
+                'email' => $_POST['email'],
+                'password' => password_hash($_POST['password'], PASSWORD_BCRYPT),
+                'role' => 'admin',
+            ]);
+            $success = $success && $result->getInsertedCount() > 0;
+        }
 
-        if ($success && $result->getInsertedCount() > 0) {
+        if ($success) {
             header("Location: /");
         } else {
             echo '<div class="alert alert-danger" role="alert">Error during installation</div>';
@@ -143,24 +163,53 @@ if (isset($_POST['envvar'])) {
 CURRENT_THEME=papermod
 MONGO_URI=
 MONGO_TLS_CA_FILE=./ssl/isrgrootx1.pem
+
 JWT_SECRET=
 JWT_ALGORITHM=HS256
+JWT_ISSUER=
+JWT_AUDIENCE=
 </textarea>
             </div>
             <div class="flex flex-col">
                 <label for="username">
-                    <h2 class="text-xl font-semibold">Set admin username</h2>
+                    <h2 class="text-xl font-semibold">Admin username</h2>
                 </label>
                 <div class="my-4  flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                     <input type="text" name="username" id="username" autocomplete="username" class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" placeholder="janesmith">
                 </div>
             </div>
             <div class="flex flex-col">
+                <label for="email">
+                    <h2 class="text-xl font-semibold">Admin email</h2>
+                </label>
+                <div class="my-4  flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                    <input type="email" name="email" id="email" autocomplete="email" class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" placeholder="janesmith@example.com">
+                </div>
+            </div>
+            <div class="flex flex-col">
                 <label for="username">
-                    <h2 class="text-xl font-semibold">Set admin password</h2>
+                    <h2 class="text-xl font-semibold">Admin password</h2>
                 </label>
                 <div class="my-4  flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                     <input type="password" name="password" id="password" autocomplete="password" class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" placeholder="password">
+                </div>
+            </div>
+            <div class="flex flex-col">
+                <h2 class="text-xl font-semibold">Allow public signup</h2>
+                <div class="flex flex-col my-4">
+                    <div class="flex items-center">
+                        <label for="allow_signup" class="flex w-48">
+                            Allow
+                        </label>
+                        <input type="radio" name="allow_signup" id="allow_signup" value="true" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                    </div>
+
+                    <div class="flex items-center">
+                        <label for="allow_signup" class="flex w-48">
+                            Disallow
+                        </label>
+                        <input type="radio" name="allow_signup" id="allow_signup" value="false" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                    </div>
                 </div>
             </div>
             <div class="flex">

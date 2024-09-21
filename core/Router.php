@@ -4,19 +4,16 @@ namespace Panda;
 
 use Bramus\Router as BramusRouter;
 
-class Router
-{
+class Router {
     private $router;
 
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->router = new BramusRouter();
         $this->setRoutes();
     }
 
-    public function setRoutes()
-    {
+    public function setRoutes() {
 
         $_router = $this->router;
 
@@ -60,7 +57,6 @@ class Router
         // TODO: allow cms owners to customize it
         // if no customized, default to Panda 404
         $_router->set404('\Panda\Controllers\ErrorController@notFound');
-
     }
 
     public function simpleRedirect(string $url, array $data = []) {
@@ -76,8 +72,7 @@ class Router
     }
 
 
-    public function run()
-    {
+    public function run() {
         $this->router->run();
     }
 }

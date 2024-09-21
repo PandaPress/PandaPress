@@ -24,9 +24,10 @@ class AuthController extends BaseController {
 
         $is_email = filter_var($username, FILTER_VALIDATE_EMAIL);
 
-        $user = $is_email ?
-            $userCollection->findOne(['email' => $username]) :
-            $userCollection->findOne(['username' => $username]);
+        $user = match ($is_email) {
+            true => $userCollection->findOne(['email' => $username]),
+            false => $userCollection->findOne(['username' => $username]),
+        };
 
         if (!$user || !password_verify($password, $user['password'])) {
             return $this->json([
@@ -80,10 +81,81 @@ class AuthController extends BaseController {
     }
 
     public function signup() {
-        return $this->template_engine->render(PANDA_ROOT . '/core/Views/auth/signup.latte');
+        if (strcasecmp(env('ALLOW_SIGNUP'), 'true') == 0) {
+            return $this->template_engine->render(PANDA_ROOT . '/core/Views/auth/signup.latte');
+        }
+        // go to 404
+        global $router;
+        return $router->simpleRedirect('/404');
     }
 
+    // !TODO  protect it from spam, bots, brute force, etc.
+    // !TODO  owners can disallow signup from ip, email, domain, etc. or disallow all signups
     public function signupApi() {
+        global $pandadb;
+
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $password2 = $_POST['password2'];
+        $email = $_POST['email'];
+
+        $is_email = filter_var($email, FILTER_VALIDATE_EMAIL);
+
+        if (!$is_email) {
+            return $this->json([
+                'message' => 'Invalid email',
+                'success' => false,
+                'code' => 400,
+                'data' => null
+            ]);
+        }
+
+        if ($password !== $password2) {
+            return $this->json([
+                'message' => 'Passwords do not match',
+                'success' => false,
+                'code' => 400,
+                'data' => null
+            ]);
+        }
+
+        $userCollection = $pandadb->selectCollection('users');
+
+        $user = $userCollection->findOne(
+            [
+                '$or' => [
+                    ['email' => $username],
+                    ['username' => $username]
+                ]
+            ]
+        );
+
+        if ($user) {
+            return $this->json([
+                'message' => 'Username already exists',
+                'success' => false,
+                'code' => 400,
+                'data' => null
+            ]);
+        }
+
+        $user = $userCollection->insertOne([
+            'username' => $username,
+            'password' => password_hash($password, PASSWORD_DEFAULT),
+            'email' => $email,
+            'role' => 'user',
+            'created_at' => time(),
+            'updated_at' => time(),
+        ]);
+
+        return $this->json([
+            'message' => 'User created successfully',
+            'success' => true,
+            'code' => 201,
+            'data' => [
+                'id' => $user->getInsertedId()->__toString(),
+            ]
+        ]);
     }
 
     public function logout() {
