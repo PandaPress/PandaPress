@@ -92,6 +92,16 @@ class AuthController extends BaseController {
     // !TODO  protect it from spam, bots, brute force, etc.
     // !TODO  owners can disallow signup from ip, email, domain, etc. or disallow all signups
     public function signupApi() {
+
+        if (strcasecmp(env('ALLOW_SIGNUP'), 'true') != 0) {
+            return $this->json([
+                'message' => 'Signup is not allowed',
+                'success' => false,
+                'code' => 404,
+                'data' => null
+            ]);
+        }
+
         global $pandadb;
 
         $username = $_POST['username'];

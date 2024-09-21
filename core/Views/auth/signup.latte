@@ -15,7 +15,7 @@
   </div>
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form class="space-y-3" action="/signup" method="POST">
+    <form class="space-y-3" action="/signup" method="POST" id="signup-form">
       <div>
         <label
           for="username"
@@ -85,7 +85,7 @@
         <div class="mt-2">
           <input
             id="password2"
-            name="password"
+            name="password2"
             type="password"
             required
             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -96,6 +96,7 @@
       <div>
         <button
           type="submit"
+          id="signup-button"
           class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
           Sign up
@@ -113,4 +114,78 @@
     </p>
   </div>
 </div>
+
+<div
+  role="alert"
+  class="alert alert-success max-w-fit mx-auto"
+  id="signup-success"
+  style="
+    display: none;
+    position: absolute;
+    top: 10%;
+    left: calc(50% - 300px);
+    right: calc(50% - 300px);
+  "
+>
+  <div class="flex flex-col items-center gap-2">
+    <div class="flex items-center gap-2">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6 shrink-0 stroke-current"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+      <span>Your account has been created!</span>
+    </div>
+    <progress class="progress w-100"></progress>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $("#signup-form").submit(function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var form = $(this);
+      var url = form.attr("action");
+
+      if (form.find("#password").val() !== form.find("#password2").val()) {
+        alert("Passwords do not match");
+        return;
+      }
+
+      $("#signup-button").prop("disabled", true);
+
+      $.ajax({
+        type: "POST",
+        url: url,
+        data: form.serialize(),
+        success: function (response) {
+          if (response.success) {
+            $("#signup-success").show();
+            setTimeout(function () {
+              window.location.href = "/login";
+            }, 2000);
+          } else {
+            $("#signup-success").hide();
+            alert(response.message);
+          }
+        },
+        error: function (xhr, status, error) {
+          alert("An error occurred: " + error);
+        },
+        complete: function () {
+          $("#signup-button").prop("disabled", false);
+        },
+      });
+    });
+  });
+</script>
 {/block}
