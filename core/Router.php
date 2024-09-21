@@ -10,22 +10,31 @@ class Router {
 
     public function __construct() {
         $this->router = new BramusRouter();
+
+        $this->router->before('*', '/.*', function () {
+            header('X-Powered-By: Panda CMS');
+
+            $path = $_SERVER['REQUEST_URI'];
+            if (strpos($path, '/admin') === 0) {
+                $user_id = \Panda\Session::get('user_id');
+
+                if (!isset($user_id) || !isset($_COOKIE['panda_token'])) {
+
+                    // TODO: check if user_id equals id in token
+                    // TODO: check if token is not expired
+
+                    header('Location: /login');
+                    exit();
+                }
+            }
+        });
+
         $this->setRoutes();
     }
 
     public function setRoutes() {
 
         $_router = $this->router;
-
-        $_router->before('GET|POST', '/admin/.*', function () {
-
-            if (!isset($_SESSION['userxxxx'])) {
-
-                header('location: /login');
-                exit();
-            }
-        });
-
 
         foreach (PANDA_THEME_ROUTES as $theme_route) {
             [$method, $route, $controller, $func] = $theme_route;

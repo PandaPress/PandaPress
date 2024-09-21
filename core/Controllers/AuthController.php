@@ -62,9 +62,8 @@ class AuthController extends BaseController {
 
 
         \Panda\Session::set('user_id', $user['_id']->__toString());
-        \Panda\Session::set('user_token', $jwt);
 
-        \Panda\Cookie::setcookie('panda_token', $jwt);
+        \Panda\Cookie::setcookie('panda_token', $jwt, expiryTime: time() + 3600 * 24 * 30 * 1);
 
         return $this->json([
             'message' => 'Login successful',
