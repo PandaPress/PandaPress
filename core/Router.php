@@ -17,6 +17,15 @@ class Router {
 
         $_router = $this->router;
 
+        $_router->before('GET|POST', '/admin/.*', function () {
+
+            if (!isset($_SESSION['userxxxx'])) {
+
+                header('location: /login');
+                exit();
+            }
+        });
+
 
         foreach (PANDA_THEME_ROUTES as $theme_route) {
             [$method, $route, $controller, $func] = $theme_route;
@@ -27,13 +36,6 @@ class Router {
                 $_router->post($route, "$controller@$func");
             }
         }
-
-        // $_router->before('GET|POST', '/admin/.*', function () {
-        //     if (!isset($_SESSION['user'])) {
-        //         header('location: /auth/login');
-        //         exit();
-        //     }
-        // });
 
         foreach (PANDA_ADMIN_ROUTES as $admin_route) {
             [$method, $route, $controller, $func] = $admin_route;
