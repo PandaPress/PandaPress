@@ -22,7 +22,7 @@ class Router {
                 $jwt_from_cookie = $_COOKIE['panda_token'];
                 $decoded_jwt = $this->verify_jwt($jwt_from_cookie);
 
-                if (!isset($user_id) || !$decoded_jwt || $user_id !== $decoded_jwt['id']) {
+                if (!isset($user_id) || !$decoded_jwt || $user_id !== $decoded_jwt['data']['id']) {
                     header('Location: /login');
                     exit();
                 }
