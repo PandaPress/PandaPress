@@ -3,6 +3,8 @@
 namespace Panda;
 
 use Bramus\Router as BramusRouter;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 class Router {
     private $router;
@@ -17,12 +19,10 @@ class Router {
             $path = $_SERVER['REQUEST_URI'];
             if (strpos($path, '/admin') === 0) {
                 $user_id = \Panda\Session::get('user_id');
+                $jwt_from_cookie = $_COOKIE['panda_token'];
+                $decoded_jwt = $this->verify_jwt($jwt_from_cookie);
 
-                if (!isset($user_id) || !isset($_COOKIE['panda_token'])) {
-
-                    // TODO: check if user_id equals id in token
-                    // TODO: check if token is not expired
-
+                if (!isset($user_id) || !$decoded_jwt || $user_id !== $decoded_jwt['id']) {
                     header('Location: /login');
                     exit();
                 }
@@ -85,5 +85,23 @@ class Router {
 
     public function run() {
         $this->router->run();
+    }
+
+    // if jwt is expired, JWT::decode will throw an exception, ExpiredException
+    public function verify_jwt($jwt) {
+        if (!$jwt) {
+            return false;
+        }
+
+        $secret_key = env("JWT_SECRET_KEY");
+        try {
+            $headers = new \stdClass();
+            $token = JWT::decode($jwt, new Key($secret_key, 'HS256'), $headers);
+            return (array)$token;
+        } catch (\Throwable $e) {
+            global $logger;
+            $logger->error($e->getMessage());
+            return false;
+        }
     }
 }

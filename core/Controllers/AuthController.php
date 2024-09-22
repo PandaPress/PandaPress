@@ -3,7 +3,6 @@
 namespace  Panda\Controllers;
 
 use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 
 
 class AuthController extends BaseController {
