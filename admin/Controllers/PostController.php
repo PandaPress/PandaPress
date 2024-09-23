@@ -92,7 +92,7 @@ class PostController extends BaseController {
     public function index() {
         $posts = $this->posts(['type' => 'post']);
 
-        return $this->template_engine->render("$this->views/posts/index.latte", $this->getFullDataForTemplate([
+        return $this->template_engine->render("$this->views/posts/index.latte", $this->appendUserData([
             "posts" => $posts
         ]));
     }
@@ -100,14 +100,14 @@ class PostController extends BaseController {
     public function pages() {
         $posts = $this->posts(['type' => 'page']);
 
-        return $this->template_engine->render("$this->views/posts/pages.latte", $this->getFullDataForTemplate([
+        return $this->template_engine->render("$this->views/posts/pages.latte", $this->appendUserData([
             "posts" => $posts
         ]));
     }
 
     public function compose() {
         global $pandadb;
-        return $this->template_engine->render("$this->views/posts/compose.latte", $this->getFullDataForTemplate([
+        return $this->template_engine->render("$this->views/posts/compose.latte", $this->appendUserData([
             "categories" => $pandadb->selectCollection("categories")->find()
         ]));
     }
@@ -224,7 +224,7 @@ class PostController extends BaseController {
             $categories = $pandadb->selectCollection("categories")->find()->toArray();
             $category = $pandadb->selectCollection("categories")->findOne(["_id" => new ObjectId($post['category'])]);
 
-            return $this->template_engine->render("$this->views/posts/update.latte", $this->getFullDataForTemplate([
+            return $this->template_engine->render("$this->views/posts/update.latte", $this->appendUserData([
                 "post" => $post,
                 "categories" => $categories,
                 "current_category" => $category,
@@ -305,7 +305,7 @@ class PostController extends BaseController {
             $tags[] = $doc['_id'];
         }
 
-        return $this->template_engine->render("$this->views/posts/tags.latte", $this->getFullDataForTemplate([
+        return $this->template_engine->render("$this->views/posts/tags.latte", $this->appendUserData([
             "tags" => $tags
         ]));
     }
@@ -313,7 +313,7 @@ class PostController extends BaseController {
     public function tag($tag) {
         $posts = $this->posts(['tag' => $tag]);
 
-        return $this->template_engine->render("$this->views/posts/tag.latte", $this->getFullDataForTemplate([
+        return $this->template_engine->render("$this->views/posts/tag.latte", $this->appendUserData([
             "posts" => $posts,
             "tag" => $tag
         ]));

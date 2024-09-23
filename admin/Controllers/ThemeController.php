@@ -12,7 +12,7 @@ class ThemeController extends BaseController {
     }
 
     public function settings() {
-        return $this->template_engine->render("$this->views/themes/settings.latte", $this->getFullDataForTemplate([
+        return $this->template_engine->render("$this->views/themes/settings.latte", $this->appendUserData([
             'current_theme' => env("CURRENT_THEME"),
             'themes' =>  array_diff(scandir(PANDA_THEMES), array('.', '..'))
         ]));

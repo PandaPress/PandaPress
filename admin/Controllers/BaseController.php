@@ -32,7 +32,7 @@ class BaseController {
         $this->user_id = \Panda\Session::get('user_id');
     }
 
-    protected function getFullDataForTemplate(array $params = []) {
+    protected function appendUserData(array $params = []) {
         return array_merge($params, [
             "user_data" => $this->user_data,
             "user_id" => $this->user_id

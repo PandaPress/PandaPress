@@ -15,7 +15,7 @@ class HomeController extends BaseController {
         $categoryCount = $pandadb->selectCollection("categories")->countDocuments();
         $commentCount = $pandadb->selectCollection("comments")->countDocuments();
 
-        return $this->template_engine->render("$this->views/index.latte", $this->getFullDataForTemplate([
+        return $this->template_engine->render("$this->views/index.latte", $this->appendUserData([
             "postCount" => $postCount,
             "categoryCount" => $categoryCount,
             "commentCount" => $commentCount,
@@ -25,7 +25,7 @@ class HomeController extends BaseController {
     public function success() {
         $success_message = isset($_SESSION['panda_success_message']) ? $_SESSION['panda_success_message'] : "";
         unset($_SESSION['panda_success_message']);
-        return $this->template_engine->render("$this->views/success.latte", $this->getFullDataForTemplate([
+        return $this->template_engine->render("$this->views/success.latte", $this->appendUserData([
             "success_message" => $success_message
         ]));
     }
@@ -33,7 +33,7 @@ class HomeController extends BaseController {
     public function error() {
         $error_message = isset($_SESSION['panda_error_message']) ? $_SESSION['panda_error_message'] : "";
         unset($_SESSION['panda_error_message']);
-        return $this->template_engine->render("$this->views/error.latte", $this->getFullDataForTemplate([
+        return $this->template_engine->render("$this->views/error.latte", $this->appendUserData([
             "error_message" => $error_message
         ]));
     }
