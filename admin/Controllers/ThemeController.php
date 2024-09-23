@@ -12,10 +12,10 @@ class ThemeController extends BaseController {
     }
 
     public function settings() {
-        return $this->template_engine->render("$this->views/themes/settings.latte", [
+        return $this->template_engine->render("$this->views/themes/settings.latte", $this->getFullDataForTemplate([
             'current_theme' => env("CURRENT_THEME"),
             'themes' =>  array_diff(scandir(PANDA_THEMES), array('.', '..'))
-        ]);
+        ]));
     }
 
     public function current() {

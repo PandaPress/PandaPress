@@ -126,18 +126,21 @@
           </ul>
         </li>
         <li class="nav-header">User</li>
+        {if !isset($user_id) && !isset($user_data)}
         <li class="nav-item" id="login">
-          <a href="./docs/layout.html" class="nav-link">
+          <a href="/login" class="nav-link">
             <i class="nav-icon bi bi-grip-horizontal"></i>
             <p>Login</p>
           </a>
         </li>
+        {/if} {if isset($user_id) && isset($user_data)}
         <li class="nav-item">
-          <a href="./docs/layout.html" class="nav-link">
+          <a href="/logout" class="nav-link">
             <i class="nav-icon bi bi-grip-horizontal"></i>
             <p>Layout</p>
           </a>
         </li>
+        {/if}
         <li class="nav-header">DOCUMENTATIONS</li>
         <li class="nav-item">
           <a href="./docs/introduction.html" class="nav-link">

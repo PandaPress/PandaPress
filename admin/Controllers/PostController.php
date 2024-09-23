@@ -92,24 +92,24 @@ class PostController extends BaseController {
     public function index() {
         $posts = $this->posts(['type' => 'post']);
 
-        return $this->template_engine->render("$this->views/posts/index.latte", [
+        return $this->template_engine->render("$this->views/posts/index.latte", $this->getFullDataForTemplate([
             "posts" => $posts
-        ]);
+        ]));
     }
 
     public function pages() {
         $posts = $this->posts(['type' => 'page']);
 
-        return $this->template_engine->render("$this->views/posts/pages.latte", [
+        return $this->template_engine->render("$this->views/posts/pages.latte", $this->getFullDataForTemplate([
             "posts" => $posts
-        ]);
+        ]));
     }
 
     public function compose() {
         global $pandadb;
-        return $this->template_engine->render("$this->views/posts/compose.latte", [
+        return $this->template_engine->render("$this->views/posts/compose.latte", $this->getFullDataForTemplate([
             "categories" => $pandadb->selectCollection("categories")->find()
-        ]);
+        ]));
     }
 
     // check if slug is unique
@@ -224,12 +224,12 @@ class PostController extends BaseController {
             $categories = $pandadb->selectCollection("categories")->find()->toArray();
             $category = $pandadb->selectCollection("categories")->findOne(["_id" => new ObjectId($post['category'])]);
 
-            return $this->template_engine->render("$this->views/posts/update.latte", [
+            return $this->template_engine->render("$this->views/posts/update.latte", $this->getFullDataForTemplate([
                 "post" => $post,
                 "categories" => $categories,
                 "current_category" => $category,
                 "tags" => iterator_to_array($post['tags'])
-            ]);
+            ]));
         } catch (CompileException | \Exception $e) {
             $error_message = $e->getMessage();
             return $router->simpleRedirect("/admin/error", [
@@ -305,18 +305,18 @@ class PostController extends BaseController {
             $tags[] = $doc['_id'];
         }
 
-        return $this->template_engine->render("$this->views/posts/tags.latte", [
+        return $this->template_engine->render("$this->views/posts/tags.latte", $this->getFullDataForTemplate([
             "tags" => $tags
-        ]);
+        ]));
     }
 
     public function tag($tag) {
         $posts = $this->posts(['tag' => $tag]);
 
-        return $this->template_engine->render("$this->views/posts/tag.latte", [
+        return $this->template_engine->render("$this->views/posts/tag.latte", $this->getFullDataForTemplate([
             "posts" => $posts,
             "tag" => $tag
-        ]);
+        ]));
     }
 
 

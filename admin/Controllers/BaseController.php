@@ -12,6 +12,9 @@ class BaseController {
     protected $views;
     protected $template_engine;
 
+    private $user_data;
+    private $user_id;
+
     public function __construct() {
         // template engine
         $this->template_engine = new Engine();
@@ -24,5 +27,15 @@ class BaseController {
 
         // admin view templates
         $this->views = PANDA_ROOT . "/admin/Views";
+
+        $this->user_data = \Panda\Session::get('user_data');
+        $this->user_id = \Panda\Session::get('user_id');
+    }
+
+    protected function getFullDataForTemplate(array $params = []) {
+        return array_merge($params, [
+            "user_data" => $this->user_data,
+            "user_id" => $this->user_id
+        ]);
     }
 }

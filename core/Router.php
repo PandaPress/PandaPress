@@ -12,14 +12,20 @@ class Router {
 
     public function __construct() {
         $this->router = new BramusRouter();
+        $this->before();
+        $this->setRoutes();
+    }
 
+    public function before() {
+
+        // TODO: modify the Bramus\Router class to allow before() to be run multiple times
         $this->router->before('*', '/.*', function () {
             header('X-Powered-By: Panda CMS');
 
             $path = $_SERVER['REQUEST_URI'];
 
             $user_id = \Panda\Session::get('user_id');
-            $jwt_from_cookie = $_COOKIE['panda_token'];
+            $jwt_from_cookie = $_COOKIE['panda_token'] ?? null;
             $decoded_jwt = $jwt_from_cookie ? $this->verify_jwt($jwt_from_cookie) : null;
 
             if (str_starts_with($path, '/admin')) {
@@ -36,8 +42,6 @@ class Router {
                 }
             }
         });
-
-        $this->setRoutes();
     }
 
     public function setRoutes() {
@@ -101,11 +105,12 @@ class Router {
             return false;
         }
 
-        $secret_key = env("JWT_SECRET_KEY");
+        $secret_key = env("JWT_SECRET");
+        $algorithm = env("JWT_ALGORITHM");
         try {
             $headers = new \stdClass();
-            $token = JWT::decode($jwt, new Key($secret_key, 'HS256'), $headers);
-            return (array)$token;
+            $token = JWT::decode($jwt, new Key($secret_key, $algorithm), $headers);
+            return json_decode(json_encode($token), true);
         } catch (\Throwable $e) {
             global $logger;
             $logger->error($e->getMessage());
