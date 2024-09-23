@@ -17,13 +17,21 @@ class Router {
             header('X-Powered-By: Panda CMS');
 
             $path = $_SERVER['REQUEST_URI'];
-            if (strpos($path, '/admin') === 0) {
-                $user_id = \Panda\Session::get('user_id');
-                $jwt_from_cookie = $_COOKIE['panda_token'];
-                $decoded_jwt = $this->verify_jwt($jwt_from_cookie);
 
-                if (!isset($user_id) || !$decoded_jwt || $user_id !== $decoded_jwt['data']['id']) {
+            $user_id = \Panda\Session::get('user_id');
+            $jwt_from_cookie = $_COOKIE['panda_token'];
+            $decoded_jwt = $jwt_from_cookie ? $this->verify_jwt($jwt_from_cookie) : null;
+
+            if (str_starts_with($path, '/admin')) {
+                if (!isset($user_id) || !$decoded_jwt || $user_id !== $decoded_jwt['data']['id'] || $decoded_jwt['data']['role'] !== 'admin') {
                     header('Location: /login');
+                    exit();
+                }
+            }
+
+            if (str_starts_with($path, '/login') || str_starts_with($path, '/signup')) {
+                if ($decoded_jwt && $decoded_jwt['data']['id'] === $user_id && $decoded_jwt['data']['role'] === 'admin') {
+                    header('Location: /');
                     exit();
                 }
             }
