@@ -3,17 +3,19 @@
 
 
 
-function env(string $kee)
-{
+function env(string $kee) {
     return $_ENV[$kee];
 }
 
 // themes helper functions
 
 
-function get_theme_info(string $current_theme)
-{
-    $theme_exists = file_exists(PANDA_THEMES . "/$current_theme");
+function get_theme_info(string $current_theme) {
+    $theme_exists = file_exists(PANDA_THEMES . "/$current_theme") &&
+        file_exists(PANDA_THEMES . "/$current_theme/settings.php") &&
+        file_exists(PANDA_THEMES . "/$current_theme/Views") &&
+        file_exists(PANDA_THEMES . "/$current_theme/Controllers");
+
     if (!$theme_exists) {
         return false;
     }
@@ -30,7 +32,7 @@ function get_form_old_value($session_key, $field) {
     return isset($_SESSION[$kee][$field]) ? htmlspecialchars($_SESSION[$kee][$field]) : '';
 }
 
-function generate_full_session_key(string $kee){
+function generate_full_session_key(string $kee) {
     return "panda_$kee";
 }
 
