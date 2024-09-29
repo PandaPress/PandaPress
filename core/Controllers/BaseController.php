@@ -5,7 +5,7 @@ namespace Panda\Controllers;
 
 use Latte\Engine;
 use Latte\Essential\RawPhpExtension;
-
+use Panda\Models\ThemeSettings;
 
 class BaseController {
 
@@ -13,6 +13,8 @@ class BaseController {
     protected $current_theme;
     protected $current_theme_dir;
     protected $current_theme_views;
+
+    protected $themeSettings;
 
     public function __construct() {
         // template engine
@@ -28,6 +30,8 @@ class BaseController {
         }
         $this->template_engine->setTempDirectory($cache_panda_tmpl_dir);
         $this->template_engine->addExtension(new RawPhpExtension);
+
+        $this->themeSettings = new ThemeSettings(PANDA_THEME_STORAGE_TYPE, $this->current_theme_dir);
     }
 
     public function json($data, $status_code = 200) {
@@ -36,4 +40,11 @@ class BaseController {
         echo json_encode($data);
         exit;
     }
+
+    // protected function appendUserData(array $params = []) {
+    //     return array_merge($params, [
+    //         "user_data" => $this->user_data,
+    //         "user_id" => $this->user_id
+    //     ]);
+    // }
 }
