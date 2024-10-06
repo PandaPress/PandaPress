@@ -1,0 +1,23 @@
+<main
+  class="flex flex-col items-center justify-center p-6 gap-2.5 max-w-[364px] mx-auto"
+>
+  <!-- <img src="{$image_url}" alt="{$image_title}" /> -->
+  <h1 class="text-4xl font-bold">{$theme_settings['site_title']}</h1>
+  <p>{$theme_settings['site_subtitle']}</p>
+  <ul n:if="$theme_settings['social_buttons']" class="flex gap-2">
+    {foreach array_keys($theme_settings['social_buttons']) as
+    $social_button_name}
+    <li class="w-10 h-10">
+      <a
+        href="{$theme_settings['social_buttons'][$social_button_name]}"
+        class="w-10 h-10 flex items-center justify-center"
+      >
+        <img
+          src="/themes/papermod/images/{$social_button_name}.svg"
+          alt="{$social_button} icon"
+          class="w-6 h-6"
+      /></a>
+    </li>
+    {/foreach}
+  </ul>
+</main>
