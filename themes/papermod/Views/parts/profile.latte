@@ -1,20 +1,29 @@
 <main
-  class="flex flex-col items-center justify-center p-6 gap-2.5 max-w-[364px] mx-auto"
+  class="flex flex-col items-center justify-center p-6 gap-2.5 max-w-[400px] mx-auto h-full"
 >
-  <!-- <img src="{$image_url}" alt="{$image_title}" /> -->
+  <img
+    src="/themes/papermod/images/{$theme_settings['profile_image_name']}"
+    alt="{$theme_settings['profile_image_title']}"
+    class="w-40 h-40 rounded-full"
+  />
   <h1 class="text-4xl font-bold">{$theme_settings['site_title']}</h1>
   <p>{$theme_settings['site_subtitle']}</p>
+  <p class="flex gap-2 flex-wrap">
+    {foreach $theme_settings['site_keywords'] as $keyword}
+    <span class="text-sm rounded-full px-2 py-1 bg-gray-200">{$keyword}</span>
+    {/foreach}
+  </p>
   <ul n:if="$theme_settings['social_buttons']" class="flex gap-2">
-    {foreach array_keys($theme_settings['social_buttons']) as
-    $social_button_name}
+    {foreach $theme_settings['social_buttons'] as $social_button_name =>
+    $social_button_url}
     <li class="w-10 h-10">
       <a
-        href="{$theme_settings['social_buttons'][$social_button_name]}"
+        href="{$social_button_url}"
         class="w-10 h-10 flex items-center justify-center"
       >
         <img
           src="/themes/papermod/images/{$social_button_name}.svg"
-          alt="{$social_button} icon"
+          alt="{$social_button_name} icon"
           class="w-6 h-6"
       /></a>
     </li>
