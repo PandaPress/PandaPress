@@ -1,8 +1,8 @@
 <?php
 
 /**
- * This file is part of the PandaCMS (https://pandacms.net)
- * Copyright (c) 2023 Yumin Gui (https://yumindev.com)
+ * This file is part of the Panda Press (https://pandapress.org)
+ * Copyright (c) 2024 Yumin Gui (https://yumin.io)
  */
 
 declare(strict_types=1);
@@ -11,6 +11,5 @@ namespace Latte\Exception;
 
 use Latte\Exception\IException;
 
-class RuntimeException extends \RuntimeException implements IException
-{
+class RuntimeException extends \RuntimeException implements IException {
 }

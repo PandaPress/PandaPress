@@ -44,7 +44,7 @@ class Panda {
 
     private function initializeLogger(): void {
         $log_path =   PANDA_ROOT . "/logs";
-        $log_file = $log_path . "/pandacms.log";
+        $log_file = $log_path . "/pandapress.log";
 
         if (!is_writable($log_path)) {
             chmod($log_path, 0755);

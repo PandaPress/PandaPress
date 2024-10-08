@@ -1,15 +1,18 @@
-# Panda CMS
+# Panda Press
 
 - A modern CMS but without composer
 
 ## Features
 
 - MVC architecture
+- PHP 8.2+
 - PSR-4 compatibility
 - composer free, beginner friendly
-- powerful admin dashboard
-- plugins
-- themes
+- AdminLTE dashboard
+- powerful plugins
+- beautiful themes
+- open source
+- always free
 
 ## Useful links
 

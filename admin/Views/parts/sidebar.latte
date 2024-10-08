@@ -6,12 +6,12 @@
       <!--begin::Brand Image-->
       <img
         src="/admin/assets/img/AdminLTELogo.png"
-        alt="Panda CMS"
+        alt="Panda Press"
         class="brand-image opacity-75 shadow"
       />
       <!--end::Brand Image-->
       <!--begin::Brand Text-->
-      <span class="brand-text fw-light">Panda CMS</span>
+      <span class="brand-text fw-light">Panda Press</span>
       <!--end::Brand Text-->
     </a>
     <!--end::Brand Link-->
@@ -180,7 +180,7 @@
 
 <script>
   $(document).ready(function () {
-    var active_menu = window.localStorage.getItem("PandaCMS.active_menu");
+    var active_menu = window.localStorage.getItem("PandaPress.active_menu");
     if (active_menu) {
       $("#" + active_menu).addClass("menu-open");
     }
@@ -188,7 +188,7 @@
     $(".nav-item").click(function () {
       console.log("window.location.pathname", window.location.pathname);
       var id = $(this).attr("id");
-      window.localStorage.setItem("PandaCMS.active_menu", id);
+      window.localStorage.setItem("PandaPress.active_menu", id);
     });
   });
 </script>

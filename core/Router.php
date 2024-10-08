@@ -20,7 +20,7 @@ class Router {
 
         // TODO: modify the Bramus\Router class to allow before() to be run multiple times
         $this->router->before('*', '/.*', function () {
-            header('X-Powered-By: Panda CMS');
+            header('X-Powered-By: Panda Press');
 
             $path = $_SERVER['REQUEST_URI'];
 

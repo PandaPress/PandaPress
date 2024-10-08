@@ -117,7 +117,7 @@ if (isset($_POST['envvar'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Panda CMS Installation</title>
+    <title>Panda Press Installation</title>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
 </head>
@@ -131,7 +131,7 @@ if (isset($_POST['envvar'])) {
             </div>
             <div class="flex-none">
                 <ul class="menu menu-horizontal px-1">
-                    <li><a href="https://pandacms.net" target="_blank">Panda CMS</a></li>
+                    <li><a href="https://pandapress.org" target="_blank">Panda Press</a></li>
                 </ul>
             </div>
         </div>

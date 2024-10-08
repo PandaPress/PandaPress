@@ -57,7 +57,7 @@ require $theme_info['current_theme_dir'] . "/routes.php";
 require $theme_info['current_theme_dir'] . "/settings.php";
 
 
-// main panda cms logic here
+// main panda press logic here
 
 use Panda\Panda;
 

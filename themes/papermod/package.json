@@ -1,7 +1,7 @@
 {
   "name": "papermod",
   "version": "1.0.0",
-  "description": "the theme PaperMod implementation in Panda CMS, a modern CMS but without composer",
+  "description": "the theme PaperMod implementation in Panda Press, a modern CMS but without composer",
   "main": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,7 +9,7 @@
     "css:watch": "tailwindcss -i ./css/base.css -o ./css/layout.css --watch"
   },
   "keywords": [
-    "Panda CMS",
+    "Panda Press",
     "mordern CMS",
     "PSR-4",
     "autoload",
@@ -18,7 +18,7 @@
     "no composer",
     "PHP"
   ],
-  "author": "Yumin Gui <yumin@pandacms.net>",
+  "author": "Yumin Gui <mail@yumin.io>",
   "license": "GPL-2.0-only",
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2",
