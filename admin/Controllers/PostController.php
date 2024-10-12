@@ -5,101 +5,26 @@ namespace Panda\Admin\Controllers;
 use MongoDB\Exception\Exception;
 use Latte\Exception\CompileException;
 use MongoDB\BSON\ObjectId;
-
+use Panda\Models\Post;
 
 class PostController extends BaseController {
 
+    private Post $post;
 
     public function __construct() {
         parent::__construct();
+        $this->post = new Post();
     }
-
-    private function posts($params) {
-
-        // $page = isset($params['page']) ? $params['page'] : 1;
-        // $limit = isset($params['limit']) ? $params['limit'] : 25;
-        // $skip = ($page - 1) * $limit;
-
-        $tag = isset($params['tag']) ? $params['tag'] : null;
-
-        $type = isset($params['type']) ? $params['type'] : null;
-
-        global $pandadb;
-
-        $pipeline = [
-            [
-                '$addFields' => [
-                    "cid" => ['$toObjectId' => '$category']
-                ]
-            ],
-            [
-                '$lookup' => [
-                    'from' => 'categories',
-                    'localField' => 'cid',
-                    'foreignField' => '_id',
-                    'as' => 'category_obj'
-                ]
-            ]
-        ];
-
-        // tag filter all documents that have the tag
-        // the documents could be posts or pages
-        if ($tag) {
-            array_unshift($pipeline, ['$match' => ['tags' => ['$in' => [$tag]]]]);
-        }
-
-        // type filter all documents that are pages
-        if ($type === 'page') {
-            array_unshift($pipeline, ['$match' => ['type' => 'page']]);
-        }
-
-        // type filter all documents that are posts
-        if ($type === 'post') {
-            array_unshift($pipeline, ['$match' => [
-                '$or' => [
-                    ['type' => 'post'],
-                    ['type' => ['$exists' => false]]
-                ]
-            ]]);
-        }
-
-        // !TODO pagination
-        $documents = $pandadb->selectCollection("posts")->aggregate($pipeline);
-
-        $posts = [];
-
-        foreach ($documents as $document) {
-            $post = [
-                "_id" => (string) $document["_id"],
-                "title" => $document["title"],
-                "slug" => $document["slug"],
-                "content" => $document["content"],
-                "author" => $document["author"],
-                "status" => $document["status"],
-                "created_at" => $document["created_at"],
-                "updated_at" => $document["updated_at"],
-                "category" => $document['category_obj'][0],
-                "tags" => iterator_to_array($document["tags"]),
-                "type" => isset($document["type"]) ? $document["type"] : "post"
-            ];
-            array_push($posts, $post);
-        }
-
-        return $posts;
-    }
-
 
     public function index() {
-        $posts = $this->posts(['type' => 'post']);
-
+        $posts = $this->post->all(['type' => 'post']);
         return $this->template_engine->render("$this->views/posts/index.latte", $this->appendUserData([
             "posts" => $posts
         ]));
     }
 
     public function pages() {
-        $posts = $this->posts(['type' => 'page']);
-
+        $posts = $this->post->all(['type' => 'page']);
         return $this->template_engine->render("$this->views/posts/pages.latte", $this->appendUserData([
             "posts" => $posts
         ]));
@@ -178,27 +103,25 @@ class PostController extends BaseController {
 
 
     public function delete() {
-        global $pandadb;
         global $router;
 
         try {
             $id = $_POST["_id"];
 
-            $post = $pandadb->selectCollection("posts")->findOne(["_id" => new ObjectId($id)]);
+            $post = $this->post->findById($id);
 
             if ($post['status'] === "published") {
-                $pandadb->selectCollection("posts")->updateOne(
-                    ["_id" => new ObjectId($id)],
-                    ['$set' => ['status' => 'deleted']]
-                );
+                $this->post->softDeleteById($id);
                 return $router->simpleRedirect("/admin/posts");
-            } else {
-                $pandadb->selectCollection("posts")->deleteOne(
-                    ["_id" => new ObjectId($id)]
-                );
+            } else if ($post['status'] === "deleted") {
+                $this->post->hardDeleteById($id);
 
                 return $router->simpleRedirect("/admin/success", [
                     "success_message" => "Post deleted successfully"
+                ]);
+            } else {
+                return $router->simpleRedirect("/admin/error", [
+                    "error_message" => "Post is not in a valid status"
                 ]);
             }
         } catch (Exception $e) {
@@ -214,6 +137,7 @@ class PostController extends BaseController {
         }
     }
 
+    // ! this is not update action, it just renders the update form
     public function update($id) {
         global $pandadb;
         global $router;
@@ -311,7 +235,7 @@ class PostController extends BaseController {
     }
 
     public function tag($tag) {
-        $posts = $this->posts(['tag' => $tag]);
+        $posts = $this->post->all(['tag' => $tag]);
 
         return $this->template_engine->render("$this->views/posts/tag.latte", $this->appendUserData([
             "posts" => $posts,
