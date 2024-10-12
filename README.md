@@ -5,7 +5,7 @@
 ## Features
 
 - MVC architecture
-- PHP 8.2+
+- PHP 8.1+
 - PSR-4 compatibility
 - composer free, beginner friendly
 - AdminLTE dashboard

@@ -2,6 +2,6 @@
 
 
 define("PANDA_THEME_ROUTES", [
-    ["GET", "/", "\Panda\Controllers\HomeController", "index"],
-    ["GET", "/about", "\Panda\Controllers\HomeController", "about"],
+    ["GET", "/", "\Panda\Theme\Controllers\HomeController", "index"],
+    ["GET", "/about", "\Panda\Theme\Controllers\HomeController", "about"],
 ]);

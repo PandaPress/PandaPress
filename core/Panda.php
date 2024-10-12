@@ -65,7 +65,7 @@ class Panda {
                 'tls' => true,
                 'tlsCAFile' => env("MONGO_TLS_CA_FILE"),
             ]);
-            $this->db = $this->mongo_client->selectDatabase("pandacms");
+            $this->db = $this->mongo_client->selectDatabase("pandapress");
 
             $this->mongo_client->selectDatabase('admin')->command(['ping' => 1]);
 

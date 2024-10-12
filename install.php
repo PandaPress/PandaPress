@@ -55,13 +55,13 @@ if (isset($_POST['envvar'])) {
         ]);
         $mongo_client->selectDatabase('admin')->command(['ping' => 1]);
 
-        $pandacmsdb = $mongo_client->selectDatabase("pandacms");
-        $collections = iterator_to_array($pandacmsdb->listCollectionNames());
-        $usersCollection = $pandacmsdb->selectCollection('users');
+        $pandapressdb = $mongo_client->selectDatabase("pandapress");
+        $collections = iterator_to_array($pandapressdb->listCollectionNames());
+        $usersCollection = $pandapressdb->selectCollection('users');
 
         foreach (MONGO_DEFAULT_COLLECTIONS as $collection) {
             if (!in_array($collection, $collections)) {
-                $pandacmsdb->createCollection($collection);
+                $pandapressdb->createCollection($collection);
             }
         }
 

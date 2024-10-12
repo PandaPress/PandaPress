@@ -14,7 +14,11 @@ class BaseController {
     protected $current_theme_dir;
     protected $current_theme_views;
 
-    protected $themeSettings;
+    private $user_data;
+    private $user_id;
+
+
+    protected $theme_settings;
 
     public function __construct() {
         // template engine
@@ -31,7 +35,10 @@ class BaseController {
         $this->template_engine->setTempDirectory($cache_panda_tmpl_dir);
         $this->template_engine->addExtension(new RawPhpExtension);
 
-        $this->themeSettings = new ThemeSettings(PANDA_THEME_STORAGE_TYPE, $this->current_theme_dir);
+        $this->user_data = \Panda\Session::get('user_data');
+        $this->user_id = \Panda\Session::get('user_id');
+
+        $this->theme_settings = new ThemeSettings(PANDA_THEME_STORAGE_TYPE, $this->current_theme_dir);
     }
 
     public function json($data, $status_code = 200) {
@@ -41,10 +48,11 @@ class BaseController {
         exit;
     }
 
-    // protected function appendUserData(array $params = []) {
-    //     return array_merge($params, [
-    //         "user_data" => $this->user_data,
-    //         "user_id" => $this->user_id
-    //     ]);
-    // }
+    protected function appendMetaData(array $params = []) {
+        return array_merge($params, [
+            "theme_settings" => $this->theme_settings->getSettings(),
+            "user_data" => $this->user_data,
+            "user_id" => $this->user_id
+        ]);
+    }
 }
