@@ -19,14 +19,16 @@ class PostController extends BaseController {
     public function index() {
         $posts = $this->post->all(['type' => 'post']);
         return $this->template_engine->render("$this->views/posts/index.latte", $this->appendUserData([
-            "posts" => $posts
+            "posts" => $posts['posts'],
+            "totalCount" => $posts['totalCount']
         ]));
     }
 
     public function pages() {
         $posts = $this->post->all(['type' => 'page']);
         return $this->template_engine->render("$this->views/posts/pages.latte", $this->appendUserData([
-            "posts" => $posts
+            "posts" => $posts['posts'],
+            "totalCount" => $posts['totalCount']
         ]));
     }
 
@@ -39,7 +41,6 @@ class PostController extends BaseController {
 
     // check if slug is unique
     public function save() {
-        global $pandadb;
         global $router;
 
         try {
@@ -65,7 +66,7 @@ class PostController extends BaseController {
                 }
             }
 
-            $result = $pandadb->selectCollection("posts")->insertOne([
+            $result = $this->post->create([
                 "title" => $title,
                 "slug" => $slug,
                 "status" => $status,
@@ -73,18 +74,16 @@ class PostController extends BaseController {
                 "content" => $content,
                 "tags" => $tags,
                 "type" => $type,
-                "category" => $category, // !TODO: should save the entire category object here
-                "updated_at" => time(),
-                "created_at" => time()
+                "category" => $category
             ]);
 
-            if ($result->getInsertedCount() > 0) {
+            if ($result["success"]) {
                 return $router->simpleRedirect("/admin/success", [
                     "success_message" => "Post saved successfully"
                 ]);
             } else {
                 return $router->simpleRedirect("/admin/error", [
-                    "error_message" => "Post creation failed"
+                    "error_message" => $result["message"]
                 ]);
             }
         } catch (Exception $e) {
@@ -124,12 +123,7 @@ class PostController extends BaseController {
                     "error_message" => "Post is not in a valid status"
                 ]);
             }
-        } catch (Exception $e) {
-            $error_message = $e->getMessage();
-            return $router->simpleRedirect("/admin/error", [
-                "error_message" => $error_message
-            ]);
-        } catch (\Exception $e) {
+        } catch (Exception | \Throwable $e) {
             $error_message = $e->getMessage();
             return $router->simpleRedirect("/admin/error", [
                 "error_message" => $error_message
@@ -238,7 +232,8 @@ class PostController extends BaseController {
         $posts = $this->post->all(['tag' => $tag]);
 
         return $this->template_engine->render("$this->views/posts/tag.latte", $this->appendUserData([
-            "posts" => $posts,
+            "posts" => $posts['posts'],
+            "totalCount" => $posts['totalCount'],
             "tag" => $tag
         ]));
     }
@@ -295,7 +290,7 @@ class PostController extends BaseController {
                 "data" => null,
                 'message' => "tag is removed from the post"
             ]);
-        } catch (Exception | \Exception $e) {
+        } catch (Exception | \Throwable $e) {
             $error_message = $e->getMessage();
             echo json_encode([
                 "code" => -1,
