@@ -28,7 +28,7 @@ class Router {
             $jwt_from_cookie = $_COOKIE['panda_token'] ?? null;
             $decoded_jwt = $jwt_from_cookie ? $this->verify_jwt($jwt_from_cookie) : null;
 
-            if (str_starts_with($path, '/admin')) {
+            if (str_starts_with($path, '/admin') || str_starts_with($path, '/logout')) {
                 if (!isset($user_id) || !$decoded_jwt || $user_id !== $decoded_jwt['data']['id'] || $decoded_jwt['data']['role'] !== 'admin') {
                     header('Location: /login');
                     exit();
