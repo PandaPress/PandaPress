@@ -133,7 +133,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="/logout" class="nav-link">
+          <a href="/logout" class="nav-link" id="logout">
             <i class="nav-icon bi bi-box-arrow-right"></i>
             <p>Logout</p>
           </a>
@@ -189,6 +189,23 @@
       console.log("window.location.pathname", window.location.pathname);
       var id = $(this).attr("id");
       window.localStorage.setItem("PandaPress.active_menu", id);
+    });
+
+    $("#logout").click(function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      $.ajax({
+        url: "/logout",
+        type: "POST",
+        success: function (response) {
+          if (response.success) {
+            window.localStorage.removeItem("PandaPress.panda_token");
+            window.location.href = "/";
+          } else {
+            alert(response.message);
+          }
+        },
+      });
     });
   });
 </script>

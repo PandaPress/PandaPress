@@ -168,5 +168,13 @@ class AuthController extends BaseController {
     }
 
     public function logout() {
+        $cookie = new \Panda\Cookie('panda_token');
+        $cookie->delete();
+        return $this->json([
+            'message' => 'Logout successful',
+            'success' => true,
+            'code' => 200,
+            'data' => null
+        ]);
     }
 }
