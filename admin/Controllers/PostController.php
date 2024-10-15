@@ -40,7 +40,7 @@ class PostController extends BaseController {
     }
 
     // check if slug is unique
-    public function save() {
+    public function create() {
         global $router;
 
         try {

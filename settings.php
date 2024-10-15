@@ -32,7 +32,7 @@ define("PANDA_ADMIN_ROUTES", [
     // admin posts
     ["GET", "/admin/posts", "\Panda\Admin\Controllers\PostController", "index"],
     ["GET", "/admin/posts/compose", "\Panda\Admin\Controllers\PostController", "compose"],
-    ["POST", '/admin/posts/save', '\Panda\Admin\Controllers\PostController', 'save'],
+    ["POST", '/admin/posts/create', '\Panda\Admin\Controllers\PostController', 'create'],
     ["GET", '/admin/posts/update/{id}', '\Panda\Admin\Controllers\PostController', 'update'],
     ["POST", '/admin/posts/upsave', '\Panda\Admin\Controllers\PostController', 'upsave'],
     ["POST", '/admin/posts/delete', '\Panda\Admin\Controllers\PostController', 'delete'],
