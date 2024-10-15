@@ -7,7 +7,7 @@ use MongoDB\BSON\ObjectId;
 
 
 class CategoryController extends BaseController {
-    private string $errorMessage = "";
+
 
     public function __construct() {
         parent::__construct();
@@ -50,9 +50,9 @@ class CategoryController extends BaseController {
             array_push($categoriesWithPostCount, $category);
         }
 
-        return $this->template_engine->render("$this->views/categories/index.latte", [
+        return $this->template_engine->render("$this->views/categories/index.latte", $this->appendUserData([
             "categories" => $categoriesWithPostCount
-        ]);
+        ]));
     }
 
     public function create() {

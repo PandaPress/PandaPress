@@ -53,7 +53,7 @@ class PostController extends BaseController {
             $_tags = $_POST["tags"];
             $tags = isset($_tags) && strlen($_tags) > 0 ? explode(',', $_tags) : [];
 
-            $category = isset($_POST["category"]) ? $_POST["category"] : "uncategorized";
+            $category = isset($_POST["category"]) ? $_POST["category"] : env('UNCATEGORIZED_CATEGORY_ID');
             $type = isset($_POST["type"]) ? $_POST["type"] : "post";
 
             $requiredFields = ['title', 'slug', 'editor'];

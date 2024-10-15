@@ -55,7 +55,8 @@ if (isset($_POST['envvar'])) {
         ]);
         $mongo_client->selectDatabase('admin')->command(['ping' => 1]);
 
-        $pandapressdb = $mongo_client->selectDatabase("pandapress");
+        $databaseName = $envvars["DATABASE_NAME"];
+        $pandapressdb = $mongo_client->selectDatabase($databaseName);
         $collections = iterator_to_array($pandapressdb->listCollectionNames());
         $usersCollection = $pandapressdb->selectCollection('users');
 
@@ -71,6 +72,7 @@ if (isset($_POST['envvar'])) {
         $database = $_POST['database'];
         $allow_signup = $_POST['allow_signup'];
         $success = $success && file_put_contents(PANDA_ROOT . '/.env', "DB_TYPE=$database\n", FILE_APPEND);
+        $success = $success && file_put_contents(PANDA_ROOT . '/.env', "DATABASE_NAME=$databaseName\n", FILE_APPEND);
         $success = $success && file_put_contents(PANDA_ROOT . '/.env', "ALLOW_SIGNUP=$allow_signup\n", FILE_APPEND);
 
         $existingAdmin = $usersCollection->findOne(['role' => 'admin']);
@@ -95,6 +97,21 @@ if (isset($_POST['envvar'])) {
                 'role' => 'admin',
             ]);
             $success = $success && $result->getInsertedCount() > 0;
+        }
+
+        $uncategorizedCategory = $pandapressdb->selectCollection('categories')->findOne(['title' => 'Uncategorized']);
+        if ($uncategorizedCategory) {
+            $uncategorizedCategoryId = $uncategorizedCategory['_id']->__toString();
+            $success = $success && file_put_contents(PANDA_ROOT . '/.env', "UNCATEGORIZED_CATEGORY_ID=$uncategorizedCategoryId\n", FILE_APPEND);
+        } else {
+            $result2 = $pandapressdb->selectCollection('categories')->insertOne([
+                'title' => 'Uncategorized',
+                'slug' => 'uncategorized',
+                'description' => 'Uncategorized posts, default category',
+            ]);
+            $success = $success && $result2->getInsertedCount() > 0;
+            $uncategorizedCategoryId = $result2->getInsertedId()->__toString();
+            $success = $success && file_put_contents(PANDA_ROOT . '/.env', "UNCATEGORIZED_CATEGORY_ID=$uncategorizedCategoryId\n", FILE_APPEND);
         }
 
         if ($success) {
@@ -161,8 +178,11 @@ if (isset($_POST['envvar'])) {
                 </label>
                 <textarea id="envvar" name="envvar" rows="10" type="text" class="my-4 p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
 CURRENT_THEME=papermod
+
 MONGO_URI=
 MONGO_TLS_CA_FILE=./ssl/isrgrootx1.pem
+DATABASE_NAME=pandapress
+
 
 JWT_SECRET=
 JWT_ALGORITHM=HS256
