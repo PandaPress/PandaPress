@@ -22,7 +22,13 @@ class CategoryController extends BaseController {
         $pipeline = [
             [
                 '$addFields' => [
-                    'stringId' => ['$toString' => '$_id']
+                    'stringId' => [
+                        '$cond' => [
+                            'if' => ['$eq' => [['$type' => '$_id'], 'objectId']],
+                            'then' => ['$toString' => '$_id'],
+                            'else' => ['$convert' => ['input' => '$_id', 'to' => 'string']]
+                        ]
+                    ]
                 ]
             ],
             [
@@ -41,7 +47,7 @@ class CategoryController extends BaseController {
 
         foreach ($documents as $document) {
             $category = [
-                "_id" => $document["_id"]->__toString(),
+                "_id" => is_object($document["_id"]) ? $document["_id"]->__toString() : $document["_id"],
                 "title" => $document["title"],
                 "description" => $document["description"],
                 "slug" => $document["slug"],

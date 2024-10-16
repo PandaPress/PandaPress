@@ -72,7 +72,6 @@ if (isset($_POST['envvar'])) {
         $database = $_POST['database'];
         $allow_signup = $_POST['allow_signup'];
         $success = $success && file_put_contents(PANDA_ROOT . '/.env', "DB_TYPE=$database\n", FILE_APPEND);
-        $success = $success && file_put_contents(PANDA_ROOT . '/.env', "DATABASE_NAME=$databaseName\n", FILE_APPEND);
         $success = $success && file_put_contents(PANDA_ROOT . '/.env', "ALLOW_SIGNUP=$allow_signup\n", FILE_APPEND);
 
         $existingAdmin = $usersCollection->findOne(['role' => 'admin']);
@@ -99,19 +98,18 @@ if (isset($_POST['envvar'])) {
             $success = $success && $result->getInsertedCount() > 0;
         }
 
-        $uncategorizedCategory = $pandapressdb->selectCollection('categories')->findOne(['title' => 'Uncategorized']);
-        if ($uncategorizedCategory) {
-            $uncategorizedCategoryId = $uncategorizedCategory['_id']->__toString();
-            $success = $success && file_put_contents(PANDA_ROOT . '/.env', "UNCATEGORIZED_CATEGORY_ID=$uncategorizedCategoryId\n", FILE_APPEND);
-        } else {
+        // Check for the special "Uncategorized" category
+        // We use _id of 0 for this category as it serves as the default category
+        // This allows for easy reference and ensures it's always the first category
+        $uncategorizedCategory = $pandapressdb->selectCollection('categories')->findOne(['_id' => 0, 'title' => 'Uncategorized', 'slug' => 'uncategorized']);
+        if (!$uncategorizedCategory) {
             $result2 = $pandapressdb->selectCollection('categories')->insertOne([
+                '_id' => 0,
                 'title' => 'Uncategorized',
                 'slug' => 'uncategorized',
                 'description' => 'Uncategorized posts, default category',
             ]);
             $success = $success && $result2->getInsertedCount() > 0;
-            $uncategorizedCategoryId = $result2->getInsertedId()->__toString();
-            $success = $success && file_put_contents(PANDA_ROOT . '/.env', "UNCATEGORIZED_CATEGORY_ID=$uncategorizedCategoryId\n", FILE_APPEND);
         }
 
         if ($success) {

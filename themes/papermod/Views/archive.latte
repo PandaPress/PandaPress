@@ -1,0 +1,71 @@
+{layout 'parts/layout.latte'} {block title} Archive - Panda Press {/block}
+{block content}
+<main class="p-6 w-full h-full">
+  <div class="flex gap-x-2 items-end">
+    <h1 class="text-[40px] font-bold">
+      Archive
+      <sup class="text-2xl font-bold text-slate-500 align-middle">
+        {$totalCount}
+      </sup>
+    </h1>
+    <a href="/rss/index.xml" title="RSS" aria-label="RSS" class="pb-3">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        height="23"
+      >
+        <path d="M4 11a9 9 0 0 1 9 9"></path>
+        <path d="M4 4a16 16 0 0 1 16 16"></path>
+        <circle cx="5" cy="19" r="1"></circle>
+      </svg>
+    </a>
+  </div>
+  <div class="flex flex-col gap-y-10">
+    {foreach $posts as $year => $yearData}
+    <div class="flex flex-col gap-y-2 archive-year">
+      <h2 class="text-3xl font-bold">
+        {$year}
+        <sup class="text-2xl font-bold text-slate-500 align-middle">
+          {php echo count(array_merge(...array_values($yearData)));}
+        </sup>
+      </h2>
+      {foreach $yearData['months'] as $month => $monthData}
+      <div class="flex gap-x-2 archive-month">
+        <h3 class="text-2xl font-bold" id="{$year}-{$month}">
+          <a href="#{$year}-{$month}" class="text-[20px] font-bold">
+            {$month}
+            <sup class="text-sm font-bold text-slate-500 align-middle">
+              {php echo count($monthData);}
+            </sup>
+          </a>
+        </h3>
+        <div class="flex flex-col gap-y-3">
+          {foreach $monthData as $post}
+          <div class="flex flex-col gap-y-1">
+            <a
+              href="/post/{$post['slug']}"
+              class="text-lg"
+              title="{$post['title']}"
+              aria-label="{$post['title']}"
+              target="_blank"
+            >
+              {$post['title']}
+            </a>
+            <div class="text-sm text-slate-500">
+              {php echo date('F j, Y', $post['created_at']);}
+            </div>
+          </div>
+          {/foreach}
+        </div>
+      </div>
+      {/foreach}
+    </div>
+    {/foreach}
+  </div>
+</main>
+{/block}

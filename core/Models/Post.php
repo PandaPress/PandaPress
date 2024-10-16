@@ -27,17 +27,35 @@ class Post {
         $type = isset($params['type']) ? $params['type'] : null;
 
 
+
         $pipeline = [
             [
                 '$addFields' => [
-                    "cid" => ['$toObjectId' => '$category']
+                    "category_id" => [
+                        '$cond' => [
+                            'if' => ['$eq' => [['$type' => '$category'], 'objectId']],
+                            'then' => ['$toString' => '$category'],
+                            'else' => '$category'
+                        ]
+                    ]
                 ]
             ],
             [
                 '$lookup' => [
                     'from' => 'categories',
-                    'localField' => 'cid',
-                    'foreignField' => '_id',
+                    'let' => ['category_id' => '$category_id'],
+                    'pipeline' => [
+                        [
+                            '$match' => [
+                                '$expr' => [
+                                    '$or' => [
+                                        ['$eq' => ['$_id', '$$category_id']],
+                                        ['$eq' => [['$toString' => '$_id'], '$$category_id']]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ],
                     'as' => 'category_obj'
                 ]
             ]
@@ -72,7 +90,8 @@ class Post {
         $pipeline[] = ['$limit' => $limit];
 
         $documents = $this->collection->aggregate($pipeline);
-        $totalCount = $this->collection->aggregate($countPipeline)->toArray()[0]['total'];
+        $totalCountResult = $this->collection->aggregate($countPipeline)->toArray();
+        $totalCount = $totalCountResult[0]['total'] ?? 0;
 
         $posts = [];
 
