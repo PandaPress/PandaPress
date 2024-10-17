@@ -1,7 +1,7 @@
 {layout 'parts/layout.latte'} {block title} Archive - Panda Press {/block}
 {block content}
 <main class="p-6 w-full h-full">
-  <div class="flex gap-x-2 items-end">
+  <div class="flex gap-x-2 items-end my-6">
     <h1 class="text-[40px] font-bold">
       Archive
       <sup class="text-2xl font-bold text-slate-500 align-middle">
@@ -25,10 +25,10 @@
       </svg>
     </a>
   </div>
-  <div class="flex flex-col gap-y-10">
+  <div class="flex flex-col gap-y-10 mt-10">
     {foreach $posts as $year => $yearData}
     <div class="flex flex-col gap-y-2 archive-year">
-      <h2 class="text-3xl font-bold">
+      <h2 class="text-3xl font-bold mb-4">
         {$year}
         <sup class="text-2xl font-bold text-slate-500 align-middle">
           {php echo count(array_merge(...array_values($yearData)));}
@@ -36,7 +36,7 @@
       </h2>
       {foreach $yearData['months'] as $month => $monthData}
       <div class="flex gap-x-2 archive-month">
-        <h3 class="text-2xl font-bold" id="{$year}-{$month}">
+        <h3 class="text-2xl font-bold w-[200px]" id="{$year}-{$month}">
           <a href="#{$year}-{$month}" class="text-[20px] font-bold">
             {$month}
             <sup class="text-sm font-bold text-slate-500 align-middle">
@@ -44,7 +44,7 @@
             </sup>
           </a>
         </h3>
-        <div class="flex flex-col gap-y-3">
+        <div class="grow flex flex-col gap-y-3">
           {foreach $monthData as $post}
           <div class="flex flex-col gap-y-1">
             <a
