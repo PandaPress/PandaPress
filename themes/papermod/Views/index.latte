@@ -1,3 +1,15 @@
 {layout 'parts/layout.latte'} {block title} Homepage - Panda Press {/block}
 {block content} {include $theme_settings['enable_profile_mode'] ?
-'parts/profile.latte' : 'parts/posts.latte'} {/block}
+'parts/profile.latte' : 'parts/home.latte'}
+
+<script>
+  const enableProfileMode = window.localStorage.getItem(
+    "PandaPress.enable_profile_mode"
+  );
+  const currentPath = window.location.pathname;
+  if (enableProfileMode && currentPath === "/") {
+    window.location.replace("/home");
+  }
+</script>
+
+{/block}
