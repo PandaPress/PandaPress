@@ -3,12 +3,19 @@
 'parts/profile.latte' : 'parts/home.latte'}
 
 <script>
-  const enableProfileMode = window.localStorage.getItem(
-    "PandaPress.enable_profile_mode"
-  );
-  const currentPath = window.location.pathname;
-  if (enableProfileMode && currentPath === "/") {
-    window.location.replace("/home");
+  try {
+    const enableProfileMode = window.localStorage.getItem(
+      "PandaPress.enable_profile_mode"
+    );
+    const { value, expiry } = JSON.parse(enableProfileMode || "{}");
+    const currentPath = window.location.pathname;
+    if (value && Date.now() < expiry && currentPath === "/") {
+      window.location.replace("/home");
+    } else {
+      window.localStorage.removeItem("PandaPress.enable_profile_mode");
+    }
+  } catch (error) {
+    console.error(error);
   }
 </script>
 

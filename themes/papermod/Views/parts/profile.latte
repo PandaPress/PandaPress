@@ -1,11 +1,36 @@
 <main
   class="flex flex-col items-center justify-center p-6 gap-2.5 max-w-[400px] mx-auto h-full"
 >
-  <img
-    src="/themes/papermod/images/{$theme_settings['profile_image_name']}"
-    alt="{$theme_settings['profile_image_title']}"
-    class="w-40 h-40 rounded-full"
-  />
+  <div class="relative w-full h-40 flex items-center justify-center">
+    {if !isset($active_link) || $active_link != 'profile'}
+    <div
+      id="temporarily-turn-off-profile-mode"
+      class="absolute top-0 right-0"
+      tooltip="Don't show this profile again for a week"
+    >
+      <svg
+        class="fill-blue-100 cursor-pointer hover:fill-violet-600 transition-colors"
+        stroke="currentColor"
+        fill="currentColor"
+        stroke-width="0"
+        viewBox="0 0 1024 1024"
+        height="40px"
+        width="40px"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M512 0C229.232 0 0 229.232 0 512c0 282.784 229.232 512 512 512 282.784 0 512-229.216 512-512C1024 229.232 794.784 0 512 0zm0 961.008c-247.024 0-448-201.984-448-449.01 0-247.024 200.976-448 448-448s448 200.977 448 448-200.976 449.01-448 449.01zm181.008-630.016c-12.496-12.496-32.752-12.496-45.248 0L512 466.752l-135.76-135.76c-12.496-12.496-32.752-12.496-45.264 0-12.496 12.496-12.496 32.752 0 45.248L466.736 512l-135.76 135.76c-12.496 12.48-12.496 32.769 0 45.249 12.496 12.496 32.752 12.496 45.264 0L512 557.249l135.76 135.76c12.496 12.496 32.752 12.496 45.248 0 12.496-12.48 12.496-32.769 0-45.249L557.248 512l135.76-135.76c12.512-12.512 12.512-32.768 0-45.248z"
+        ></path>
+      </svg>
+    </div>
+    {/if}
+    <img
+      src="/themes/papermod/images/{$theme_settings['profile_image_name']}"
+      alt="{$theme_settings['profile_image_title']}"
+      class="w-40 h-40 rounded-full"
+    />
+  </div>
+
   <h1 class="text-4xl font-bold">{$theme_settings['site_title']}</h1>
   <p>{$theme_settings['site_subtitle']}</p>
   <p class="flex gap-2 flex-wrap">
@@ -33,13 +58,78 @@
   <p class="flex items-center gap-4">
     <a
       href="/posts"
+      role="button"
       class="flex items-center justify-center text-xl px-4 py-2 w-40 bg-blue-500 text-white rounded-full hover:bg-violet-600 transition-colors"
       >Posts</a
     >
     <a
       href="/rss"
+      role="button"
       class="flex items-center justify-center text-xl px-4 py-2 w-40 bg-blue-500 text-white rounded-full hover:bg-violet-600 transition-colors"
       >RSS</a
     >
   </p>
 </main>
+
+<script>
+  document
+    .querySelector("#temporarily-turn-off-profile-mode")
+    .addEventListener("click", function (event) {
+      event.stopPropagation();
+      event.preventDefault();
+
+      // set the profile mode to off for a week
+      window.localStorage.setItem(
+        "PandaPress.enable_profile_mode",
+        JSON.stringify({
+          value: true,
+          expiry: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        })
+      );
+
+      window.location.replace("/home");
+    });
+</script>
+
+<style>
+  [tooltip] {
+    display: inline-block;
+  }
+
+  [tooltip]::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 4px 6px 0 6px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.7) transparent transparent transparent;
+    z-index: 99;
+    opacity: 0;
+  }
+
+  [tooltip]::after {
+    content: attr(tooltip);
+    position: absolute;
+    left: 50%;
+    top: -6px;
+    transform: translateX(-50%) translateY(-100%);
+    background: rgba(0, 0, 0, 0.7);
+    text-align: center;
+    color: #fff;
+    padding: 4px 2px;
+    font-size: 12px;
+    min-width: 160px;
+    border-radius: 5px;
+    pointer-events: none;
+    padding: 4px 4px;
+    z-index: 99;
+    opacity: 0;
+  }
+
+  [tooltip]:hover::after,
+  [tooltip]:hover::before {
+    opacity: 1;
+  }
+</style>
