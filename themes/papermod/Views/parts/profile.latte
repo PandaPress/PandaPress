@@ -57,10 +57,10 @@
   </ul>
   <p class="flex items-center gap-4">
     <a
-      href="/posts"
+      href="/home"
       role="button"
       class="flex items-center justify-center text-xl px-4 py-2 w-40 bg-blue-500 text-white rounded-full hover:bg-violet-600 transition-colors"
-      >Posts</a
+      >Home</a
     >
     <a
       href="/rss"
@@ -79,14 +79,10 @@
       event.preventDefault();
 
       // set the profile mode to off for a week
-      window.localStorage.setItem(
-        "PandaPress.enable_profile_mode",
-        JSON.stringify({
-          value: true,
-          expiry: Date.now() + 1000 * 60 * 60 * 24 * 7,
-        })
-      );
-
+      window._ls.set("disableProfileMode", {
+        value: true,
+        expiry: Date.now() + 1000 * 60 * 60 * 24 * 7,
+      });
       window.location.replace("/home");
     });
 </script>

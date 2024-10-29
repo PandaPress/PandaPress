@@ -4,15 +4,22 @@
 
 <script>
   try {
-    const enableProfileMode = window.localStorage.getItem(
-      "PandaPress.enable_profile_mode"
-    );
-    const { value, expiry } = JSON.parse(enableProfileMode || "{}");
+    const papermodSettings = window._ls.getAll();
+    const { disableProfileMode: { value, expiry } = {} } = papermodSettings;
     const currentPath = window.location.pathname;
+
+    // only redirect to home page if disableProfileMode is true and it's not expired
+    // because this is explicitly set by the user
+    // otherwise, it's controlled by the site owner's theme settings
     if (value && Date.now() < expiry && currentPath === "/") {
       window.location.replace("/home");
     } else {
-      window.localStorage.removeItem("PandaPress.enable_profile_mode");
+      // remove disableProfileMode from papermodSettings
+      // since it's expired, or the user has turned it off
+      // only remove it if it exists
+      if (papermodSettings.disableProfileMode) {
+        window._ls.remove("disableProfileMode");
+      }
     }
   } catch (error) {
     console.error(error);
