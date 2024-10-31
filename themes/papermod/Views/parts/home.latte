@@ -1,0 +1,30 @@
+<main class="flex flex-col gap-4 pt-6 m-6 max-w-[720px]">
+  <div>
+    <h1 class="text-[34px] leading-tight font-bold">
+      {$theme_settings['site_title']}
+    </h1>
+  </div>
+  <div class="flex flex-col gap-2 text-gray-500">
+    <p>{$theme_settings['home_page_title']}</p>
+
+    <ul class="list-disc list-outside pl-5">
+      {foreach $theme_settings['home_page_descriptions'] as $description}
+      <li>{$description}</li>
+      {/foreach}
+    </ul>
+  </div>
+
+  <ul class="flex gap-4">
+    {foreach $theme_settings['social_buttons'] as $social_platform => $url}
+    <li>
+      <a href="{$url}" target="_blank">
+        <img
+          src="/themes/papermod/images/{$social_platform}.svg"
+          alt="{$social_platform}"
+          class="w-12 h-12 p-2"
+        />
+      </a>
+    </li>
+    {/foreach}
+  </ul>
+</main>
