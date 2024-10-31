@@ -5,7 +5,7 @@
   "main": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "css:layout": "tailwindcss -i ./css/base.css -o ./css/index.css --minify",
+    "css:layout": "tailwindcss -i ./css/base.css -o ./css/index.css",
     "css:watch": "tailwindcss -i ./css/base.css -o ./css/index.css --watch",
     "js:build": "uglifyjs ./js/ls.js -c -o ./js/index.min.js"
   },
