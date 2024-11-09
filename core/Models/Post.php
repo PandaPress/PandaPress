@@ -27,7 +27,6 @@ class Post {
         $type = isset($params['type']) ? $params['type'] : null;
 
 
-
         $pipeline = [
             [
                 '$addFields' => [
@@ -100,7 +99,7 @@ class Post {
                 "_id" => (string) $document["_id"],
                 "title" => $document["title"],
                 "slug" => $document["slug"],
-                "content" => $document["content"],
+                "content" => strip_tags($document["content"]),
                 "author" => $document["author"],
                 "status" => $document["status"],
                 "created_at" => $document["created_at"],
