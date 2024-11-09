@@ -1,9 +1,7 @@
 <main class="flex flex-col gap-4 pt-6 m-6 max-w-[720px]">
-  <div>
-    <h1 class="text-[34px] leading-tight font-bold">
-      {$theme_settings['site_title']}
-    </h1>
-  </div>
+  <h1 class="text-[34px] font-bold flex items-center h-11">
+    {$theme_settings['site_title']}
+  </h1>
   <div class="flex flex-col gap-2 text-gray-500">
     <p>{$theme_settings['home_page_title']}</p>
 
@@ -27,4 +25,31 @@
     </li>
     {/foreach}
   </ul>
+  <div class="mt-16 flex flex-col gap-6 min-h-[500px]">
+    {foreach $posts as $post}
+    <article
+      class="bg-white rounded-lg border border-gray-200 p-6 flex flex-col gap-2"
+    >
+      <header class="h-8 text-2xl font-bold">
+        <h2>
+          <a
+            href="/post/{$post['slug']}"
+            class="hover:underline"
+            target="_blank"
+          >
+            {$post['title']}
+          </a>
+        </h2>
+      </header>
+      <div class="text-gray-500 text-sm">
+        <p>{substr($post['content'], 0, 200)}...</p>
+      </div>
+      <footer class="text-gray-500 text-sm">
+        <span title="{$post['created_at']}"
+          >{date("F j, Y", $post['created_at'])}</span
+        >
+      </footer>
+    </article>
+    {/foreach}
+  </div>
 </main>
