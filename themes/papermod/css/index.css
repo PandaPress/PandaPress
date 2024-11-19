@@ -1330,12 +1330,16 @@ select {
   margin-top: 2.5rem;
 }
 
+.mt-12 {
+  margin-top: 3rem;
+}
+
 .mt-16 {
   margin-top: 4rem;
 }
 
-.mt-12 {
-  margin-top: 3rem;
+.mt-6 {
+  margin-top: 1.5rem;
 }
 
 .block {
@@ -1422,11 +1426,16 @@ select {
   max-width: 720px;
 }
 
-.max-w-screen-md {
+.max-w-\[768px\] {
   max-width: 768px;
 }
 
-.max-w-\[768px\] {
+.max-w-fit {
+  max-width: -moz-fit-content;
+  max-width: fit-content;
+}
+
+.max-w-screen-md {
   max-width: 768px;
 }
 
@@ -1669,11 +1678,6 @@ select {
   line-height: 1.75rem;
 }
 
-.text-5xl {
-  font-size: 3rem;
-  line-height: 1;
-}
-
 .font-bold {
   font-weight: 700;
 }
@@ -1714,6 +1718,11 @@ select {
 
 .hover\:fill-violet-600:hover {
   fill: #7c3aed;
+}
+
+.hover\:text-gray-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity));
 }
 
 .hover\:underline:hover {

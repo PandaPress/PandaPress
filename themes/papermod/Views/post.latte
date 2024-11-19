@@ -3,20 +3,20 @@
 
 <main class="max-w-[768px] w-full px-6 mt-12">
   <h1 class="post-title text-[40px] font-bold">{$post['title']}</h1>
-  <div class="post-metaflex items-center gap-1">
-      <span class="text-gray-500 text-sm" title="{$post['created_at']}">
+  <div class="post-meta flex items-center gap-2 text-sm h-6">
+      <span class="text-gray-500" title="{$post['created_at']}">
         {date("l F j, Y", $post['created_at'])}
       </span>
       <span> &nbsp;·&nbsp; </span>
-      <span class="text-gray-500 text-sm"> {$post['author']} </span>
+      <span class="text-gray-500"> {$post['author']} </span>
     
-      <span> &nbsp;|&nbsp; </span>
+      <span class="h-6"> &nbsp;|&nbsp; </span>
   
-      <span class="font-bold"> Category: </span>
+      <span class="font-bold text-gray-500"> Category: </span>
       {if isset($post['category']) && $post['category'] !== null}
       <a
           href="/category/{$post['category']['slug']}"
-          class="hover:text-gray-700 flex items-center gap-2"
+          class="hover:text-gray-700 flex items-center gap-2 max-w-fit text-gray-500"
           target="_blank"
         >
           {$post['category']['title']}
@@ -38,7 +38,7 @@
       </span>
    
   </div>
-  <div class="post-content">
+  <div class="post-content mt-6">
     {$post['content']}
   </div>
 </main>
