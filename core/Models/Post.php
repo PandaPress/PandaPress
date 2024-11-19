@@ -6,14 +6,17 @@ use MongoDB\BSON\ObjectId;
 use MongoDB\Collection;
 
 
+
 class Post {
 
     private string $collection_name = "posts";
     private Collection $collection;
+    private Collection $category_collection;
 
     public function __construct() {
         global $pandadb;
         $this->collection = $pandadb->selectCollection($this->collection_name);
+        $this->category_collection = $pandadb->selectCollection("categories");
     }
 
     public function all($params = []): array {
@@ -99,7 +102,8 @@ class Post {
                 "_id" => (string) $document["_id"],
                 "title" => $document["title"],
                 "slug" => $document["slug"],
-                "content" => strip_tags($document["content"]),
+                // !TODO: https://github.com/PandaPress/PandaPress/issues/1
+                "content" => htmlspecialchars(strip_tags($document["content"]), ENT_QUOTES, 'UTF-8'),
                 "author" => $document["author"],
                 "status" => $document["status"],
                 "created_at" => $document["created_at"],
@@ -122,7 +126,32 @@ class Post {
     }
 
     public function findBySlug(string $slug): array|object|null {
-        return $this->collection->findOne(["slug" => $slug]);
+        // 1. Find the post by slug
+        $post = $this->collection->findOne(["slug" => $slug]);
+
+        if ($post) {
+            // 2. Convert MongoDB ID to string for API compatibility
+            $post['_id'] = (string) $post['_id'];
+
+            // 3. Look up the category from categories collection
+            if (isset($post['category'])) {
+                // Ensure we're comparing with integer 0, not string "0"
+                if ($post['category'] === 0 || $post['category'] === "0") {
+                    $post['category'] = $this->category_collection->findOne(['_id' => 0]);
+                } else {
+                    try {
+                        $categoryId = new ObjectId($post['category']);
+                        $post['category'] = $this->category_collection->findOne(["_id" => $categoryId]);
+                    } catch (\Exception $e) {
+                        // If category ID is invalid, set category to null
+                        global $logger;
+                        $logger->error("Error looking up category: " . $e->getMessage());
+                        $post['category'] = null;
+                    }
+                }
+            }
+        }
+        return $post;
     }
 
     public function findByCategory(string $category): array {

@@ -15,7 +15,7 @@ class PostController extends BaseController {
 
     public function show($slug) {
         $post = $this->post->findBySlug($slug);
-        return $this->template_engine->render($this->current_theme_views . "/post.latte", ["post" => $post]);
+        return $this->template_engine->render($this->current_theme_views . "/post.latte", $this->appendMetaData(["post" => $post]));
     }
 
     public function archive() {
@@ -66,7 +66,7 @@ class PostController extends BaseController {
 
         return $this->template_engine->render(
             $this->current_theme_views . "/archive.latte",
-            $this->appendMetaData(
+            params: $this->appendMetaData(
                 [
                     "active_link" => "archive",
                     "posts" => $_posts,
