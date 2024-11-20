@@ -38,7 +38,15 @@
       </span>
    
   </div>
-  <div class="post-content mt-6">
+  <div class="post-content mt-6 leading-7">
     {$post['content']|noescape}
   </div>
+  <div class="post-tags mt-6 flex flex-wrap gap-2">
+    {foreach $post['tags'] as $tag}
+      <a href="/tags/{$tag}" class="tag h-9 inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+          {$tag}
+      </a>
+    {/foreach}
+  </div>
+  
 </main>
