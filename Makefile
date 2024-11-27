@@ -1,7 +1,7 @@
-.PHONY: start stop
+.PHONY: d-up d-stop
 
-start:
-	docker-compose up -d
+d-up:
+	docker compose up -d
 
-stop:
-	docker-compose stop
+d-stop:
+	docker compose stop
