@@ -1,7 +1,7 @@
 version: "3"
 
 networks:
-  panda_cms:
+  pandapress:
 
 services:
   server:
@@ -16,7 +16,7 @@ services:
     depends_on:
       - php
     networks:
-      - panda_cms
+      - pandapress
 
   php:
     build:
@@ -26,4 +26,4 @@ services:
     volumes:
       - .:/var/www/html:delegated
     networks:
-      - panda_cms
+      - pandapress
