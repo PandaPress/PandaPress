@@ -3,9 +3,12 @@ upstream php {
     server php:9000;
 }
 
+# Add this line before the main server block
+include /etc/nginx/conf.d/ssl.conf if (-f /var/www/html/ssl/server.crt);
+
 server {
     listen 80;
-    server_name localhost;
+    server_name SERVER_NAME;
 
     root /var/www/html;
 
@@ -25,5 +28,4 @@ server {
         expires max;
         log_not_found off;
     }
-}
-
+} 
