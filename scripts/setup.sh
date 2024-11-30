@@ -15,14 +15,6 @@ if [ ! -f compose.yml ]; then
     cp nginx/default.conf.template nginx/default.conf
     awk -v domain="$domain" '{gsub(/server_name SERVER_NAME/, "server_name " domain)}1' nginx/default.conf > nginx/default.conf.tmp && mv nginx/default.conf.tmp nginx/default.conf
     
-    if [ "$domain" != "localhost" ]; then
-        cp nginx/ssl.conf.template nginx/ssl.conf
-        awk -v domain="$domain" '{gsub(/server_name SERVER_NAME/, "server_name " domain)}1' nginx/ssl.conf > nginx/ssl.conf.tmp && mv nginx/ssl.conf.tmp nginx/ssl.conf
-        echo -e "\033[32mSSL configuration generated for $domain\033[0m"
-    else
-        echo -e "\033[33mSkipping SSL configuration for localhost\033[0m"
-    fi
-    
     echo -e "\033[32mConfiguration complete! You can now run 'make d-up' to start the servers.\033[0m"
 else
     echo -e "\033[33mcompose.yml already exists. If you want to reset it, delete it first and run this command again.\033[0m"

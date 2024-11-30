@@ -11,11 +11,8 @@ services:
       - 8080:80
     volumes:
       - .:/var/www/html:delegated
-      - ./nginx/ssl.conf:/etc/nginx/conf.d/ssl.conf:ro,optional
     depends_on:
       - php
-    environment:
-      - SERVER_NAME=localhost
     networks:
       - pandapress
 

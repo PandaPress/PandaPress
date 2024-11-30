@@ -3,8 +3,6 @@ upstream php {
     server php:9000;
 }
 
-# Add this line before the main server block
-include /etc/nginx/conf.d/ssl.conf if (-f /var/www/html/ssl/server.crt);
 
 server {
     listen 80;

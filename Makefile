@@ -24,5 +24,5 @@ d-clean:
 		exit 1; \
 	fi
 	docker compose down -v --rmi all
-	rm -rf compose.yml nginx/default.conf nginx/ssl.conf
+	rm -rf compose.yml nginx/default.conf
 
