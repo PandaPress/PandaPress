@@ -9,11 +9,22 @@ if [ ! -f compose.yml ]; then
     domain=${domain:-localhost}
     echo -e "\033[36mSetting domain to: $domain\033[0m"
     
-    awk -v domain="$domain" '{gsub(/SERVER_NAME=localhost/, "SERVER_NAME=" domain)}1' compose.yml > compose.yml.tmp && mv compose.yml.tmp compose.yml
+    if [ "$domain" != "localhost" ]; then
+        read -p "Do you want to enable HTTPS/SSL for your domain? (y/N): " enable_ssl
+        enable_ssl=${enable_ssl:-n}
+        if [[ $enable_ssl =~ ^[Yy]$ ]]; then
+            echo -e "\033[36mConfiguring nginx for HTTPS...\033[0m"
+            cp nginx/ssl.conf.template nginx/default.conf
+        else
+            echo -e "\033[36mConfiguring nginx for HTTP only...\033[0m"
+            cp nginx/default.conf.template nginx/default.conf
+        fi
+    else
+        cp nginx/default.conf.template nginx/default.conf
+    fi
     
     echo -e "\033[36mGenerating nginx configuration files...\033[0m"
-    cp nginx/default.conf.template nginx/default.conf
-    awk -v domain="$domain" '{gsub(/server_name SERVER_NAME/, "server_name " domain)}1' nginx/default.conf > nginx/default.conf.tmp && mv nginx/default.conf.tmp nginx/default.conf
+    awk -v domain="$domain" '{gsub(/server_name SERVER_NAME/, "server_name " domain " www." domain)}1' nginx/default.conf > nginx/default.conf.tmp && mv nginx/default.conf.tmp nginx/default.conf
     
     echo -e "\033[32mConfiguration complete! You can now run 'make d-up' to start the servers.\033[0m"
 else
