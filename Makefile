@@ -1,4 +1,4 @@
-.PHONY: d-up d-stop d-clean d-setup
+.PHONY: d-up d-stop d-clean d-setup d-nginx-reload
 
 d-setup:
 	@chmod +x scripts/setup.sh
@@ -30,4 +30,16 @@ d-clean:
 		echo "Docker is not running, cleaning up files only..."; \
 	fi
 	rm -rf compose.yml nginx/default.conf
+
+d-nginx-reload:
+	@if [ ! -f compose.yml ]; then \
+		echo "\033[31mERROR: compose.yml not found. Run 'make d-setup' first.\033[0m"; \
+		exit 1; \
+	fi
+	@if ! docker compose ps --services --filter "status=running" | grep -q "server"; then \
+		echo "\033[31mERROR: Nginx container is not running.\033[0m"; \
+		exit 1; \
+	fi
+	@echo "Reloading Nginx configuration..."
+	docker compose exec server nginx -s reload
 
