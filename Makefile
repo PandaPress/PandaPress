@@ -24,7 +24,7 @@ d-clean:
 		exit 1; \
 	fi
 	@if docker info > /dev/null 2>&1; then \
-		echo "Docker is running, cleaning up containers and images..."; \
+		echo "Docker is running, cleaning up containers and images and files..."; \
 		docker compose down -v --rmi all; \
 	else \
 		echo "Docker is not running, cleaning up files only..."; \
