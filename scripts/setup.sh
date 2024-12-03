@@ -11,11 +11,7 @@ if [ ! -f compose.yml ]; then
 
     cp nginx/default.conf.template nginx/default.conf
     echo -e "\033[36mGenerating nginx configuration files...\033[0m"
-    if [ "$domain" = "localhost" ]; then
-        awk -v domain="$domain" '{gsub(/server_name SERVER_NAME/, "server_name " domain)}1' nginx/default.conf > nginx/default.conf.tmp
-    else
-        awk -v domain="$domain" '{gsub(/server_name SERVER_NAME/, "server_name " domain " www." domain)}1' nginx/default.conf > nginx/default.conf.tmp
-    fi
+    awk -v domain="$domain" '{gsub(/server_name SERVER_NAME/, "server_name " domain)}1' nginx/default.conf > nginx/default.conf.tmp
     mv nginx/default.conf.tmp nginx/default.conf
     
     echo -e "\033[32mConfiguration complete! You can now run 'make d-up' to start the servers.\033[0m"
