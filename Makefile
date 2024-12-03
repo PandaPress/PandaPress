@@ -1,4 +1,4 @@
-.PHONY: d-up d-stop d-clean d-setup d-nginx-reload
+.PHONY: d-setup d-up d-stop d-clean d-nginx-reload g-pull
 
 d-setup:
 	@chmod +x scripts/setup.sh
@@ -42,4 +42,13 @@ d-nginx-reload:
 	fi
 	@echo "Reloading Nginx configuration..."
 	docker compose exec server nginx -s reload
+
+d-permissions:
+	docker exec -it panda_php chown -R www-data:www-data /var/www/html && \
+	docker exec -it panda_php chmod -R 775 /var/www/html && \
+	echo "Permissions set successfully."
+
+
+g-pull:
+	git pull origin main
 

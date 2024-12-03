@@ -4,7 +4,7 @@
 
 
 function env(string $kee) {
-    return $_ENV[$kee];
+    return isset($_ENV[$kee]) ? $_ENV[$kee] : null;
 }
 
 // themes helper functions
