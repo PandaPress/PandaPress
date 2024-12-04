@@ -80,7 +80,7 @@ class AuthController extends BaseController {
     }
 
     public function signup() {
-        if (strcasecmp(env('ALLOW_SIGNUP'), 'true') == 0) {
+        if (env('ALLOW_SIGNUP', true)) {
             return $this->template_engine->render(PANDA_ROOT . '/core/Views/auth/signup.latte');
         }
         // go to 404
@@ -92,7 +92,7 @@ class AuthController extends BaseController {
     // !TODO  owners can disallow signup from ip, email, domain, etc. or disallow all signups
     public function signupApi() {
 
-        if (strcasecmp(env('ALLOW_SIGNUP'), 'true') != 0) {
+        if (!env('ALLOW_SIGNUP', true)) {
             return $this->json([
                 'message' => 'Signup is not allowed',
                 'success' => false,

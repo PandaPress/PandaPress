@@ -3,8 +3,12 @@
 
 
 
-function env(string $kee) {
-    return isset($_ENV[$kee]) ? $_ENV[$kee] : null;
+function env(string $kee, bool $is_bool = false) {
+    $value = isset($_ENV[$kee]) ? $_ENV[$kee] : null;
+    if ($is_bool) {
+        return filter_var($value, FILTER_VALIDATE_BOOLEAN);
+    }
+    return $value;
 }
 
 // themes helper functions

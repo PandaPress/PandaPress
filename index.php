@@ -40,7 +40,7 @@ if (!file_exists($dotenv_file)) {
 $dotenv = new Dotenv();
 $dotenv->load($dotenv_file);
 
-if (!env("SITE_READY")) {
+if (!env("SITE_READY", true)) {
     ob_start();
     header("Location: /install.php");
     ob_end_flush();
