@@ -19,7 +19,7 @@ define("PANDA_THEME_SETTINGS", [
     "site_subtitle" => "a modern, fast, minimalist, and powerful CMS, with a focus on simplicity and performance.",
     "site_description" => "Panda Press is a modern, fast, minimalist, and powerful CMS, with a focus on simplicity and performance.",
     "site_header_page_links" => ["about"],
-    "site_keywords" => ["Modern CMS", "PHP 8.1+", "Without Composer", "PSR-4 Autoloader", "AdminLTE Dashboard", "Powerful Plugins", "Beautiful Themes", "Open Source", "Always Free"],
+    "site_keywords" => ["Modern CMS", "PHP 8.2+", "Without Composer", "PSR-4 Autoloader", "AdminLTE Dashboard", "Powerful Plugins", "Beautiful Themes", "Open Source", "Always Free"],
     "site_author" => "Yumin",
     "show_author_in_post" => true,
     "profile_image_name" => "panda.png",
