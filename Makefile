@@ -1,8 +1,7 @@
-.PHONY: d-setup d-up d-stop d-clean d-nginx-reload g-pull
+.PHONY: d-init d-up d-stop d-clean d-nginx-reload g-pull
 
-d-setup:
-	@chmod +x scripts/setup.sh
-	@./scripts/setup.sh
+d-init:
+	./scripts/init.sh
 
 d-up:
 	@if [ ! -f compose.yml ]; then \
@@ -43,10 +42,7 @@ d-nginx-reload:
 	@echo "Reloading Nginx configuration..."
 	docker compose exec server nginx -s reload
 
-d-permissions:
-	docker exec -it panda_php chown -R www-data:www-data /var/www/html && \
-	docker exec -it panda_php chmod -R 775 /var/www/html && \
-	echo "Permissions set successfully."
+
 
 
 g-pull:

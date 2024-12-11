@@ -10,7 +10,7 @@ services:
     ports:
       - 80:8000
     volumes:
-      - .:/var/www/html:delegated
+      - .:/var/www/html
     depends_on:
       - php
     networks:
@@ -20,8 +20,11 @@ services:
     build:
       context: .
       dockerfile: php.dockerfile
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
     container_name: panda_php
     volumes:
-      - .:/var/www/html:delegated
+      - .:/var/www/html
     networks:
       - pandapress 

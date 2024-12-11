@@ -1,5 +1,26 @@
 #!/bin/bash
 
+
+export UID=1000
+export GID=1000
+
+# Check if running as root
+if [ "$EUID" -ne 0 ]; then 
+    echo "Please run as root (with sudo)"
+    exit 1
+fi
+
+# Create webuser if it doesn't exist
+if ! id "webuser" &>/dev/null; then
+    useradd -u 1000 -m webuser
+    usermod -aG www-data webuser
+fi
+
+# Set correct permissions
+chown -R webuser:webuser .
+chmod -R 755 .
+
+
 if [ ! -f compose.yml ]; then
     echo -e "\033[36mcompose.yml not found, creating it from template...\033[0m"
     cp compose.yml.template compose.yml
