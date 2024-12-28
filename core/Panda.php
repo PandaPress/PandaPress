@@ -63,7 +63,7 @@ class Panda {
             // ! Like this: $this->mongo_client = new MongoDBClient(env("MONGO_URI"));
             $this->mongo_client = new MongoDBClient(env("MONGO_URI"), [
                 'tls' => true,
-                'tlsCAFile' => env("MONGO_TLS_CA_FILE"),
+                'tlsCAFile' => PANDA_ROOT . env("MONGO_TLS_CA_FILE"),
             ]);
             $this->db = $this->mongo_client->selectDatabase(env("DATABASE_NAME"));
 

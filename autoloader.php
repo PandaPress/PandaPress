@@ -1,8 +1,7 @@
 <?php
 
 
-class Psr4Autoloader
-{
+class Psr4Autoloader {
     /**
      * An associative array where the key is a namespace prefix and the value
      * is an array of base directories for classes in that namespace.
@@ -16,8 +15,7 @@ class Psr4Autoloader
      *
      * @return void
      */
-    public function register()
-    {
+    public function register() {
         spl_autoload_register(array($this, 'loadClass'));
     }
 
@@ -32,8 +30,7 @@ class Psr4Autoloader
      * than last.
      * @return void
      */
-    public function addNamespace($prefix, $base_dir, $prepend = false)
-    {
+    public function addNamespace($prefix, $base_dir, $prepend = false) {
         // normalize namespace prefix
         $prefix = trim($prefix, '\\') . '\\';
 
@@ -60,8 +57,7 @@ class Psr4Autoloader
      * @return mixed The mapped file name on success, or boolean false on
      * failure.
      */
-    public function loadClass($class)
-    {
+    public function loadClass($class) {
         // the current namespace prefix
         $prefix = $class;
 
@@ -98,8 +94,7 @@ class Psr4Autoloader
      * @return mixed Boolean false if no mapped file can be loaded, or the
      * name of the mapped file that was loaded.
      */
-    protected function loadMappedFile($prefix, $relative_class)
-    {
+    protected function loadMappedFile($prefix, $relative_class) {
         // are there any base directories for this namespace prefix?
         if (isset($this->prefixes[$prefix]) === false) {
             return false;
@@ -132,8 +127,7 @@ class Psr4Autoloader
      * @param string $file The file to require.
      * @return bool True if the file exists, false if not.
      */
-    protected function requireFile($file)
-    {
+    protected function requireFile($file) {
         if (file_exists($file)) {
             require $file;
             return true;
@@ -141,3 +135,20 @@ class Psr4Autoloader
         return false;
     }
 }
+
+$loader = new Psr4Autoloader();
+$loader->register();
+
+$loader->addNamespace('Psr', PANDA_ROOT . "/vendor/Psr");
+$loader->addNamespace('Firebase', PANDA_ROOT . "/vendor/Firebase");
+
+$loader->addNamespace('MongoDB', PANDA_ROOT . '/vendor/MongoDB');
+require PANDA_ROOT . "/vendor/MongoDB/functions.php";
+
+$loader->addNamespace('Symfony', PANDA_ROOT . '/vendor/Symfony');
+
+$loader->addNamespace('Bramus', PANDA_ROOT . '/vendor/Bramus');
+$loader->addNamespace('Latte', PANDA_ROOT . '/vendor/Latte');
+
+$loader->addNamespace('Panda', PANDA_ROOT . '/core');
+$loader->addNamespace('Panda\Admin', PANDA_ROOT . '/admin');

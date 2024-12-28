@@ -2,6 +2,7 @@
 
 
 define("PANDA_ROOT", __DIR__);
+define("PANDA_ROOT_PUBLIC", __DIR__ . "/public");
 
 define("PANDA_THEMES", __DIR__ . '/themes');
 define("PANDA_PLUGINS", __DIR__ . '/plugins');
