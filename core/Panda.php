@@ -83,7 +83,9 @@ class Panda {
             }
         } catch (Exception $error) {
             $this->logger->error("Failed to connect to MongoDB: " . $error->getMessage());
-            var_dump($error);
+            if (env('APP_ENV') == 'development') {
+                var_dump($error);
+            }
             exit(1);
         }
     }
