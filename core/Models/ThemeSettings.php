@@ -7,17 +7,18 @@ namespace Panda\Models;
 class ThemeSettings extends AbstractSettings {
     private string $theme_dir;
 
+    private string $theme_name;
 
-    public function __construct(string $theme_dir) {
 
+    public function __construct(string $theme_dir, string $theme_name) {
 
         $this->theme_dir = $theme_dir;
+        $this->theme_name = $theme_name;
     }
 
     public function getSettings(): array {
         $defaultSettings = $this->getDefaultSettings();
         $customSettings = $this->getCustomSettings();
-
         return array_merge($defaultSettings, $customSettings);
     }
 
@@ -25,13 +26,14 @@ class ThemeSettings extends AbstractSettings {
         return PANDA_THEME_SETTINGS;
     }
     public function getCustomSettings(): array {
-
-
-
-        return [];
+        global $db;
+        $settings = $db->selectCollection("settings")->findOne(["theme_name" => $this->theme_name]);
+        return $settings ?? [];
     }
 
     public function updateCustomSettings(array $newSettings) {
+        global $db;
+        $db->selectCollection('settings')->updateOne(['theme_name' => $this->theme_name], ['$set' => $newSettings], ['upsert' => true]);
     }
 
     // ! this is for migration, export settings to json file
