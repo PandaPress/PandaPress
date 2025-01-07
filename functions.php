@@ -4,6 +4,11 @@
 
 
 function env(string $kee, bool $is_bool = false) {
+
+    if (!in_array($kee, PANDA_ENV_KEYS)) {
+        throw new \Exception("Invalid environment variable key: $kee");
+    }
+
     $value = isset($_ENV[$kee]) ? $_ENV[$kee] : null;
     if ($is_bool) {
         return filter_var($value, FILTER_VALIDATE_BOOLEAN);

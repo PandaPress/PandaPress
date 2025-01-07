@@ -62,3 +62,19 @@ define("PANDA_ADMIN_ROUTES", [
 
 
 ]);
+
+
+define("PANDA_ENV_KEYS", [
+    'DATABASE_TYPE',
+    'DATABASE_NAME',
+    'MONGO_URI',
+    'MONGO_TLS_CA_FILE',
+    'CURRENT_THEME',
+    'JWT_SECRET',
+    'JWT_ALGORITHM',
+    'JWT_ISSUER',
+    'JWT_AUDIENCE',
+    'ALLOW_SIGNUP',
+    'SITE_READY',
+    'APP_ENV',
+]);
