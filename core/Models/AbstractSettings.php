@@ -4,6 +4,8 @@ namespace Panda\Models;
 
 abstract class AbstractSettings {
     abstract public function getSettings(): array;
+
+    abstract public function getCustomSettings(): array;
     abstract public function updateCustomSettings(array $settings);
 
     abstract public function export(): bool|string;

@@ -1,6 +1,5 @@
 <?php
 
-define("PANDA_THEME_STORAGE_TYPE", \Panda\Utils\SettingStorageType::FILE);
 
 
 define("PANDA_THEME_SETTINGS", [

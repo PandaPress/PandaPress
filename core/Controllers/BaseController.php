@@ -38,7 +38,7 @@ class BaseController {
         $this->user_data = \Panda\Session::get('user_data');
         $this->user_id = \Panda\Session::get('user_id');
 
-        $this->theme_settings = new ThemeSettings(PANDA_THEME_STORAGE_TYPE, $this->current_theme_dir);
+        $this->theme_settings = new ThemeSettings($this->current_theme_dir);
     }
 
     public function json($data, $status_code = 200) {
