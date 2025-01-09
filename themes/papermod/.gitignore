@@ -1,1 +1,5 @@
 node_modules
+assets/**/*.min.js
+assets/**/*.min.css
+assets/**/*.min.js.map
+assets/**/*.min.css.map

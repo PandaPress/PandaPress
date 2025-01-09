@@ -1,11 +1,10 @@
 .PHONY: build watch
 
 build:
-	npm run css:layout
+	npm run css:build
 	npm run js:build
 	mkdir -p ../../public/assets/papermod
-	cp -r ./css ../../public/assets/papermod
-	mv -r ./js/ls.min.js ../../public/assets/papermod/js/ls.min.js
+	cp -r ./assets/* ../../public/assets/papermod
 
 watch:
 	npm run css:watch

@@ -26,14 +26,14 @@ class ThemeSettings extends AbstractSettings {
         return PANDA_THEME_SETTINGS;
     }
     public function getCustomSettings(): array {
-        global $db;
-        $settings = $db->selectCollection("settings")->findOne(["theme_name" => $this->theme_name]);
+        global $pandadb;
+        $settings = $pandadb->selectCollection("settings")->findOne(["theme_name" => $this->theme_name]);
         return $settings ?? [];
     }
 
     public function updateCustomSettings(array $newSettings) {
-        global $db;
-        $db->selectCollection('settings')->updateOne(['theme_name' => $this->theme_name], ['$set' => $newSettings], ['upsert' => true]);
+        global $pandadb;
+        $pandadb->selectCollection('settings')->updateOne(['theme_name' => $this->theme_name], ['$set' => $newSettings], ['upsert' => true]);
     }
 
     // ! this is for migration, export settings to json file
