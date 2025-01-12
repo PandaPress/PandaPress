@@ -13,6 +13,7 @@
 - beautiful themes
 - open source
 - always free
+- MIT license
 
 ## Useful links
 

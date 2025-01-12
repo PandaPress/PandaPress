@@ -1,0 +1,20 @@
+{
+  "type": "theme",
+  "directory": "pandamod",
+  "name": "Paper Mod",
+  "version": "1.0.0",
+  "description": "the theme PaperMod implementation in Panda Press, a modern CMS but without composer",
+  "author": {
+    "name": "Yumin",
+    "email": "mail@yumin.io",
+    "url": "https://yumin.io"
+  },
+  "license": "MIT",
+  "homepage": "https://blog.pandapress.org",
+  "repository": "https://github.com/pandapress/pandapress.git",
+  "keywords": ["papermod", "theme", "pandapress"],
+  "dependencies": {
+    "pandapress": ">=1.0.0",
+    "php": ">=8.2"
+  }
+}
