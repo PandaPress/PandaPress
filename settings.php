@@ -58,7 +58,7 @@ define("PANDA_ADMIN_ROUTES", [
     // themes
     ["GET", "/admin/themes", "\Panda\Admin\Controllers\ThemeController", "index"],
     ["GET", "/admin/themes/settings", "\Panda\Admin\Controllers\ThemeController", "settings"],
-    ["POST", "/admin/themes/current", "\Panda\Admin\Controllers\ThemeController", "current"],
+    ["POST", "/admin/themes/setCurrentTheme", "\Panda\Admin\Controllers\ThemeController", "setCurrentThemeId"],
 
 
 ]);

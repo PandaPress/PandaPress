@@ -2,13 +2,12 @@
 
 <main class="app-main settings-container">
   <h1>Themes Settings</h1>
-
-  <form action="/admin/themes/current" method="post">
+  <form action="/admin/themes/setCurrentTheme" method="post">
     <div class="form-group">
       <label for="theme">Current Theme</label>
       <select class="form-control" id="theme" name="theme">
         {foreach $themes as $theme}
-        <option value="{$theme}" {if $theme === $current_theme} selected {/if}>{$theme}</option>
+        <option value="{$theme['id']}" {if $theme['id'] === $current_theme} selected {/if}>{$theme['display_name']}</option>
         {/foreach}
       </select>
     </div>

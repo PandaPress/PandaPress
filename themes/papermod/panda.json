@@ -1,7 +1,8 @@
 {
   "type": "theme",
-  "directory": "pandamod",
-  "name": "Paper Mod",
+  "directory": "papermod",
+  "id": "papermod",
+  "display_name": "Paper Mod",
   "version": "1.0.0",
   "description": "the theme PaperMod implementation in Panda Press, a modern CMS but without composer",
   "author": {
