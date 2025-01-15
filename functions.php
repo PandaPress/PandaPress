@@ -19,21 +19,6 @@ function env(string $kee, bool $is_bool = false) {
 // themes helper functions
 
 
-function get_theme_info(string $current_theme) {
-    $theme_exists = file_exists(PANDA_THEMES . "/$current_theme") &&
-        file_exists(PANDA_THEMES . "/$current_theme/settings.php") &&
-        file_exists(PANDA_THEMES . "/$current_theme/Views") &&
-        file_exists(PANDA_THEMES . "/$current_theme/Controllers");
-
-    if (!$theme_exists) {
-        return false;
-    }
-    return [
-        "current_theme_dir" => PANDA_THEMES . "/$current_theme",
-        "current_theme_views" => PANDA_THEMES . "/$current_theme/Views",
-        "current_theme_controllers" => PANDA_THEMES . "/$current_theme/Controllers",
-    ];
-}
 
 
 function get_form_old_value($session_key, $field) {

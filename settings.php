@@ -69,7 +69,6 @@ define("PANDA_ENV_KEYS", [
     'DATABASE_NAME',
     'MONGO_URI',
     'MONGO_TLS_CA_FILE',
-    'CURRENT_THEME',
     'JWT_SECRET',
     'JWT_ALGORITHM',
     'JWT_ISSUER',

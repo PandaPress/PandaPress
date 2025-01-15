@@ -7,6 +7,7 @@ use Latte\Engine;
 use Latte\Essential\RawPhpExtension;
 use Panda\Models\ThemeSettings;
 
+
 class BaseController {
 
     protected $template_engine;
@@ -23,9 +24,27 @@ class BaseController {
     public function __construct() {
         // template engine
         $this->template_engine = new Engine();
-        $this->current_theme = env("CURRENT_THEME") ?? "papermod";
-        $this->current_theme_dir = get_theme_info($this->current_theme)['current_theme_dir'];
-        $this->current_theme_views = get_theme_info($this->current_theme)['current_theme_views'];
+
+        // Get theme from MongoDB settings, fallback to "papermod"
+
+        $theme_settings = (new ThemeSettings())->getSettings();
+
+        $current_theme_id = $theme_settings['current_theme'];
+
+        if ($current_theme_id) {
+            // read theme info from panda.json
+            $theme_info = json_decode(file_get_contents(PANDA_THEMES . "/$current_theme_id/panda.json"), true);
+            $current_theme_dir = $theme_info['id'];
+            $this->current_theme = $current_theme_id;
+            $this->current_theme_dir = PANDA_THEMES . "/$current_theme_dir";
+            $this->current_theme_views = PANDA_THEMES . "/$current_theme_dir/Views";
+        } else {
+            $this->current_theme = "papermod";
+            $this->current_theme_dir = PANDA_THEMES . "/papermod";
+            $this->current_theme_views = PANDA_THEMES . "/papermod/Views";
+        }
+
+
 
         // set template engine template directory
         $cache_panda_tmpl_dir = PANDA_ROOT . "/cache/templates/$this->current_theme";

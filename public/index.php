@@ -31,14 +31,12 @@ if (!env("SITE_READY", true)) {
     exit();
 }
 
-$current_theme = env('CURRENT_THEME');
-$theme_info = get_theme_info($current_theme);
-if (!$theme_info) {
-    die("Theme not found");
-}
-$loader->addNamespace('Panda\Theme', $theme_info['current_theme_dir']);
-require $theme_info['current_theme_dir'] . "/routes.php";
-require $theme_info['current_theme_dir'] . "/settings.php";
+$current_theme_id = (new \Panda\Models\ThemeSettings())->getCurrentThemeId();
+$current_theme_dir = PANDA_THEMES . "/$current_theme_id";
+
+$loader->addNamespace('Panda\Theme', $current_theme_dir);
+require $current_theme_dir . "/routes.php";
+require $current_theme_dir . "/settings.php";
 
 
 // main panda press logic here

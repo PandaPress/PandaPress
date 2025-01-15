@@ -1,8 +1,6 @@
 <?php
 
-
-
-define("PANDA_THEME_SETTINGS", [
+return [
     // ! Attention: variables starting with "theme_" are not allowed to be changed by users
     "theme_name" => "papermod",
     "theme_version" => "1.0.0",
@@ -43,7 +41,7 @@ define("PANDA_THEME_SETTINGS", [
     "time_format" => "g:i A",
     "date_format" => "F j, Y",
     "show_full_text_in_rss" => true,
-]);
+];
 
 
 // define the i18n kv 

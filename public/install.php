@@ -80,7 +80,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $success = $success && file_put_contents(PANDA_ROOT . '/.env', "DATABASE_NAME=$DATABASE_NAME\n", FILE_APPEND);
         $success = $success && file_put_contents(PANDA_ROOT . '/.env', "MONGO_URI=$MONGO_URI\n", FILE_APPEND);
         $success = $success && file_put_contents(PANDA_ROOT . '/.env', "MONGO_TLS_CA_FILE=$MONGO_TLS_CA_FILE\n", FILE_APPEND);
-        $success = $success && file_put_contents(PANDA_ROOT . '/.env', "CURRENT_THEME=$CURRENT_THEME\n", FILE_APPEND);
         $success = $success && file_put_contents(PANDA_ROOT . '/.env', "JWT_SECRET=$JWT_SECRET\n", FILE_APPEND);
         $success = $success && file_put_contents(PANDA_ROOT . '/.env', "JWT_ALGORITHM=$JWT_ALGORITHM\n", FILE_APPEND);
         $success = $success && file_put_contents(PANDA_ROOT . '/.env', "JWT_ISSUER=$JWT_ISSUER\n", FILE_APPEND);
@@ -205,14 +204,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </label>
                 <div class="my-4  flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                     <input type="text" name="MONGO_URI" id="MONGO_URI" class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6">
-                </div>
-            </div>
-            <div class="flex flex-col">
-                <label for="CURRENT_THEME">
-                    <h2 class="text-xl font-semibold">Current theme</h2>
-                </label>
-                <div class="my-4  flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                    <input type="text" name="CURRENT_THEME" id="CURRENT_THEME" class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" value="papermod">
                 </div>
             </div>
 

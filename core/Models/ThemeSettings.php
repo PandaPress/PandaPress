@@ -2,47 +2,72 @@
 
 namespace Panda\Models;
 
+use Panda\Interfaces\IThemeSettings;
 
+class ThemeSettings implements IThemeSettings {
 
-class ThemeSettings extends AbstractSettings {
-    private string $theme_dir;
+    private string $theme_id;
+    private array $custom_settings;
+    public function __construct() {
+        global $pandadb;
+        $settings = $pandadb
+            ->selectCollection('settings')
+            ->findOne(['current_theme' => $this->theme_id]);
 
-    private string $theme_name;
+        $this->theme_id =  $settings ? $settings['current_theme'] : 'papermod';
+        $this->custom_settings = $settings['settings'] ?? [];
+    }
 
-
-    public function __construct(string $theme_dir, string $theme_name) {
-
-        $this->theme_dir = $theme_dir;
-        $this->theme_name = $theme_name;
+    public function getCurrentThemeId(): string {
+        return $this->theme_id;
     }
 
     public function getSettings(): array {
         $defaultSettings = $this->getDefaultSettings();
-        $customSettings = $this->getCustomSettings();
-        return array_merge($defaultSettings, $customSettings);
+        return array_merge($defaultSettings, $this->custom_settings);
     }
 
+    // alway get default settings from settings.php file in theme directory
     private function getDefaultSettings(): array {
-        return PANDA_THEME_SETTINGS;
+        $settings_file =  PANDA_THEMES . "/" . $this->theme_id . "/settings.php";
+        if (!file_exists($settings_file)) {
+            throw new \RuntimeException("Default Settings file not found: " . $settings_file);
+        }
+        $default_settings = require_once $settings_file;
+        return $default_settings;
     }
     public function getCustomSettings(): array {
-        global $pandadb;
-        $settings = $pandadb->selectCollection("settings")->findOne(["theme_name" => $this->theme_name]);
-        return $settings ?? [];
+        return $this->custom_settings;
     }
 
     public function updateCustomSettings(array $newSettings) {
         global $pandadb;
-        $pandadb->selectCollection('settings')->updateOne(['theme_name' => $this->theme_name], ['$set' => $newSettings], ['upsert' => true]);
+        $pandadb
+            ->selectCollection('settings')
+            ->updateOne(
+                [
+                    'current_theme' => $this->theme_id
+                ],
+                [
+                    '$set' => array_combine(
+                        array_map(
+                            fn($key) => "settings.$key",
+                            array_keys($newSettings)
+                        ),
+                        array_values($newSettings)
+                    )
+                ],
+                ['upsert' => true]
+            );
     }
 
     // ! this is for migration, export settings to json file
-    public function export(): bool|string {
-        return json_encode($this->getSettings(), JSON_PRETTY_PRINT);
+    public function exportCustomSettings(): bool|string {
+        return json_encode($this->getCustomSettings(), JSON_PRETTY_PRINT);
     }
 
     // ! this is for migration, import settings from json file
-    public function import(string $json_file_path): string {
+    public function importCustomSettings(string $json_file_path): string {
         try {
             $json_content = file_get_contents($json_file_path);
             if ($json_content === false) {
