@@ -136,6 +136,8 @@ class Psr4Autoloader {
     }
 }
 
+global $loader;
+
 $loader = new Psr4Autoloader();
 $loader->register();
 

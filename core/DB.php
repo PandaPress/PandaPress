@@ -1,40 +1,23 @@
 <?php
 
-
 namespace Panda;
 
-// use Panda\Services\PandaBase;
-use Panda\Services\Logger;
 use MongoDB\Client as MongoDBClient;
 use MongoDB\Database;
 use Exception;
-use Panda\Router;
+use Panda\Services\Logger as PandaLoggerService;
 
+class DB {
 
-class Panda {
     private static self|null $instance = null;
-
     public readonly MongoDBClient $mongo_client;
     public readonly Database $db;
+    public readonly PandaLoggerService $logger;
 
-    public readonly Logger $logger;
-
-    public readonly Router $router;
 
     final private function __construct() {
-        // initialize router
-        $this->router = new Router();
-
-        // initialize logger
-        $this->initializeLogger();
-
-        // initialize MongoDB 
+        $this->logger = Logger::getInstance()->logger;
         $this->initializeMongoDB();
-    }
-
-    final public function __clone() {
-    }
-    final public function __wakeup() {
     }
 
     public static function getInstance(): self {
@@ -42,19 +25,12 @@ class Panda {
         return self::$instance;
     }
 
-    private function initializeLogger(): void {
-        $log_path =   PANDA_ROOT . "/logs";
-        $log_file = $log_path . "/pandapress.log";
 
-        if (!is_writable($log_path)) {
-            chmod($log_path, 0755);
-        }
-
-        if (!file_exists($log_file)) {
-            touch($log_file);
-        }
-
-        $this->logger = new Logger($log_file);
+    final public function __clone() {
+        throw new \RuntimeException('Cloning is not allowed.');
+    }
+    final public function __wakeup() {
+        throw new \RuntimeException('Unserialize is not allowed.');
     }
 
     private function initializeMongoDB(): void {
@@ -88,9 +64,5 @@ class Panda {
             }
             exit(1);
         }
-    }
-
-    public function start(): void {
-        $this->router->run();
     }
 }

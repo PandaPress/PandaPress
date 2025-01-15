@@ -9,7 +9,6 @@ use Firebase\JWT\Key;
 class Router {
     private $router;
 
-
     public function __construct() {
         $this->router = new BramusRouter();
         $this->before();
@@ -48,16 +47,6 @@ class Router {
 
         $_router = $this->router;
 
-        foreach (PANDA_THEME_ROUTES as $theme_route) {
-            [$method, $route, $controller, $func] = $theme_route;
-            if ($method === "GET") {
-                $_router->get($route, "$controller@$func");
-            }
-            if ($method === "POST") {
-                $_router->post($route, "$controller@$func");
-            }
-        }
-
         foreach (PANDA_ADMIN_ROUTES as $admin_route) {
             [$method, $route, $controller, $func] = $admin_route;
             if ($method === "GET") {
@@ -81,6 +70,30 @@ class Router {
         // if no customized, default to Panda 404
         $_router->set404('\Panda\Controllers\ErrorController@notFound');
     }
+    public function setThemeRoutes() {
+
+        $current_theme_id = (new \Panda\Models\ThemeSettings())->getCurrentThemeId();
+        $current_theme_dir = PANDA_THEMES . "/$current_theme_id";
+
+        global $loader;
+
+        $loader->addNamespace('Panda\Theme', $current_theme_dir);
+        require $current_theme_dir . "/routes.php";
+        require $current_theme_dir . "/settings.php";
+
+        $_router = $this->router;
+
+        foreach (PANDA_THEME_ROUTES as $theme_route) {
+            [$method, $route, $controller, $func] = $theme_route;
+            if ($method === "GET") {
+                $_router->get($route, "$controller@$func");
+            }
+            if ($method === "POST") {
+                $_router->post($route, "$controller@$func");
+            }
+        }
+    }
+
 
     public function simpleRedirect(string $url, array $data = []) {
 

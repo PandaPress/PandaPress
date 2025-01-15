@@ -15,11 +15,12 @@ class BaseController {
     protected $current_theme_dir;
     protected $current_theme_views;
 
+    protected array $theme_settings;
+
     private $user_data;
     private $user_id;
 
 
-    protected $theme_settings;
 
     public function __construct() {
         // template engine
@@ -29,7 +30,7 @@ class BaseController {
 
         $theme_settings = (new ThemeSettings())->getSettings();
 
-        $current_theme_id = $theme_settings['current_theme'];
+        $current_theme_id = (new ThemeSettings())->getCurrentThemeId();
 
         if ($current_theme_id) {
             // read theme info from panda.json
@@ -43,8 +44,7 @@ class BaseController {
             $this->current_theme_dir = PANDA_THEMES . "/papermod";
             $this->current_theme_views = PANDA_THEMES . "/papermod/Views";
         }
-
-
+        $this->theme_settings = $theme_settings;
 
         // set template engine template directory
         $cache_panda_tmpl_dir = PANDA_ROOT . "/cache/templates/$this->current_theme";
@@ -56,8 +56,6 @@ class BaseController {
 
         $this->user_data = \Panda\Session::get('user_data');
         $this->user_id = \Panda\Session::get('user_id');
-
-        $this->theme_settings = new ThemeSettings($this->current_theme_dir, $this->current_theme);
     }
 
     public function json($data, $status_code = 200) {
@@ -69,7 +67,7 @@ class BaseController {
 
     protected function appendMetaData(array $params = []) {
         return array_merge($params, [
-            "theme_settings" => $this->theme_settings->getSettings(),
+            "theme_settings" => $this->theme_settings,
             "user_data" => $this->user_data,
             "user_id" => $this->user_id
         ]);

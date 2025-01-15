@@ -31,26 +31,21 @@ if (!env("SITE_READY", true)) {
     exit();
 }
 
-$current_theme_id = (new \Panda\Models\ThemeSettings())->getCurrentThemeId();
-$current_theme_dir = PANDA_THEMES . "/$current_theme_id";
-
-$loader->addNamespace('Panda\Theme', $current_theme_dir);
-require $current_theme_dir . "/routes.php";
-require $current_theme_dir . "/settings.php";
-
-
 // main panda press logic here
 
-use Panda\Panda;
+use Panda\Core as Panda;
 
+global $router;
 global $pandadb;
 global $logger;
-global $router;
+
 
 $panda = Panda::getInstance();
-
 $pandadb = $panda->db;
 $logger = $panda->logger;
+
 $router = $panda->router;
+
+$router->setThemeRoutes();
 
 $panda->start();

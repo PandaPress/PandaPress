@@ -12,7 +12,12 @@ class ThemeSettings implements IThemeSettings {
         global $pandadb;
         $settings = $pandadb
             ->selectCollection('settings')
-            ->findOne(['current_theme' => $this->theme_id]);
+            ->findOne([
+                'current_theme' => [
+                    '$exists' => true,
+                    '$ne' => ''
+                ]
+            ]);
 
         $this->theme_id =  $settings ? $settings['current_theme'] : 'papermod';
         $this->custom_settings = $settings['settings'] ?? [];
@@ -30,10 +35,16 @@ class ThemeSettings implements IThemeSettings {
     // alway get default settings from settings.php file in theme directory
     private function getDefaultSettings(): array {
         $settings_file =  PANDA_THEMES . "/" . $this->theme_id . "/settings.php";
+
         if (!file_exists($settings_file)) {
             throw new \RuntimeException("Default Settings file not found: " . $settings_file);
         }
-        $default_settings = require_once $settings_file;
+        $default_settings = include $settings_file;
+
+        if (!is_array($default_settings)) {
+            throw new \RuntimeException("Settings file must return an array");
+        }
+
         return $default_settings;
     }
     public function getCustomSettings(): array {
