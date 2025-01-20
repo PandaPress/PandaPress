@@ -1,10 +1,5 @@
-.PHONY: pre-check g-clone g-update d-init d-up d-stop d-clean d-reload
+.PHONY: g-update d-init d-up d-stop d-clean d-reload
 
-pre-check:
-	./scripts/pre-check.sh
-
-g-clone:
-	./scripts/g-clone.sh
 
 g-update:
 	./scripts/g-update.sh
