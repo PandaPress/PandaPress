@@ -13,6 +13,8 @@ services:
       - APP_ENV=${APP_ENV}
     ports:
       - "80:80"
+      - "443:443"
+      - "443:443/udp"
     volumes:
       - ./caddy/Caddyfile:/etc/caddy/Caddyfile
       - ./logs/caddylogs:/var/log/caddy/access.log

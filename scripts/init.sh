@@ -19,8 +19,13 @@ if [ ! -f compose.yml ]; then
     echo -e "\033[36mGenerating Caddy configuration files...\033[0m"
     
     # Create .env file with the domain
-    echo "SITE_ADDRESS=${domain}" > .env
-    echo -e "\033[36mAdded SITE_ADDRESS=${domain} to .env\033[0m"
+    if [ "$domain" = "localhost" ]; then
+        echo "SITE_ADDRESS=:80" >> .env
+        echo -e "\033[36mAdded SITE_ADDRESS=:80 to .env (localhost mode)\033[0m"
+    else
+        echo "SITE_ADDRESS=${domain}" >> .env
+        echo -e "\033[36mAdded SITE_ADDRESS=${domain} to .env (production mode)\033[0m"
+    fi
     
     # Create necessary directories
     mkdir -p caddy/data
