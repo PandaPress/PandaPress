@@ -1,10 +1,17 @@
 #! /bin/bash
 
-if [ ! -f compose.yml ]; then
-    echo "\033[31mERROR: compose.yml not found. Nothing to clean.\033[0m"
+if [ ! -f compose.yml ] && [ ! -f compose.production.yml ]; then
+    echo "\033[31mERROR: No compose files found. Nothing to clean.\033[0m"
 else
-    echo "compose.yml found, cleaning up..."
-    rm -rf compose.yml
+    if [ -f compose.yml ]; then
+        echo "compose.yml found, cleaning up..."
+        rm -rf compose.yml
+    fi
+    
+    if [ -f compose.production.yml ]; then
+        echo "compose.production.yml found, cleaning up..."
+        rm -rf compose.production.yml
+    fi
 fi
 
 if docker info > /dev/null 2>&1; then
@@ -14,4 +21,11 @@ else
     echo "Docker is not running, cleaning up files only..."
 fi
 
-rm -rf caddy/Caddyfile caddy/data caddy/config logs/caddylogs
+# Remove .env if it exists
+[ -f .env ] && rm -f .env
+
+# Remove Caddy files and directories if they exist
+[ -f caddy/Caddyfile ] && rm -f caddy/Caddyfile
+[ -d caddy/data ] && rm -rf caddy/data
+[ -d caddy/config ] && rm -rf caddy/config
+[ -d logs/caddylogs ] && rm -rf logs/caddylogs
