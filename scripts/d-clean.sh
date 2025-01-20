@@ -2,7 +2,9 @@
 
 if [ ! -f compose.yml ]; then
     echo "\033[31mERROR: compose.yml not found. Nothing to clean.\033[0m"
-    exit 1
+else
+    echo "compose.yml found, cleaning up..."
+    rm -rf compose.yml
 fi
 
 if docker info > /dev/null 2>&1; then
@@ -12,4 +14,4 @@ else
     echo "Docker is not running, cleaning up files only..."
 fi
 
-rm -rf compose.yml caddy/Caddyfile caddy/data caddy/config logs/caddylogs
+rm -rf caddy/Caddyfile caddy/data caddy/config logs/caddylogs
