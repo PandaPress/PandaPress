@@ -5,8 +5,8 @@ services:
   server:
     build:
       context: .
-      dockerfile: nginx.dockerfile
-    container_name: panda_nginx
+      dockerfile: caddy.dockerfile
+    container_name: panda_caddy
     ports:
       - 80:8000
     volumes:
@@ -16,13 +16,33 @@ services:
     networks:
       - pandapress
 
+  server:
+    build:
+      context: .
+      dockerfile: caddy.dockerfile
+    restart: unless-stopped
+    container_name: panda_caddy
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ./logs/caddylogs:/var/log/caddy/access.log
+      - ./caddy/data:/data
+      - ./caddy/config:/config
+      - .:/var/www/html
+    environment:
+      - SITE_ADDRESS=${SITE_ADDRESS}
+    depends_on:
+      - php
+    networks:
+      - pandapress
+
   php:
     build:
       context: .
       dockerfile: php.dockerfile
-      args:
-        UID: ${UID:-1000}
-        GID: ${GID:-1000}
     container_name: panda_php
     volumes:
       - .:/var/www/html

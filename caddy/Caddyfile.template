@@ -1,0 +1,16 @@
+# The domain name or :port to listen on
+{SITE_ADDRESS} {
+    # Set the root directory for serving files
+    root * /var/www/html
+
+    # Enable file server
+    file_server
+
+    # Enable gzip compression
+    encode gzip
+
+    # Basic logging
+    log {
+        output file /var/log/caddy/access.log
+    }
+}

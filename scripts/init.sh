@@ -1,24 +1,9 @@
 #!/bin/bash
 
-
-export UID=1000
-export GID=1000
-
-# Check if running as root
-if [ "$EUID" -ne 0 ]; then 
-    echo "Please run as root (with sudo)"
-    exit 1
+if [ ! -f .env ]; then
+    touch .env
+    echo ".env file created"
 fi
-
-# Create webuser if it doesn't exist
-if ! id "webuser" &>/dev/null; then
-    useradd -u 1000 -m webuser
-    usermod -aG www-data webuser
-fi
-
-# Set correct permissions
-chown -R webuser:webuser .
-chmod -R 755 .
 
 
 if [ ! -f compose.yml ]; then
@@ -30,11 +15,19 @@ if [ ! -f compose.yml ]; then
     domain=${domain:-localhost}
     echo -e "\033[36mSetting domain to: $domain\033[0m"
 
-    cp nginx/default.conf.template nginx/default.conf
-    echo -e "\033[36mGenerating nginx configuration files...\033[0m"
-    awk -v domain="$domain" '{gsub(/server_name SERVER_NAME/, "server_name " domain)}1' nginx/default.conf > nginx/default.conf.tmp
-    mv nginx/default.conf.tmp nginx/default.conf
+    cp caddy/Caddyfile.template caddy/Caddyfile
+    echo -e "\033[36mGenerating Caddy configuration files...\033[0m"
     
+    # Create .env file with the domain
+    echo "SITE_ADDRESS=${domain}" > .env
+    echo -e "\033[36mAdded SITE_ADDRESS=${domain} to .env\033[0m"
+    
+    # Create necessary directories
+    mkdir -p caddy/data
+    mkdir -p caddy/config
+    mkdir -p logs/caddylogs
+    echo -e "\033[36mCreated necessary directories for Caddy\033[0m"
+
     echo -e "\033[32mConfiguration complete! You can now run 'make d-up' to start the servers.\033[0m"
 else
     echo -e "\033[33mcompose.yml already exists. If you want to reset it, delete it first and run this command again.\033[0m"

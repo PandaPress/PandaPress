@@ -17,24 +17,8 @@ RUN apt-get update && apt-get install -y \
 # Install additional PHP extensions if needed
 RUN pecl install mongodb && docker-php-ext-enable mongodb
 
-# Create a user with the same UID as the host user
-ARG UID=1000
-ARG GID=1000
-
-# Modify www-data user and group
-RUN groupmod -g $GID www-data \
-    && usermod -u $UID www-data \
-    && mkdir -p /var/www/html \
-    && chown -R www-data:www-data /var/www/html \
-    && chmod 777 /var/www/html
-
-# Configure php-fpm to run as www-data
-RUN sed -i "s/user = www-data/user = www-data/g" /usr/local/etc/php-fpm.d/www.conf && \
-    sed -i "s/group = www-data/group = www-data/g" /usr/local/etc/php-fpm.d/www.conf
+# Switch to www-data user
+USER www-data
 
 # Set working directory
 WORKDIR /var/www/html
-
-
-# Switch to www-data user
-USER www-data
