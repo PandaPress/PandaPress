@@ -1,4 +1,7 @@
-.PHONY: d-init d-up d-stop d-clean d-nginx-reload g-pull
+.PHONY: pre-check d-init d-up d-stop d-clean d-nginx-reload g-pull
+
+pre-check:
+	./scripts/pre.sh
 
 d-init:
 	./scripts/init.sh
