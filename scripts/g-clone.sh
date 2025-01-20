@@ -8,7 +8,7 @@ fi
 
 # Configuration
 REPO_URL="https://github.com/PandaPress/PandaPress.git"
-TARGET_DIR="panda-press"
+TARGET_DIR="panda_press"
 
 # Create directory if it doesn't exist
 mkdir -p "$TARGET_DIR"
