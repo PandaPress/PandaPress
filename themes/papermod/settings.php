@@ -19,7 +19,7 @@ return [
     "site_keywords" => ["Modern CMS", "PHP 8.2+", "Without Composer", "PSR-4 Autoloader", "AdminLTE Dashboard", "Powerful Plugins", "Beautiful Themes", "Open Source", "Always Free"],
     "site_author" => "Yumin",
     "show_author_in_post" => true,
-    "profile_image_name" => "panda.png",
+    "profile_image_name" => "panda.jpg",
     "profile_image_title" =>  "Panda Press Logo",
     "home_page_title" => "🚀 Welcome to Panda Press and its default theme PaperMod",
     "home_page_descriptions" => [
