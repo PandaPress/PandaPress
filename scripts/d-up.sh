@@ -1,7 +1,12 @@
 #! /bin/bash
 
-if [ ! -f compose.yml ]; then
-	echo "\033[31mERROR: compose.yml not found. Run 'make d-init' first.\033[0m"
+if [ ! -f compose.development.yml ]; then
+	echo "\033[31mERROR: compose.development.yml not found. Run 'make d-init' first.\033[0m"
+	exit 1
+fi
+
+if [ ! -f compose.production.yml ]; then
+	echo "\033[31mERROR: compose.production.yml not found. Run 'make d-init' first.\033[0m"
 	exit 1
 fi
 

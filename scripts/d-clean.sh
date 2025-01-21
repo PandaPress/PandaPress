@@ -8,12 +8,12 @@ else
 fi
 
 
-if [ ! -f compose.yml ] && [ ! -f compose.production.yml ]; then
+if [ ! -f compose.development.yml ] && [ ! -f compose.production.yml ]; then
     echo "\033[31mERROR: No compose files found. Nothing to clean.\033[0m"
 else
-    if [ -f compose.yml ]; then
-        echo "compose.yml found, cleaning up..."
-        rm -rf compose.yml
+    if [ -f compose.development.yml ]; then
+        echo "compose.development.yml found, cleaning up..."
+        rm -rf compose.development.yml
     fi
     
     if [ -f compose.production.yml ]; then
