@@ -1,24 +1,23 @@
 #! /bin/bash
 
-if [ ! -f compose.development.yml ]; then
-	echo "\033[31mERROR: compose.development.yml not found. Run 'make d-init' first.\033[0m"
-	exit 1
-fi
-
-if [ ! -f compose.production.yml ]; then
-	echo "\033[31mERROR: compose.production.yml not found. Run 'make d-init' first.\033[0m"
-	exit 1
-fi
-
 # Source the .env file if it exists
 if [ -f .env ]; then
 	export $(cat .env | grep -v '^#' | xargs)
 fi
 
+# Check and validate APP_ENV first
 if [ "$APP_ENV" = "development" ]; then
+	if [ ! -f compose.development.yml ]; then
+		echo "\033[31mERROR: compose.development.yml not found. Run 'make d-init' first.\033[0m"
+		exit 1
+	fi
 	echo "Starting development environment..."
 	docker compose -f compose.development.yml up -d
 elif [ "$APP_ENV" = "production" ]; then
+	if [ ! -f compose.production.yml ]; then
+		echo "\033[31mERROR: compose.production.yml not found. Run 'make d-init' first.\033[0m"
+		exit 1
+	fi
 	echo "Starting production environment..."
 	docker compose -f compose.production.yml up -d
 else
