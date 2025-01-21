@@ -8,11 +8,8 @@ services:
       dockerfile: caddy.dockerfile
     restart: unless-stopped
     container_name: panda_caddy
-    environment:
-      - SITE_ADDRESS=${SITE_ADDRESS}
-      - APP_ENV=${APP_ENV}
     ports:
-      - "80:80"
+      - "8080:80"
     volumes:
       - ./caddy/Caddyfile:/etc/caddy/Caddyfile
       - ./logs/caddylogs:/var/log/caddy/access.log

@@ -76,4 +76,5 @@ define("PANDA_ENV_KEYS", [
     'ALLOW_SIGNUP',
     'SITE_READY',
     'APP_ENV',
+    'SITE_ADDRESS',
 ]);

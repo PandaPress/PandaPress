@@ -1,7 +1,13 @@
 # The domain name or :port to listen on
 {SITE_ADDRESS} {
     # Set the root directory for serving files
-    root * /var/www/html
+    root * /var/www/html/public
+
+    # Enable PHP FastCGI processing
+    php_fastcgi php:9000
+
+    # Try files, then directories, then index.php
+    try_files {path} {path}/ /index.php?{query}
 
     # Enable file server
     file_server

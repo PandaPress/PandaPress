@@ -11,9 +11,11 @@ if [ -f .env ]; then
 fi
 
 if [ "$APP_ENV" = "development" ]; then
-	docker compose up -d
+	echo "Starting development environment..."
+	docker compose -f compose.yml up -d
 elif [ "$APP_ENV" = "production" ]; then
-	docker compose -f compose.yml -f compose.production.yml up
+	echo "Starting production environment..."
+	docker compose -f compose.yml -f compose.production.yml up -d
 else
 	echo "\033[31mERROR: APP_ENV must be set to either 'development' or 'production'\033[0m"
 	exit 1

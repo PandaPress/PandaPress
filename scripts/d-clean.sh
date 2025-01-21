@@ -1,5 +1,13 @@
 #! /bin/bash
 
+if docker info > /dev/null 2>&1; then
+    echo "Docker is running, cleaning up containers and images and files..."
+    docker compose down -v --rmi all
+else
+    echo "Docker is not running, cleaning up files only..."
+fi
+
+
 if [ ! -f compose.yml ] && [ ! -f compose.production.yml ]; then
     echo "\033[31mERROR: No compose files found. Nothing to clean.\033[0m"
 else
@@ -12,13 +20,6 @@ else
         echo "compose.production.yml found, cleaning up..."
         rm -rf compose.production.yml
     fi
-fi
-
-if docker info > /dev/null 2>&1; then
-    echo "Docker is running, cleaning up containers and images and files..."
-    docker compose down -v --rmi all
-else
-    echo "Docker is not running, cleaning up files only..."
 fi
 
 # Remove .env if it exists

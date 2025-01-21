@@ -21,10 +21,14 @@ if [ ! -f compose.yml ]; then
     
     # Create .env file with the domain
     if [ "$domain" = "localhost" ]; then
-        echo "SITE_ADDRESS=:80" >> .env
+        echo "SITE_ADDRESS=:8080" >> .env
+        # Add the domain to the Caddyfile
+        awk '{gsub(/{SITE_ADDRESS}/,":8080")}1' caddy/Caddyfile > caddy/Caddyfile.tmp && mv caddy/Caddyfile.tmp caddy/Caddyfile
         echo -e "\033[36mAdded SITE_ADDRESS=:80 to .env (localhost mode)\033[0m"
     else
         echo "SITE_ADDRESS=${domain}" >> .env
+        # Add the domain to the Caddyfile
+        awk '{gsub(/{SITE_ADDRESS}/,"'"$domain"'")}1' caddy/Caddyfile > caddy/Caddyfile.tmp && mv caddy/Caddyfile.tmp caddy/Caddyfile
         echo -e "\033[36mAdded SITE_ADDRESS=${domain} to .env (production mode)\033[0m"
     fi
     
