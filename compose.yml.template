@@ -17,6 +17,8 @@ services:
       - ./caddy/data:/data
       - ./caddy/config:/config
       - .:/var/www/html
+    depends_on:
+      - php
     networks:
       - pandapress
 
