@@ -35,7 +35,9 @@ if [ ! -f compose.yml ]; then
     # Create necessary directories
     mkdir -p caddy/data
     mkdir -p caddy/config
-    mkdir -p logs/caddylogs
+    mkdir -p logs/caddy
+    touch logs/caddy/access.log
+    touch logs/caddy/error.log
     echo -e "\033[36mCreated necessary directories for Caddy\033[0m"
 
     echo -e "\033[32mConfiguration complete! You can now run 'make d-up' to start the servers.\033[0m"

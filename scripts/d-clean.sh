@@ -28,4 +28,4 @@ fi
 [ -f caddy/Caddyfile ] && rm -f caddy/Caddyfile
 [ -d caddy/data ] && rm -rf caddy/data
 [ -d caddy/config ] && rm -rf caddy/config
-[ -d logs/caddylogs ] && rm -rf logs/caddylogs
+[ -d logs/caddy ] && rm -rf logs/caddy
