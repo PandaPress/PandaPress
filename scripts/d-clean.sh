@@ -22,8 +22,7 @@ else
     fi
 fi
 
-# Remove .env if it exists
-[ -f .env ] && rm -f .env
+
 
 # Remove Caddy files and directories if they exist
 [ -f caddy/Caddyfile ] && rm -f caddy/Caddyfile
