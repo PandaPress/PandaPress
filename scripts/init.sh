@@ -8,9 +8,9 @@ fi
 
 if [ ! -f compose.yml ]; then
     echo -e "\033[36mcompose.yml not found, creating it from template...\033[0m"
-    cp compose.yml.template compose.yml
+    cp compose.development.yml.template compose.development.yml
     cp compose.production.yml.template compose.production.yml
-    echo -e "\033[32mCreated compose.yml from template.\033[0m"
+    echo -e "\033[32mCreated compose.development.yml and compose.production.yml from templates.\033[0m"
     
     read -p "Enter your domain name (default: localhost): " domain
     domain=${domain:-localhost}
