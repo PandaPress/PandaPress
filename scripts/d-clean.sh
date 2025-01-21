@@ -1,8 +1,16 @@
 #! /bin/bash
 
+# Determine APP_ENV, default to development if not set
+APP_ENV=${APP_ENV:-development}
+COMPOSE_FILE="compose.${APP_ENV}.yml"
+
 if docker info > /dev/null 2>&1; then
     echo "Docker is running, cleaning up containers and images and files..."
-    docker compose down -v --rmi all
+    if [ -f "$COMPOSE_FILE" ]; then
+        docker compose -f "$COMPOSE_FILE" down -v --rmi all
+    else
+        echo "\033[31mERROR: $COMPOSE_FILE not found\033[0m"
+    fi
 else
     echo "Docker is not running, cleaning up files only..."
 fi
