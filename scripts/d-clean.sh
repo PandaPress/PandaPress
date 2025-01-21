@@ -1,39 +1,48 @@
 #! /bin/bash
 
+# Exit on error, undefined vars, and pipe failures
+set -euo pipefail
+
 # Determine APP_ENV, default to development if not set
 APP_ENV=${APP_ENV:-development}
 COMPOSE_FILE="compose.${APP_ENV}.yml"
 
+echo "Starting cleanup process..."
+
+# Docker cleanup
 if docker info > /dev/null 2>&1; then
-    echo "Docker is running, cleaning up containers and images and files..."
-    if [ -f "$COMPOSE_FILE" ]; then
-        docker compose -f "$COMPOSE_FILE" down -v --rmi all
+    if [ -f "${COMPOSE_FILE}" ]; then
+        echo "Docker is running, cleaning up containers and images..."
+        docker compose -f "${COMPOSE_FILE}" down -v --rmi all
     else
-        echo "\033[31mERROR: $COMPOSE_FILE not found\033[0m"
+        echo "Docker is running, but ${COMPOSE_FILE} not found, cleanup config files only..."
     fi
 else
-    echo "Docker is not running, cleaning up files only..."
+    echo "Docker is not running, cleanup config files only..."
 fi
 
-
-if [ ! -f compose.development.yml ] && [ ! -f compose.production.yml ]; then
-    echo "\033[31mERROR: No compose files found. Nothing to clean.\033[0m"
-else
-    if [ -f compose.development.yml ]; then
-        echo "compose.development.yml found, cleaning up..."
-        rm -rf compose.development.yml
+# Compose files cleanup
+for env in development production; do
+    compose_file="compose.${env}.yml"
+    if [ -f "${compose_file}" ]; then
+        echo "Removing ${compose_file}..."
+        rm -f "${compose_file}"
     fi
-    
-    if [ -f compose.production.yml ]; then
-        echo "compose.production.yml found, cleaning up..."
-        rm -rf compose.production.yml
+done
+
+# Caddy cleanup
+caddy_files=(
+    "caddy/Caddyfile"
+    "caddy/data"
+    "caddy/config"
+    "logs/caddy"
+)
+
+for item in "${caddy_files[@]}"; do
+    if [ -e "${item}" ]; then
+        echo "Removing ${item}..."
+        rm -rf "${item}"
     fi
-fi
+done
 
-
-
-# Remove Caddy files and directories if they exist
-[ -f caddy/Caddyfile ] && rm -f caddy/Caddyfile
-[ -d caddy/data ] && rm -rf caddy/data
-[ -d caddy/config ] && rm -rf caddy/config
-[ -d logs/caddy ] && rm -rf logs/caddy
+echo "Cleanup completed successfully!"
