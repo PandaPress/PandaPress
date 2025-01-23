@@ -15,16 +15,17 @@ if [ ! -f compose.development.yml ] && [ ! -f compose.production.yml ]; then
     if [ "$domain" = "localhost" ]; then
         # Development branch
         cp compose.development.yml.template compose.development.yml
-        echo "SITE_ADDRESS=:8080" >> .env
+
         cp caddy/Caddyfile.template caddy/Caddyfile
-        awk '{gsub(/{SITE_ADDRESS}/,":8080")}1' caddy/Caddyfile > caddy/Caddyfile.tmp && mv caddy/Caddyfile.tmp caddy/Caddyfile
-        echo -e "\033[36mAdded SITE_ADDRESS=:8080 to .env (development mode)\033[0m"
+
+        echo -e "\033[36mCaddyfile created\033[0m"
     else
         # Production branch
         cp compose.production.yml.template compose.production.yml
         echo "SITE_ADDRESS=${domain}" >> .env
         cp caddy/Caddyfile.template caddy/Caddyfile
-        awk '{gsub(/{SITE_ADDRESS}/,"'"$domain"'")}1' caddy/Caddyfile > caddy/Caddyfile.tmp && mv caddy/Caddyfile.tmp caddy/Caddyfile
+        #awk '{gsub(/{SITE_ADDRESS}/,"'"$domain"'")}1' caddy/Caddyfile > caddy/Caddyfile.tmp && mv caddy/Caddyfile.tmp caddy/Caddyfile
+        sed -i "s/localhost/${domain}/g" caddy/Caddyfile
         echo -e "\033[36mAdded SITE_ADDRESS=${domain} to .env (production mode)\033[0m"
     fi
     

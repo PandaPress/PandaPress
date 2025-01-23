@@ -5,7 +5,7 @@ g-update:
 	./scripts/g-update.sh
 
 d-init:
-	./scripts/init.sh
+	./scripts/d-init.sh
 
 d-up:
 	./scripts/d-up.sh
