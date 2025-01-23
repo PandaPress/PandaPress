@@ -16,16 +16,15 @@ if [ ! -f compose.development.yml ] && [ ! -f compose.production.yml ]; then
         # Development branch
         cp compose.development.yml.template compose.development.yml
 
-        cp caddy/Caddyfile.template caddy/Caddyfile
+        cp caddy/Caddyfile.development.template caddy/Caddyfile
 
         echo -e "\033[36mCaddyfile created\033[0m"
     else
         # Production branch
         cp compose.production.yml.template compose.production.yml
         echo "SITE_ADDRESS=${domain}" >> .env
-        cp caddy/Caddyfile.template caddy/Caddyfile
-        #awk '{gsub(/{SITE_ADDRESS}/,"'"$domain"'")}1' caddy/Caddyfile > caddy/Caddyfile.tmp && mv caddy/Caddyfile.tmp caddy/Caddyfile
-        sed -i "s/localhost/${domain}/g" caddy/Caddyfile
+        cp caddy/Caddyfile.production.template caddy/Caddyfile
+        awk '{gsub(/{SITE_ADDRESS}/,"'"$domain"'")}1' caddy/Caddyfile > caddy/Caddyfile.tmp && mv caddy/Caddyfile.tmp caddy/Caddyfile
         echo -e "\033[36mAdded SITE_ADDRESS=${domain} to .env (production mode)\033[0m"
     fi
     

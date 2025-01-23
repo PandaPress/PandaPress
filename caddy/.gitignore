@@ -1,3 +1,4 @@
 *
 !.gitignore
-!Caddyfile.template
+!Caddyfile.production.template
+!Caddyfile.development.template
