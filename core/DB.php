@@ -35,11 +35,12 @@ class DB {
 
     private function initializeMongoDB(): void {
         try {
-            $options = env('APP_ENV') === 'production' ?
-                [
+            $options = env('APP_ENV') === 'production'
+                ?   [
                     'tls' => true,
                     'tlsCAFile' => PANDA_ROOT . env("MONGO_TLS_CA_FILE"),
-                ] : [];
+                ]
+                : [];
 
             $this->mongo_client = new MongoDBClient(env("MONGO_URI"), $options);
             $this->db = $this->mongo_client->selectDatabase(env("DATABASE_NAME"));

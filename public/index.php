@@ -36,11 +36,12 @@ if (!env("SITE_READY", true)) {
 try {
     $uri = env('MONGO_URI');
 
-    $options = env('APP_ENV') === 'production' ?
-        [
+    $options = env('APP_ENV') === 'production'
+        ?   [
             'tls' => true,
             'tlsCAFile' => PANDA_ROOT . env("MONGO_TLS_CA_FILE"),
-        ] : [];
+        ]
+        : [];
 
 
     $manager = new \MongoDB\Driver\Manager($uri, $options);
@@ -48,7 +49,44 @@ try {
     $manager->executeCommand('admin', $command);
 } catch (\Throwable $e) {
     http_response_code(503);
-    die('Database connection error. Please try again later.');
+    echo <<<HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Error</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f8f9fa;
+        }
+        .error-container {
+            text-align: center;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            max-width: 500px;
+        }
+        h1 { color: #dc3545; margin-bottom: 1rem; }
+        p { color: #6c757d; line-height: 1.5; }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <h1>Database Connection Error</h1>
+        <p>We're experiencing technical difficulties. Please try again later.</p>
+    </div>
+</body>
+</html>
+HTML;
+    die();
 }
 
 
