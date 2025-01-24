@@ -35,7 +35,15 @@ if (!env("SITE_READY", true)) {
 // ping mongodb server
 try {
     $uri = env('MONGO_URI');
-    $manager = new \MongoDB\Driver\Manager($uri);
+
+    $options = env('APP_ENV') === 'production' ?
+        [
+            'tls' => true,
+            'tlsCAFile' => PANDA_ROOT . env("MONGO_TLS_CA_FILE"),
+        ] : [];
+
+
+    $manager = new \MongoDB\Driver\Manager($uri, $options);
     $command = new \MongoDB\Driver\Command(['ping' => 1]);
     $manager->executeCommand('admin', $command);
 } catch (\Throwable $e) {
