@@ -43,8 +43,6 @@ class DB {
             ]);
             $this->db = $this->mongo_client->selectDatabase(env("DATABASE_NAME"));
 
-            $this->mongo_client->selectDatabase('admin')->command(['ping' => 1]);
-
             // create collections if not already created
             $collections = iterator_to_array($this->db->listCollectionNames());
 

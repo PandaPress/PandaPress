@@ -9,6 +9,7 @@ require "../functions.php";
 require "../autoloader.php";
 
 
+
 \Panda\Session::start('Strict');
 
 
@@ -30,6 +31,19 @@ if (!env("SITE_READY", true)) {
     ob_end_flush();
     exit();
 }
+
+// ping mongodb server
+try {
+    $uri = env('MONGO_URI');
+    $manager = new \MongoDB\Driver\Manager($uri);
+    $command = new \MongoDB\Driver\Command(['ping' => 1]);
+    $manager->executeCommand('admin', $command);
+} catch (\Throwable $e) {
+    http_response_code(503);
+    die('Database connection error. Please try again later.');
+}
+
+
 
 // main panda press logic here
 
