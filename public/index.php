@@ -43,7 +43,6 @@ try {
         ]
         : [];
 
-
     $manager = new \MongoDB\Driver\Manager($uri, $options);
     $command = new \MongoDB\Driver\Command(['ping' => 1]);
     $manager->executeCommand('admin', $command);

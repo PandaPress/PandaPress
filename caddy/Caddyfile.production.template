@@ -1,7 +1,3 @@
-{
-    auto_https disable_redirects
-}
-
 {SITE_ADDRESS} {
     root * /var/www/html/public
     encode gzip
