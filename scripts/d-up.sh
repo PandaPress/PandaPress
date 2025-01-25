@@ -1,9 +1,6 @@
 #! /bin/bash
 
-# Source the .env file if it exists
-if [ -f .env ]; then
-	export $(cat .env | grep -v '^#' | xargs)
-fi
+APP_ENV=${APP_ENV:-development}
 
 # Check and validate APP_ENV first
 if [ "$APP_ENV" = "development" ]; then
