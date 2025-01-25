@@ -34,7 +34,7 @@ if (!env("SITE_READY", true)) {
 
 // ping mongodb server
 try {
-    $uri = 'asda' . env('MONGO_URI');
+    $uri = env('MONGO_URI');
 
     $options = env('APP_ENV') === 'production'
         ?   [
