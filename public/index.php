@@ -34,7 +34,7 @@ if (!env("SITE_READY", true)) {
 
 // ping mongodb server
 try {
-    $uri = env('MONGO_URI');
+    $uri = 'asda' . env('MONGO_URI');
 
     $options = env('APP_ENV') === 'production'
         ?   [
@@ -75,10 +75,15 @@ try {
         }
         h1 { color: #dc3545; margin-bottom: 1rem; }
         p { color: #6c757d; line-height: 1.5; }
+        .panda-logo {
+            width: 150px;
+            margin-bottom: 1.5rem;
+        }
     </style>
 </head>
 <body>
     <div class="error-container">
+        <img src="/upload/panda.jpg" alt="Panda Logo" class="panda-logo">
         <h1>Database Connection Error</h1>
         <p>We're experiencing technical difficulties. Please try again later.</p>
     </div>
