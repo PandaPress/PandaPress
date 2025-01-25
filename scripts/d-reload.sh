@@ -1,5 +1,11 @@
 #! /bin/bash
 
+# Source .env file if it exists
+if [ -f .env ]; then
+    # Export all variables from .env
+    export $(cat .env | grep -v '^#' | xargs)
+fi
+
 # Default to development if APP_ENV is not set
 APP_ENV=${APP_ENV:-development}
 COMPOSE_FILE="compose.${APP_ENV}.yml"

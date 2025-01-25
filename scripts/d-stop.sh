@@ -1,5 +1,11 @@
 #! /bin/bash
 
+# Source .env file if it exists
+if [ -f .env ]; then
+    # Export all variables from .env
+    export $(cat .env | grep -v '^#' | xargs)
+fi
+
 APP_ENV=${APP_ENV:-development}
 
 # Check APP_ENV and use appropriate compose file

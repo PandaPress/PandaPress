@@ -3,8 +3,14 @@
 # Exit on error, undefined vars, and pipe failures
 set -euo pipefail
 
-# Determine APP_ENV, default to development if not set
-APP_ENV=${APP_ENV:-development}
+# Source .env file if it exists
+if [ -f .env ]; then
+    # Export all variables from .env
+    export $(cat .env | grep -v '^#' | xargs)
+fi
+
+# Determine APP_ENV, allow override from command line, default to development
+APP_ENV=${1:-${APP_ENV:-development}}
 COMPOSE_FILE="compose.${APP_ENV}.yml"
 
 echo "Starting cleanup process..."
