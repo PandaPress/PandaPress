@@ -3,5 +3,3 @@
 ./*/**/.DS_Store
 
 compose.yml
-compose.production.yml
-compose.development.yml

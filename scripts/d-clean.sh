@@ -3,38 +3,22 @@
 # Exit on error, undefined vars, and pipe failures
 set -euo pipefail
 
-# Source .env file if it exists
-if [ -f .env ]; then
-    # Export all variables from .env
-    export $(cat .env | grep -v '^#' | xargs)
-fi
-
-# Determine APP_ENV, allow override from command line, default to development
-APP_ENV=${1:-${APP_ENV:-development}}
-COMPOSE_FILE="compose.${APP_ENV}.yml"
-
 echo "Starting cleanup process..."
 
 # Docker cleanup
 if docker info > /dev/null 2>&1; then
-    if [ -f "${COMPOSE_FILE}" ]; then
+    if [ -f "compose.yml" ]; then
         echo "Docker is running, cleaning up containers and images..."
-        docker compose -f "${COMPOSE_FILE}" down -v --rmi all
+        docker compose down -v --rmi all
     else
-        echo "Docker is running, but ${COMPOSE_FILE} not found, cleanup config files only..."
+        echo "Docker is running, but compose.yml not found, cleanup config files only..."
     fi
 else
     echo "Docker is not running, cleanup config files only..."
 fi
 
 # Compose files cleanup
-for env in development production; do
-    compose_file="compose.${env}.yml"
-    if [ -f "${compose_file}" ]; then
-        echo "Removing ${compose_file}..."
-        rm -f "${compose_file}"
-    fi
-done
+rm -f "compose.yml"
 
 # Caddy cleanup
 caddy_files=(
