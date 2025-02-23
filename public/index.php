@@ -38,7 +38,7 @@ try {
 
     $options =  [
         'tls' => true,
-        'tlsCAFile' => PANDA_ROOT . env("MONGO_TLS_CA_FILE"),
+        'tlsCAFile' => env("MONGO_TLS_CA_FILE"),
     ];
 
     $manager = new \MongoDB\Driver\Manager($uri, $options);

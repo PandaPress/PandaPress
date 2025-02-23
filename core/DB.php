@@ -37,7 +37,7 @@ class DB {
         try {
             $options = [
                 'tls' => true,
-                'tlsCAFile' => PANDA_ROOT . env("MONGO_TLS_CA_FILE"),
+                'tlsCAFile' => env("MONGO_TLS_CA_FILE"),
             ];
 
             $this->mongo_client = new MongoDBClient(env("MONGO_URI"), $options);
