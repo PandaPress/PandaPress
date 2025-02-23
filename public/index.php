@@ -36,12 +36,10 @@ if (!env("SITE_READY", true)) {
 try {
     $uri = env('MONGO_URI');
 
-    $options = env('APP_ENV') === 'production'
-        ?   [
-            'tls' => true,
-            'tlsCAFile' => PANDA_ROOT . env("MONGO_TLS_CA_FILE"),
-        ]
-        : [];
+    $options =  [
+        'tls' => true,
+        'tlsCAFile' => PANDA_ROOT . env("MONGO_TLS_CA_FILE"),
+    ];
 
     $manager = new \MongoDB\Driver\Manager($uri, $options);
     $command = new \MongoDB\Driver\Command(['ping' => 1]);
