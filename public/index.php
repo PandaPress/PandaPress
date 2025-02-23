@@ -83,9 +83,13 @@ try {
 </head>
 <body>
     <div class="error-container">
+       
         <img src="/upload/panda.jpg" alt="Panda Logo" class="panda-logo">
         <h1>Database Connection Error</h1>
         <p>We're experiencing technical difficulties. Please try again later.</p>
+        <?php if (env('APP_ENV') === 'development') : ?>
+            <p>Error: {$e->getMessage()}</p>
+        <?php endif; ?>
     </div>
 </body>
 </html>
