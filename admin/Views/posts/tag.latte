@@ -1,15 +1,18 @@
 {layout '../parts/layout.latte'} {block content}
 
 <main class="app-main tags">
-  <div class="p-4 fs-2">
-    Posts and pages with tag:
-    <span class="badge rounded-pill text-bg-primary"> {$tag} </span>
+  <div class="p-4">
+    <h3>
+      Posts and Pages with tag
+      <span class="badge rounded-pill text-bg-primary"> {$tag} </span> :
+    </h3>
     <button
       class="btn btn-sm btn-outline-danger"
       id="delete-tag-from-all"
       data-tag="{$tag}"
     >
-      Delete from all
+      Delete tag <span class="badge rounded-pill text-bg-primary">{$tag}</span>
+      from all posts and pages
     </button>
   </div>
   <div class="p-4">

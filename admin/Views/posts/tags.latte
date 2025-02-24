@@ -1,7 +1,9 @@
 {layout '../parts/layout.latte'} {block content}
 
 <main class="app-main tags">
-  <div class="p-4 fs-2">Tags ({count($tags)})</div>
+  <div class="p-4">
+    <h3>Tags ({count($tags)})</h3>
+  </div>
   <div class="tags-cloud p-4">
     {foreach $tags as $tag}
     <span class="badge rounded-pill text-bg-primary">
