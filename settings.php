@@ -27,6 +27,7 @@ define("PANDA_ADMIN_ROUTES", [
 
     // admin home
     ["GET", "/admin", "\Panda\Admin\Controllers\HomeController", "index"],
+    ["GET", '/license', '\Panda\Admin\Controllers\HomeController', 'license'],
     ["GET", '/admin/success', '\Panda\Admin\Controllers\HomeController', 'success'],
     ["GET", '/admin/error', '\Panda\Admin\Controllers\HomeController', 'error'],
 

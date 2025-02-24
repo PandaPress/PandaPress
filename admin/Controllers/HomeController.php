@@ -22,6 +22,10 @@ class HomeController extends BaseController {
         ]));
     }
 
+    public function license() {
+        return $this->template_engine->render("$this->views/license.latte", $this->appendUserData([]));
+    }
+
     public function success() {
         $success_message = isset($_SESSION['panda_success_message']) ? $_SESSION['panda_success_message'] : "";
         unset($_SESSION['panda_success_message']);
