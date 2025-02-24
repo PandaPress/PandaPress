@@ -16,12 +16,12 @@
     <table class="table w-100">
       <thead class="w-100">
         <tr>
-          <th scope="col"><h4>Status</h4></th>
-          <th scope="col"><h4>Category</h4></th>
-          <th scope="col"><h4>Title</h4></th>
-          <th scope="col"><h4>Tags</h4></th>
-          <th scope="col"><h4>Date</h4></th>
-          <th scope="col"><h4>Actions</h4></th>
+          <th scope="col"><h5 class="col-header-title">Status</h5></th>
+          <th scope="col"><h5 class="col-header-title">Category</h5></th>
+          <th scope="col"><h5 class="col-header-title">Title</h5></th>
+          <th scope="col"><h5 class="col-header-title">Tags</h5></th>
+          <th scope="col"><h5 class="col-header-title">Date</h5></th>
+          <th scope="col"><h5 class="col-header-title">Actions</h5></th>
         </tr>
       </thead>
       <tbody n:if="$posts" class="w-100">
@@ -83,5 +83,11 @@
     </table>
   </div>
 </main>
+
+<style>
+  .col-header-title {
+    margin-bottom: 0;
+  }
+</style>
 
 {/block}
